@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Name: custom color palette
+  Author: Ilias Ism
+  URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: #5038bc;
+
+    --muted: 267 27% 14.399999999999999%;
+    --muted-foreground: 267 5.4% 54.8%;
+
+    --popover: 267 54.2% 6.24%;
+    --popover-foreground: 267 5.4% 97.4%;
+
+    --card: 267 54.2% 6.24%;
+    --card-foreground: 267 5.4% 97.4%;
+
+    --border: 267 27% 14.399999999999999%;
+    --input: 267 27% 14.399999999999999%;
+
+    --primary: 250.9 54.1% 47.8%;
+    --primary-foreground: 267 5.4% 4.8%;
+
+    --secondary: 267 27% 14.399999999999999%;
+    --secondary-foreground: 267 5.4% 97.4%;
+
+    --accent: 267 27% 14.399999999999999%;
+    --accent-foreground: 267 5.4% 97.4%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 267 5.4% 97.4%;
+
+    --ring: 267 54% 48%;
+
+    /* Unique properties from the second :root block */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.leaflet-container {
+  height: 100dvh;
+  width: 100%;
+}
