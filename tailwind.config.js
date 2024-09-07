@@ -23,6 +23,8 @@ export default {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          white: '#F9F9FE',
+          red: '#D6003C',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -49,6 +51,10 @@ export default {
           3: 'hsl(var(--chart-3))',
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
+        },
+        400: '#888888',
+        light: {
+          grey: '#C8C8C8',
         },
       },
     },

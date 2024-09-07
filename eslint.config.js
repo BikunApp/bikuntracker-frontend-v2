@@ -6,6 +6,11 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
+const customStylistic = stylistic.configs.customize({
+  semi: false,
+  quotes: 'single',
+})
+
 export default tseslint.config(
   { ignores: ['dist'] },
   {
@@ -27,7 +32,13 @@ export default tseslint.config(
       ],
     },
   },
-  stylistic.configs.customize({ semi: false, quotes: 'single' }),
+  {
+    ...customStylistic,
+    rules: {
+      ...customStylistic.rules,
+      '@stylistic/operator-linebreak': 'off',
+    },
+  },
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
