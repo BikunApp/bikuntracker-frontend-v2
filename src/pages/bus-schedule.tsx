@@ -3,9 +3,9 @@ import { TriangleAlert } from 'lucide-react'
 import bikunRoutePngUrl from '@/assets/bikun-route.png'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx'
 
-export default function Route() {
+export default function BusSchedule() {
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20">
+    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20 font-poppins">
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
         Rute Bikun
       </div>

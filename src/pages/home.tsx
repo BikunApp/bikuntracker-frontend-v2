@@ -4,12 +4,12 @@ import NavigationBar from '@/components/navigation/index.tsx'
 
 export default function Home() {
   return (
-    <div className="relative">
+    <>
       <NavigationBar />
       <Drawer />
-      <div className="absolute bottom-0 left-0 right-0 top-0 z-20">
+      <div className="absolute bottom-0 left-0 right-0 top-0 z-0">
         <Map />
       </div>
-    </div>
+    </>
   )
 }

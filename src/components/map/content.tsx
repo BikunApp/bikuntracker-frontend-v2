@@ -24,7 +24,7 @@ import { useGlobalStore } from '@/store/global.ts'
 import { OperationalStatus } from '@/types/bus.ts'
 
 export default function MapContent() {
-  const { selectedLine, message } = useGlobalStore()
+  const { selectedLine, selectedStop, message } = useGlobalStore()
 
   return (
     <>
@@ -42,6 +42,7 @@ export default function MapContent() {
               icon={redStopIcon}
               position={metadata.positionRedLine}
               zIndexOffset={10}
+              opacity={!selectedStop || selectedStop === stop ? 1 : 0.5}
             />
           )
         })}
@@ -59,6 +60,7 @@ export default function MapContent() {
               icon={blueStopIcon}
               position={metadata.positionBlueLine}
               zIndexOffset={10}
+              opacity={!selectedStop || selectedStop === stop ? 1 : 0.5}
             />
           )
         })}
@@ -74,7 +76,10 @@ export default function MapContent() {
               position={L.latLng(coordinate.latitude, coordinate.longitude)}
               zIndexOffset={100}
             >
-              <Popup>popup hehe</Popup>
+              <Popup>
+                Bus
+                {' ' + coordinate.id}
+              </Popup>
             </Marker>
           ))}
       {message && (

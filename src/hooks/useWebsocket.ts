@@ -8,7 +8,7 @@ export interface UseWebsocketProps {
 
 export default function useWebsocket({ onMessage }: UseWebsocketProps) {
   const [socket] = useState<WebSocket>(
-    () => new WebSocket(import.meta.env.VITE_WS_URL + '/v2'),
+    () => new WebSocket(import.meta.env.VITE_WS_URL),
   )
 
   const onMessageCallbackRef = useRef<UseWebsocketProps['onMessage'] | null>(

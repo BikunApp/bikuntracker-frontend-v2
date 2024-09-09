@@ -1,9 +1,17 @@
-import Cookie from 'js-cookie'
-import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 
-import { ssoLoginResponseSchema } from '@/schema/auth.ts'
+import { BackPathnameKey } from '@/constants/keys.ts'
+import { storeJwtWithExpiry } from '@/lib/utils.ts'
+import { ssoLogin } from '@/services/auth.ts'
+import { ErrorHTTPNotOk } from '@/services/util.ts'
+import { useAuthStore } from '@/store/auth.ts'
 
-export default function SSO() {
+export default function SsoLogin() {
+  const { user, setUser } = useAuthStore()
+  const [error, setError] = useState<string>('')
+  const navigate = useNavigate()
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const service = window.location.href.replace(window.location.search, '')
@@ -12,26 +20,23 @@ export default function SSO() {
     if (ticket) {
       try {
         (async () => {
-          const resp = await fetch(
-            `${import.meta.env.VITE_BACKEND_API_URL}/sso/login`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                ticket,
-                service,
-              }),
-            },
-          )
-          if (resp.ok) {
-            const data = await resp.json()
-            const ssoResp = ssoLoginResponseSchema.parse(data)
-            Cookie.set('bikuntracker_access-token', ssoResp.access)
-            Cookie.set('bikuntracker_refresh-token', ssoResp.refresh)
-          }
+          const { user, access, refresh } = await ssoLogin(ticket)
+          setUser(user)
+          storeJwtWithExpiry(access)
+          storeJwtWithExpiry(refresh)
         })()
       }
-      catch {
-        // Fail silently
+      catch (err) {
+        if (err instanceof ErrorHTTPNotOk) {
+          setError(err.message)
+        }
+      }
+      finally {
+        const back = sessionStorage.getItem(BackPathnameKey)
+        if (back) {
+          navigate({ to: back })
+          sessionStorage.removeItem(BackPathnameKey)
+        }
       }
     }
     else {
@@ -41,7 +46,20 @@ export default function SSO() {
         )}`
       }
     }
-  }, [])
+  }, [setUser, navigate])
 
-  return <h1>Logging in...</h1>
+  return (
+    <div className="flex h-dvh w-full items-center justify-center">
+      <div className="flex flex-col">
+        <div>{user ? 'You have successfully logged in' : 'Logging in...'}</div>
+        {user && (
+          <div>
+            As
+            {user.email}
+          </div>
+        )}
+      </div>
+      <div className="font-semibold text-primary-red">{error}</div>
+    </div>
+  )
 }

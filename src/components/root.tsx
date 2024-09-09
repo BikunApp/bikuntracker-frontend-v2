@@ -1,29 +1,29 @@
-import { Route as RouterDOMRoute, Routes } from 'react-router-dom'
+import { Outlet } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
-import Navbar from '@/components/navbar/index.tsx'
 import useWebsocket from '@/hooks/useWebsocket.ts'
-import General from '@/pages/general.tsx'
-import Home from '@/pages/home.tsx'
-import Report from '@/pages/report.tsx'
-import Route from '@/pages/route.tsx'
-import SSOLogin from '@/pages/sso-login.tsx'
+import { getCurrentUser } from '@/services/auth.ts'
+import { useAuthStore } from '@/store/auth.ts'
 import { useGlobalStore } from '@/store/global.ts'
 
-export default function RootComponent() {
-  const { setMessage } = useGlobalStore()
+import Navbar from './navbar/index.tsx'
 
+export default function RootComponent() {
+  const { setUser } = useAuthStore()
+  const { setMessage } = useGlobalStore()
   useWebsocket({ onMessage: setMessage })
+
+  useEffect(() => {
+    (async () => {
+      const user = await getCurrentUser()
+      setUser(user)
+    })()
+  }, [setUser])
 
   return (
     <div className="relative h-dvh w-full font-poppins">
       <Navbar />
-      <Routes>
-        <RouterDOMRoute path="/" element={<Home />} />
-        <RouterDOMRoute path="/route" element={<Route />} />
-        <RouterDOMRoute path="/report" element={<Report />} />
-        <RouterDOMRoute path="/general" element={<General />} />
-        <RouterDOMRoute path="/sso/login" element={<SSOLogin />} />
-      </Routes>
+      <Outlet />
     </div>
   )
 }

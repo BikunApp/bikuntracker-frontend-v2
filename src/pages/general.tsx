@@ -19,11 +19,11 @@ import {
 
 export default function General() {
   return (
-    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20">
+    <div className="flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20 font-poppins">
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
         General Information
       </div>
-      <div className="bg-primary-purple-100 h-[2px] w-full"></div>
+      <div className="h-[2px] w-full bg-primary-purple-100"></div>
       <div className="w-full p-4">
         <Accordion type="single" className="w-full">
           <AccordionItem value="item-1">

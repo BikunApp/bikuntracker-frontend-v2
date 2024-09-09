@@ -72,7 +72,7 @@ export default function Drawer() {
                 </div>
               </div>
             </div>
-            <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-xl">
+            <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-md">
               <div className="absolute inset-0 z-10 flex">
                 <div
                   className={cn(
