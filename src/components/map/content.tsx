@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import { GeoJSON, Marker } from 'react-leaflet'
+import { GeoJSON, Marker, Popup } from 'react-leaflet'
 
 import {
   blueBusIcon,
@@ -21,12 +21,10 @@ import {
   RED_MORNING_STOP,
   RED_NORMAL_STOP,
 } from '@/data/stops.ts'
-import useWebsocket from '@/hooks/useWebsocket.ts'
 import { OperationalStatus } from '@/types/bus.ts'
 
 export default function MapContent() {
-  const { selectedLine } = useGlobalContext()
-  const message = useWebsocket()
+  const { selectedLine, message } = useGlobalContext()
 
   return (
     <>
@@ -75,7 +73,9 @@ export default function MapContent() {
               icon={coordinate.color === 'merah' ? redBusIcon : blueBusIcon}
               position={L.latLng(coordinate.latitude, coordinate.longitude)}
               zIndexOffset={100}
-            />
+            >
+              <Popup>popup hehe</Popup>
+            </Marker>
           ))}
       {message && (
         <>

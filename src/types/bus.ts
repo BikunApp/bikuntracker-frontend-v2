@@ -38,6 +38,7 @@ export interface BusStopMetadata {
 }
 
 export interface BusCoordinate {
+  id: number
   color: 'merah' | 'biru'
   imei: string
   vehicle_name: string

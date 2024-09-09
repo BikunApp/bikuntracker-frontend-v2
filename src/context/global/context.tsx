@@ -1,14 +1,18 @@
 import { Map } from 'leaflet'
 import { createContext, useCallback, useMemo, useState } from 'react'
 
-import { BusStop } from '@/types/bus.ts'
+import useWebsocket from '@/hooks/useWebsocket'
+import { BusStop, WebsocketMessage } from '@/types/bus.ts'
 import { ChildrenProps } from '@/types/common.ts'
-import { Line } from '@/types/global.ts'
+import { Line, NavbarMenuOption } from '@/types/global.ts'
 
 export interface GlobalContextStaticValues {
   selectedLine?: Line
   selectedStop?: BusStop
   map?: Map
+  selectedMenu?: NavbarMenuOption
+  message?: WebsocketMessage
+  closestBus?: number
 }
 
 export type SetValueFn<
@@ -26,6 +30,7 @@ export const GlobalContext = createContext<GlobalContextValue | undefined>(
 )
 
 export function GlobalContextProvider({ children }: ChildrenProps) {
+  const message = useWebsocket()
   const [state, setState] = useState<GlobalContextStaticValues | undefined>(
     undefined,
   )
@@ -46,9 +51,10 @@ export function GlobalContextProvider({ children }: ChildrenProps) {
   const value: GlobalContextValue = useMemo(
     () => ({
       ...state,
+      message,
       setValue,
     }),
-    [state, setValue],
+    [state, message, setValue],
   )
 
   return (
