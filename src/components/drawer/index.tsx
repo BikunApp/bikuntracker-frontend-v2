@@ -1,8 +1,8 @@
 import { Crosshair, MoveLeft } from 'lucide-react'
 
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants/map'
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants/map.ts'
 import { useGlobalContext } from '@/context/global/hook.ts'
-import { BUS_STOP_METADATA } from '@/data/stops'
+import { BUS_STOP_METADATA } from '@/data/stops.ts'
 import { cn } from '@/lib/utils.ts'
 
 export default function Drawer() {
@@ -10,7 +10,7 @@ export default function Drawer() {
     useGlobalContext()
 
   return (
-    <div className="bg-primary-white absolute bottom-0 left-0 right-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
+    <div className="absolute bottom-0 left-0 right-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl bg-primary-white">
       <div className="relative h-full w-full">
         {selectedStop && (
           <button

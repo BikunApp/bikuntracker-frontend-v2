@@ -1,16 +1,15 @@
 import { Map } from 'leaflet'
 import { createContext, useCallback, useMemo, useState } from 'react'
 
-import useWebsocket from '@/hooks/useWebsocket'
+import useWebsocket from '@/hooks/useWebsocket.ts'
 import { BusStop, WebsocketMessage } from '@/types/bus.ts'
 import { ChildrenProps } from '@/types/common.ts'
-import { Line, NavbarMenuOption } from '@/types/global.ts'
+import { Line } from '@/types/global.ts'
 
 export interface GlobalContextStaticValues {
   selectedLine?: Line
   selectedStop?: BusStop
   map?: Map
-  selectedMenu?: NavbarMenuOption
   message?: WebsocketMessage
   closestBus?: number
 }

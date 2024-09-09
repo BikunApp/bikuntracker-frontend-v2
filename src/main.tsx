@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GlobalContextProvider>
       <BrowserRouter>
-        <div className="font-poppins relative h-dvh w-full">
+        <div className="relative h-dvh w-full font-poppins">
           <Navbar />
           <Routes>
             <RouterDOMRoute path="/" element={<Home />} />

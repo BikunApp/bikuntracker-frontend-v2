@@ -6,13 +6,6 @@ export default function SSO() {
     const service = window.location.href.replace(window.location.search, '')
     const ticket = params.get('ticket')
 
-    console.log(
-      ' >>',
-      encodeURIComponent(
-        window.location.href.replace(window.location.search, ''),
-      ),
-    )
-
     if (ticket) {
       (async () => {
         await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/sso/login`, {
