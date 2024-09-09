@@ -18,6 +18,7 @@ export default function NavigationDrawerContent() {
     (busStop: BusStop, metadata: BusStopMetadata) => () => {
       map?.flyTo(metadata.positionRedLine, 18)
       setValue('selectedStop', busStop)
+      setValue('closestBus', 1)
     },
     // There is no such need for setValue to be in the
     // dependency array since it never changes anyway
@@ -26,7 +27,7 @@ export default function NavigationDrawerContent() {
   )
 
   return (
-    <DrawerContent className="drawer-almost-dvh">
+    <DrawerContent className="font-poppins drawer-almost-dvh">
       <DrawerTitle className="text-transparent">
         Pilih halte bikun kamu saat ini
       </DrawerTitle>
