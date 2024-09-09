@@ -62,3 +62,7 @@
   height: 100dvh;
   width: 100%;
 }
+
+.drawer-almost-dvh {
+  height: calc(100dvh - 100px);
+}
