@@ -16,7 +16,6 @@ export default function Map() {
   const { setValue } = useGlobalContext()
 
   const setMap = useCallback((map: LeafletMap | null) => {
-    console.log(' ::', map)
     if (map) setValue('map', map)
     // There is no such need for setValue to be in the
     // dependency array since it never changes anyway
