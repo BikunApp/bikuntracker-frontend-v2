@@ -34,7 +34,8 @@ import teknikUIStopPngUrl from '@/assets/bus-stops/teknik-ui.png'
 import teknikUIStopWebpUrl from '@/assets/bus-stops/teknik-ui.webp'
 import vokasiUIStopPngUrl from '@/assets/bus-stops/vokasi-ui.png'
 import vokasiUIStopWebpUrl from '@/assets/bus-stops/vokasi-ui.webp'
-import { BusStop, BusStopMetadata } from '@/types/bus.ts'
+import type { BusStopMetadata } from '@/types/bus.ts'
+import { BusStop } from '@/types/bus.ts'
 
 export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
   [

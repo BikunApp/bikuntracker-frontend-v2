@@ -7,7 +7,6 @@ import {
   redBusIcon,
   redStopIcon,
 } from '@/constants/map.ts'
-import { useGlobalContext } from '@/context/global/hook.ts'
 import {
   BLUE_MORNING_ROUTE,
   BLUE_NORMAL_ROUTE,
@@ -21,10 +20,11 @@ import {
   RED_MORNING_STOP,
   RED_NORMAL_STOP,
 } from '@/data/stops.ts'
+import { useGlobalStore } from '@/store/global.ts'
 import { OperationalStatus } from '@/types/bus.ts'
 
 export default function MapContent() {
-  const { selectedLine, message } = useGlobalContext()
+  const { selectedLine, message } = useGlobalStore()
 
   return (
     <>

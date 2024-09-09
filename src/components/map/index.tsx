@@ -1,4 +1,4 @@
-import { Map as LeafletMap } from 'leaflet'
+import type { Map as LeafletMap } from 'leaflet'
 import { useCallback } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 
@@ -8,15 +8,15 @@ import {
   MAX_BOUNDS,
   TILE_URL,
 } from '@/constants/map.ts'
-import { useGlobalContext } from '@/context/global/hook.ts'
+import { useGlobalStore } from '@/store/global.ts'
 
 import MapContent from './content.tsx'
 
 export default function Map() {
-  const { setValue } = useGlobalContext()
+  const { setMap: setGlobalMap } = useGlobalStore()
 
   const setMap = useCallback((map: LeafletMap | null) => {
-    if (map) setValue('map', map)
+    if (map) setGlobalMap(map)
     // There is no such need for setValue to be in the
     // dependency array since it never changes anyway
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,4 +1,4 @@
-import L from 'leaflet'
+import type L from 'leaflet'
 
 export enum OperationalStatus {
   MorningRoute = 0,
@@ -35,22 +35,4 @@ export interface BusStopMetadata {
   fallbackImageSrc: string
   positionRedLine: L.LatLng
   positionBlueLine: L.LatLng
-}
-
-export interface BusCoordinate {
-  id: number
-  color: 'merah' | 'biru'
-  imei: string
-  vehicle_name: string
-  longitude: number
-  latitude: number
-  status: string
-  speed: number
-  total_mileage: number
-  gps_time: Date
-}
-
-export interface WebsocketMessage {
-  operationalStatus: OperationalStatus
-  coordinates: BusCoordinate[]
 }

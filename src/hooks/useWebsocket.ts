@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { WebsocketMessage } from '@/types/bus.ts'
+import { type WebsocketMessage, websocketMessageSchema } from '@/schema/ws.ts'
 
-export default function useWebsocket() {
+export interface UseWebsocketProps {
+  onMessage: (message?: WebsocketMessage) => void
+}
+
+export default function useWebsocket({ onMessage }: UseWebsocketProps) {
   const [socket] = useState<WebSocket>(
     () => new WebSocket(import.meta.env.VITE_WS_URL + '/v2'),
   )
-  const [message, setMessage] = useState<WebsocketMessage | undefined>(
-    undefined,
+
+  const onMessageCallbackRef = useRef<UseWebsocketProps['onMessage'] | null>(
+    null,
   )
+  useEffect(() => {
+    onMessageCallbackRef.current = onMessage
+  }, [onMessage])
 
   useEffect(() => {
     socket.addEventListener('open', (event) => {
@@ -16,11 +24,8 @@ export default function useWebsocket() {
     })
 
     socket.addEventListener('message', (event) => {
-      const message = JSON.parse(event.data) as WebsocketMessage
-      console.log('Message received:', message)
-      setMessage(message)
+      const message = websocketMessageSchema.parse(JSON.parse(event.data))
+      onMessageCallbackRef.current?.(message)
     })
   }, [socket])
-
-  return message
 }

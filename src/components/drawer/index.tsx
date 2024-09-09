@@ -1,13 +1,20 @@
 import { Crosshair, MoveLeft } from 'lucide-react'
 
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants/map.ts'
-import { useGlobalContext } from '@/context/global/hook.ts'
 import { BUS_STOP_METADATA } from '@/data/stops.ts'
 import { cn } from '@/lib/utils.ts'
+import { useGlobalStore } from '@/store/global.ts'
 
 export default function Drawer() {
-  const { map, closestBus, selectedLine, selectedStop, setValue } =
-    useGlobalContext()
+  const {
+    map,
+    closestBus,
+    selectedLine,
+    selectedStop,
+    setSelectedLine,
+    setSelectedStop,
+    setClosestBus,
+  } = useGlobalStore()
 
   return (
     <div className="absolute bottom-0 left-0 right-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl bg-primary-white">
@@ -15,9 +22,9 @@ export default function Drawer() {
         {selectedStop && (
           <button
             onClick={() => {
-              setValue('selectedLine', undefined)
-              setValue('selectedStop', undefined)
-              setValue('closestBus', undefined)
+              setSelectedLine(undefined)
+              setSelectedStop(undefined)
+              setClosestBus(undefined)
               map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM)
             }}
             className="absolute -top-12 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
@@ -89,8 +96,8 @@ export default function Drawer() {
                 <button
                   onClick={() =>
                     selectedLine === 'biru'
-                      ? setValue('selectedLine', undefined)
-                      : setValue('selectedLine', 'biru')}
+                      ? setSelectedLine(undefined)
+                      : setSelectedLine('biru')}
                   className={cn('h-full w-1/2 text-center', {
                     'text-primary': selectedLine !== 'biru',
                     'text-white': selectedLine === 'biru',
@@ -101,8 +108,8 @@ export default function Drawer() {
                 <button
                   onClick={() =>
                     selectedLine === 'merah'
-                      ? setValue('selectedLine', undefined)
-                      : setValue('selectedLine', 'merah')}
+                      ? setSelectedLine(undefined)
+                      : setSelectedLine('merah')}
                   className={cn('h-full w-1/2 text-center', {
                     'text-primary-red': selectedLine !== 'merah',
                     'text-white': selectedLine === 'merah',

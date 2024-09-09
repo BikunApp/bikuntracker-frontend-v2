@@ -2,13 +2,13 @@ import { PencilIcon } from 'lucide-react'
 import { MapPin, TrainTrack } from 'lucide-react'
 
 import { Drawer, DrawerTrigger } from '@/components/ui/drawer.tsx'
-import { useGlobalContext } from '@/context/global/hook.ts'
 import { cn } from '@/lib/utils.ts'
+import { useGlobalStore } from '@/store/global.ts'
 
 import NavigationDrawerContent from './drawer-content.tsx'
 
 export default function NavigationBar() {
-  const { selectedLine, selectedStop } = useGlobalContext()
+  const { selectedLine, selectedStop } = useGlobalStore()
 
   return (
     <div className="absolute left-4 right-4 top-8 z-50 flex items-center rounded-3xl bg-white">
@@ -27,7 +27,7 @@ export default function NavigationBar() {
               </div>
             </div>
           </DrawerTrigger>
-          <div className="bg-light-grey my-1.5 h-[1px] w-full" />
+          <div className="my-1.5 h-[1px] w-full bg-light-grey" />
           <button className="mb-3 flex items-center">
             <div
               className={cn(

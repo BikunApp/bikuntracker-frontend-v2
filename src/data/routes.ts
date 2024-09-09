@@ -1,4 +1,4 @@
-import { FeatureCollection } from 'geojson'
+import type { FeatureCollection } from 'geojson'
 
 export const BLUE_MORNING_ROUTE: FeatureCollection = {
   type: 'FeatureCollection',
