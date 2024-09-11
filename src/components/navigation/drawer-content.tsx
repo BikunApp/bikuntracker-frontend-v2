@@ -1,5 +1,5 @@
 import { MapPin } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import {
   DrawerClose,
@@ -8,23 +8,13 @@ import {
 } from '@/components/ui/drawer.tsx'
 import { BUS_STOP_METADATA } from '@/data/stops.ts'
 import { useGlobalStore } from '@/store/global.ts'
-import type { BusStop, BusStopMetadata } from '@/types/bus.ts'
+import { useRefStore } from '@/store/ref.ts'
 
 export default function NavigationDrawerContent() {
+  const { setSelectedStop } = useGlobalStore()
+  const { fitBoundsToSelectedStop } = useRefStore()
+
   const [filter, setFilter] = useState<string>('')
-  const { map, setSelectedStop, setClosestBus } = useGlobalStore()
-
-  const handleBusStopSelectFactory = useCallback(
-    (busStop: BusStop, metadata: BusStopMetadata) => () => {
-      map?.flyTo(metadata.positionRedLine, 18)
-      setSelectedStop(busStop)
-      setClosestBus(1)
-    },
-    // There is no such need for setValue to be in the
-    // dependency array since it never changes anyway
-
-    [map, setClosestBus, setSelectedStop],
-  )
 
   return (
     <DrawerContent className="drawer-almost-dvh font-poppins">
@@ -60,7 +50,10 @@ export default function NavigationDrawerContent() {
             <div key={metadata.name} className="flex flex-col">
               <DrawerClose>
                 <div
-                  onClick={handleBusStopSelectFactory(busStop, metadata)}
+                  onClick={() => {
+                    setSelectedStop(busStop)
+                    fitBoundsToSelectedStop(busStop)
+                  }}
                   className="flex cursor-pointer text-left"
                 >
                   <img

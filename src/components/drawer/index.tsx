@@ -1,13 +1,12 @@
 import { Crosshair, MoveLeft } from 'lucide-react'
 
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants/map.ts'
-import { BUS_STOP_METADATA } from '@/data/stops.ts'
 import { cn } from '@/lib/utils.ts'
 import { useGlobalStore } from '@/store/global.ts'
+import { useRefStore } from '@/store/ref.ts'
 
 export default function Drawer() {
+  const { fitBoundsToSelectedStop, centerMap } = useRefStore()
   const {
-    map,
     closestBus,
     selectedLine,
     selectedStop,
@@ -25,7 +24,7 @@ export default function Drawer() {
               setSelectedLine(undefined)
               setSelectedStop(undefined)
               setClosestBus(undefined)
-              map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM)
+              centerMap()
             }}
             className="absolute -top-12 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
           >
@@ -34,19 +33,17 @@ export default function Drawer() {
         )}
         <button
           onClick={() => {
-            let latLng = DEFAULT_CENTER
-            let zoom = DEFAULT_ZOOM
             if (selectedStop) {
-              const stopPosition =
-                BUS_STOP_METADATA.get(selectedStop)?.positionRedLine
-              if (stopPosition) {
-                latLng = stopPosition
-                zoom = 18
-              }
+              fitBoundsToSelectedStop(selectedStop)
             }
-            map?.flyTo(latLng, zoom)
+            else {
+              centerMap()
+            }
           }}
-          className="absolute -top-[120px] right-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary shadow-2xl"
+          className={cn(
+            'absolute right-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary shadow-2xl',
+            { '-top-[60px]': selectedStop, '-top-[120px]': !selectedStop },
+          )}
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
         </button>

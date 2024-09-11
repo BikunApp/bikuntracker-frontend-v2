@@ -21,10 +21,17 @@ import {
   RED_NORMAL_STOP,
 } from '@/data/stops.ts'
 import { useGlobalStore } from '@/store/global.ts'
+import { useRefStore } from '@/store/ref.ts'
 import { OperationalStatus } from '@/types/bus.ts'
 
 export default function MapContent() {
   const { selectedLine, selectedStop, message } = useGlobalStore()
+  const {
+    setRedBusMarkerFactory,
+    setRedBusStopMarkerFactory,
+    setBlueBusMarkerFactory,
+    setBlueBusStopMarkerFactory,
+  } = useRefStore()
 
   return (
     <>
@@ -38,12 +45,18 @@ export default function MapContent() {
           if (!metadata) return undefined
           return (
             <Marker
+              ref={setRedBusStopMarkerFactory(stop)}
               key={`red-stop-${metadata.name}`}
               icon={redStopIcon}
               position={metadata.positionRedLine}
               zIndexOffset={10}
-              opacity={!selectedStop || selectedStop === stop ? 1 : 0.5}
-            />
+              opacity={!selectedStop || selectedStop === stop ? 1 : 0}
+            >
+              <Popup>
+                Halte
+                {' ' + stop}
+              </Popup>
+            </Marker>
           )
         })}
       {message &&
@@ -56,12 +69,18 @@ export default function MapContent() {
           if (!metadata) return undefined
           return (
             <Marker
+              ref={setBlueBusStopMarkerFactory(stop)}
               key={`blue-stop-${metadata.name}`}
               icon={blueStopIcon}
               position={metadata.positionBlueLine}
               zIndexOffset={10}
-              opacity={!selectedStop || selectedStop === stop ? 1 : 0.5}
-            />
+              opacity={!selectedStop || selectedStop === stop ? 1 : 0}
+            >
+              <Popup>
+                Halte
+                {' ' + stop}
+              </Popup>
+            </Marker>
           )
         })}
       {message?.coordinates &&
@@ -71,6 +90,11 @@ export default function MapContent() {
           )
           .map(coordinate => (
             <Marker
+              ref={
+                coordinate.color === 'merah'
+                  ? setRedBusMarkerFactory(coordinate.id)
+                  : setBlueBusMarkerFactory(coordinate.id)
+              }
               key={coordinate.imei}
               icon={coordinate.color === 'merah' ? redBusIcon : blueBusIcon}
               position={L.latLng(coordinate.latitude, coordinate.longitude)}

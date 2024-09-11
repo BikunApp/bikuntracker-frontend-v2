@@ -8,15 +8,15 @@ import {
   MAX_BOUNDS,
   TILE_URL,
 } from '@/constants/map.ts'
-import { useGlobalStore } from '@/store/global.ts'
+import { useRefStore } from '@/store/ref.ts'
 
 import MapContent from './content.tsx'
 
 export default function Map() {
-  const { setMap: setGlobalMap } = useGlobalStore()
+  const { setMap: setMapRef } = useRefStore()
 
   const setMap = useCallback((map: LeafletMap | null) => {
-    if (map) setGlobalMap(map)
+    if (map) setMapRef(map)
     // There is no such need for setValue to be in the
     // dependency array since it never changes anyway
     // eslint-disable-next-line react-hooks/exhaustive-deps
