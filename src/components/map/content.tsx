@@ -43,6 +43,7 @@ export default function MapContent() {
         ).map((stop) => {
           const metadata = BUS_STOP_METADATA.get(stop)
           if (!metadata) return undefined
+          const shouldShow = !selectedStop || selectedStop === stop
           return (
             <Marker
               ref={setRedBusStopMarkerFactory(stop)}
@@ -50,12 +51,14 @@ export default function MapContent() {
               icon={redStopIcon}
               position={metadata.positionRedLine}
               zIndexOffset={10}
-              opacity={!selectedStop || selectedStop === stop ? 1 : 0}
+              opacity={shouldShow ? 1 : 0}
             >
-              <Popup>
-                Halte
-                {' ' + stop}
-              </Popup>
+              {shouldShow && (
+                <Popup>
+                  Halte
+                  {' ' + stop}
+                </Popup>
+              )}
             </Marker>
           )
         })}
@@ -67,6 +70,7 @@ export default function MapContent() {
         ).map((stop) => {
           const metadata = BUS_STOP_METADATA.get(stop)
           if (!metadata) return undefined
+          const shouldShow = !selectedStop || selectedStop === stop
           return (
             <Marker
               ref={setBlueBusStopMarkerFactory(stop)}
@@ -74,12 +78,14 @@ export default function MapContent() {
               icon={blueStopIcon}
               position={metadata.positionBlueLine}
               zIndexOffset={10}
-              opacity={!selectedStop || selectedStop === stop ? 1 : 0}
+              opacity={shouldShow ? 1 : 0}
             >
-              <Popup>
-                Halte
-                {' ' + stop}
-              </Popup>
+              {shouldShow && (
+                <Popup>
+                  Halte
+                  {' ' + stop}
+                </Popup>
+              )}
             </Marker>
           )
         })}
