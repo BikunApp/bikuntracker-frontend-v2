@@ -81,21 +81,18 @@ export default function NavigationDrawerContent() {
                       className="h-11 w-11"
                     />
                     <div className="ml-4 flex flex-col gap-1.5">
-                      <div className="text-sm font-semibold">
+                      <div className="text-sm font-semibold mr-auto">
                         Halte
                         {' ' + metadata.name}
                       </div>
-                      <div className="text-xs text-400">
+                      <div className="text-xs text-400 mr-auto">
                         {metadata.additionalInfo}
                       </div>
                     </div>
                   </div>
                 </DrawerClose>
                 <Star 
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering the drawer close
-                    toggleFavorite(metadata.name);
-                  }}
+                  onClick={() => toggleFavorite(metadata.name)}
                   className={
                     `ml-auto mr-4 my-auto ${favorites.includes(metadata.name) ? "text-yellow-400 fill-current" : ""}`
                   } 
