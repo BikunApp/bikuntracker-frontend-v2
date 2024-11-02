@@ -14,7 +14,6 @@ export default function NavigationDrawerContent() {
   const { setSelectedStop } = useGlobalStore()
   const { fitBoundsToSelectedStop } = useRefStore()
   const [favorites, setFavorites] = useState<string[]>([])
-  const isiDulu = true
   const [filter, setFilter] = useState<string>('')
 
   useEffect(() => {
