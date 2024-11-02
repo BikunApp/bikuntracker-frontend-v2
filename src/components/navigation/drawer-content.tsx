@@ -1,5 +1,5 @@
-import { MapPin } from 'lucide-react'
-import { useState } from 'react'
+import { MapPin, Star } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 import {
   DrawerClose,
@@ -13,8 +13,27 @@ import { useRefStore } from '@/store/ref.ts'
 export default function NavigationDrawerContent() {
   const { setSelectedStop } = useGlobalStore()
   const { fitBoundsToSelectedStop } = useRefStore()
-
+  const [favorites, setFavorites] = useState<string[]>([])
+  const isiDulu = true
   const [filter, setFilter] = useState<string>('')
+
+  useEffect(() => {
+    const localFavorites = localStorage.getItem('favorites')
+    if (localFavorites) {
+      setFavorites(JSON.parse(localFavorites))
+    }
+  }, [])
+
+  const toggleFavorite = (halteName: string) => {
+    const updatedLocalFavorites = 
+      (
+        favorites.includes(halteName) ? 
+          favorites.filter(currentHalte => currentHalte !== halteName)
+        : [...favorites, halteName]
+      )
+      setFavorites(updatedLocalFavorites)
+      localStorage.setItem('favorites', JSON.stringify(updatedLocalFavorites))
+  }
 
   return (
     <DrawerContent className="drawer-almost-dvh font-poppins">
@@ -48,30 +67,42 @@ export default function NavigationDrawerContent() {
           )
           .map(([busStop, metadata]) => (
             <div key={metadata.name} className="flex flex-col">
-              <DrawerClose>
-                <div
-                  onClick={() => {
-                    setSelectedStop(busStop)
-                    fitBoundsToSelectedStop(busStop)
-                  }}
-                  className="flex cursor-pointer text-left"
-                >
-                  <img
-                    src={metadata.imageSrc}
-                    alt={metadata.name}
-                    className="h-11 w-11"
-                  />
-                  <div className="ml-4 flex flex-col gap-1.5">
-                    <div className="text-sm font-semibold">
-                      Halte
-                      {' ' + metadata.name}
-                    </div>
-                    <div className="text-xs text-400">
-                      {metadata.additionalInfo}
+              <div className="flex cursor-pointer text-left items-center">
+                <DrawerClose>
+                  <div
+                    onClick={() => {
+                      setSelectedStop(busStop)
+                      fitBoundsToSelectedStop(busStop)
+                    }}
+                    className="flex items-center grow"
+                  >
+                    <img
+                      src={metadata.imageSrc}
+                      alt={metadata.name}
+                      className="h-11 w-11"
+                    />
+                    <div className="ml-4 flex flex-col gap-1.5">
+                      <div className="text-sm font-semibold">
+                        Halte
+                        {' ' + metadata.name}
+                      </div>
+                      <div className="text-xs text-400">
+                        {metadata.additionalInfo}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </DrawerClose>
+                </DrawerClose>
+                <Star 
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the drawer close
+                    toggleFavorite(metadata.name);
+                  }}
+                  className={
+                    `ml-auto mr-4 my-auto ${favorites.includes(metadata.name) ? "text-yellow-400 fill-current" : ""}`
+                  } 
+                  strokeWidth={1.1}
+                />
+              </div>
               <div className="mb-4 ml-[60px] mt-1.5 h-[1px] bg-light-grey"></div>
             </div>
           ))}
