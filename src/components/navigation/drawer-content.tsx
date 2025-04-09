@@ -24,14 +24,11 @@ export default function NavigationDrawerContent() {
   }, [])
 
   const toggleFavorite = (halteName: string) => {
-    const updatedLocalFavorites = 
-      (
-        favorites.includes(halteName) ? 
-          favorites.filter(currentHalte => currentHalte !== halteName)
-        : [...favorites, halteName]
-      )
-      setFavorites(updatedLocalFavorites)
-      localStorage.setItem('favorites', JSON.stringify(updatedLocalFavorites))
+    const updatedLocalFavorites = favorites.includes(halteName)
+      ? favorites.filter(currentHalte => currentHalte !== halteName)
+      : [...favorites, halteName]
+    setFavorites(updatedLocalFavorites)
+    localStorage.setItem('favorites', JSON.stringify(updatedLocalFavorites))
   }
 
   return (
@@ -40,7 +37,7 @@ export default function NavigationDrawerContent() {
         Pilih halte bikun kamu saat ini
       </DrawerTitle>
       <div className="relative mx-8">
-        <div className="absolute bottom-0 left-2 top-0 flex items-center">
+        <div className="absolute top-0 bottom-0 left-2 flex items-center">
           <MapPin size={20} className="text-primary" />
         </div>
         <input
@@ -50,11 +47,11 @@ export default function NavigationDrawerContent() {
           onChange={e => setFilter(e.target.value)}
         />
       </div>
-      <div className="mt-3 h-[1px] w-full bg-light-grey" />
-      <div className="ml-6 mt-4 flex max-w-full flex-col overflow-auto">
+      <div className="bg-light-grey mt-3 h-[1px] w-full" />
+      <div className="mt-4 ml-6 flex max-w-full flex-col overflow-auto">
         <div className="mb-4 flex gap-6">
-          <div className="grow text-nowrap font-bold">Pilihan Halte</div>
-          <div className="mt-3 h-[2px] w-full bg-light-grey" />
+          <div className="grow font-bold text-nowrap">Pilihan Halte</div>
+          <div className="bg-light-grey mt-3 h-[2px] w-full" />
         </div>
         {Array.from(BUS_STOP_METADATA.entries())
           .filter(
@@ -66,14 +63,14 @@ export default function NavigationDrawerContent() {
           )
           .map(([busStop, metadata]) => (
             <div key={metadata.name} className="flex flex-col">
-              <div className="flex cursor-pointer text-left items-center">
+              <div className="flex cursor-pointer items-center text-left">
                 <DrawerClose>
                   <div
                     onClick={() => {
                       setSelectedStop(busStop)
                       fitBoundsToSelectedStop(busStop)
                     }}
-                    className="flex items-center grow"
+                    className="flex grow items-center"
                   >
                     <img
                       src={metadata.imageSrc}
@@ -81,25 +78,23 @@ export default function NavigationDrawerContent() {
                       className="h-11 w-11"
                     />
                     <div className="ml-4 flex flex-col gap-1.5">
-                      <div className="text-sm font-semibold mr-auto">
+                      <div className="mr-auto text-sm font-semibold">
                         Halte
                         {' ' + metadata.name}
                       </div>
-                      <div className="text-xs text-400 mr-auto">
+                      <div className="text-400 mr-auto text-xs">
                         {metadata.additionalInfo}
                       </div>
                     </div>
                   </div>
                 </DrawerClose>
-                <Star 
+                <Star
                   onClick={() => toggleFavorite(metadata.name)}
-                  className={
-                    `ml-auto mr-4 my-auto ${favorites.includes(metadata.name) ? "text-yellow-400 fill-current" : ""}`
-                  } 
+                  className={`my-auto mr-4 ml-auto ${favorites.includes(metadata.name) ? 'fill-current text-yellow-400' : ''}`}
                   strokeWidth={1.1}
                 />
               </div>
-              <div className="mb-4 ml-[60px] mt-1.5 h-[1px] bg-light-grey"></div>
+              <div className="bg-light-grey mt-1.5 mb-4 ml-[60px] h-[1px]"></div>
             </div>
           ))}
       </div>
