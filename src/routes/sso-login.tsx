@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { BackPathnameKey } from '@/constants/keys.ts'
@@ -7,7 +8,11 @@ import { ssoLogin } from '@/services/auth.ts'
 import { ErrorHTTPNotOk } from '@/services/util.ts'
 import { useAuthStore } from '@/store/auth.ts'
 
-export default function SsoLogin() {
+export const Route = createFileRoute('/sso-login')({
+  component: Page,
+})
+
+export default function Page() {
   const { user, setUser } = useAuthStore()
   const [error, setError] = useState<string>('')
   const navigate = useNavigate()
@@ -59,7 +64,7 @@ export default function SsoLogin() {
           </div>
         )}
       </div>
-      <div className="font-semibold text-primary-red">{error}</div>
+      <div className="text-primary-red font-semibold">{error}</div>
     </div>
   )
 }

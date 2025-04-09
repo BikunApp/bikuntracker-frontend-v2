@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { ChevronLeft, Info, SendHorizonal } from 'lucide-react'
 import { useState } from 'react'
 
@@ -7,7 +8,11 @@ import { Textarea } from '@/components/ui/textarea.tsx'
 import { ROUTES } from '@/constants/routes.ts'
 import { useAuthStore } from '@/store/auth.ts'
 
-export default function CreateReport() {
+export const Route = createFileRoute('/create-report')({
+  component: Page,
+})
+
+export default function Page() {
   const { user } = useAuthStore()
   const navigate = useNavigate()
   const [description, setDescription] = useState<string>('')
