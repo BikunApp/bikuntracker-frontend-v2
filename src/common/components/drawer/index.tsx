@@ -1,8 +1,8 @@
 import { Crosshair, MoveLeft } from 'lucide-react'
 
+import { useGlobalStore } from '@/lib/store/global.ts'
+import { useRefStore } from '@/lib/store/ref.ts'
 import { cn } from '@/lib/utils.ts'
-import { useGlobalStore } from '@/store/global.ts'
-import { useRefStore } from '@/store/ref.ts'
 
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore()
@@ -16,7 +16,7 @@ export default function Drawer() {
   } = useGlobalStore()
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl bg-primary-white">
+    <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
         {selectedStop && (
           <button
@@ -41,7 +41,7 @@ export default function Drawer() {
             }
           }}
           className={cn(
-            'absolute right-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary shadow-2xl',
+            'bg-primary absolute right-4 flex h-10 w-10 items-center justify-center rounded-full shadow-2xl',
             { '-top-[60px]': selectedStop, '-top-[120px]': !selectedStop },
           )}
         >
@@ -50,7 +50,7 @@ export default function Drawer() {
         {closestBus && (
           <div className="p-6">
             <div className="mb-5 flex">
-              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-primary text-3xl font-extrabold text-white">
+              <div className="bg-primary flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white">
                 {closestBus.toString().length === 2
                   ? closestBus
                   : `0${closestBus}`}
@@ -61,7 +61,7 @@ export default function Drawer() {
                     Bus
                     {' ' + closestBus}
                   </div>
-                  <div className="text-xs text-primary">
+                  <div className="text-primary text-xs">
                     Next
                     {' '}
                     <b>Balairung</b>

@@ -1,8 +1,8 @@
 import L from 'leaflet'
 import { create } from 'zustand'
 
-import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/constants/map.ts'
-import type { BusStop } from '@/types/bus.ts'
+import { DEFAULT_CENTER, DEFAULT_ZOOM } from '@/common/constants/map.ts'
+import type { BusStop } from '@/common/types/bus.ts'
 
 import { useGlobalStore } from './global.ts'
 

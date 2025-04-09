@@ -2,8 +2,8 @@ import { type ClassValue, clsx } from 'clsx'
 import Cookies from 'js-cookie'
 import { twMerge } from 'tailwind-merge'
 
-import { AccessTokenKey, RefreshTokenKey } from '@/constants/keys.ts'
-import { jwtPayloadSchema } from '@/schema/auth.ts'
+import { AccessTokenKey, RefreshTokenKey } from '@/common/constants/keys.ts'
+import { jwtPayloadSchema } from '@/common/schema/auth.ts'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

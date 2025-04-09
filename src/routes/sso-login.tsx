@@ -2,11 +2,11 @@ import { useNavigate } from '@tanstack/react-router'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
-import { BackPathnameKey } from '@/constants/keys.ts'
+import { BackPathnameKey } from '@/common/constants/keys.ts'
+import { useAuthStore } from '@/lib/store/auth.ts'
 import { storeJwtWithExpiry } from '@/lib/utils.ts'
 import { ssoLogin } from '@/services/auth.ts'
 import { ErrorHTTPNotOk } from '@/services/util.ts'
-import { useAuthStore } from '@/store/auth.ts'
 
 export const Route = createFileRoute('/sso-login')({
   component: Page,

@@ -1,9 +1,9 @@
-import type { SsoLoginResponse } from '@/schema/auth.ts'
+import type { SsoLoginResponse } from '@/common/schema/auth.ts'
 import {
   ssoLoginResponseSchema,
   tokenResponseSchema,
   userSchema,
-} from '@/schema/auth.ts'
+} from '@/common/schema/auth.ts'
 
 import { ErrorHTTPNotOk, getDefaultHeaders, http } from './util.ts'
 

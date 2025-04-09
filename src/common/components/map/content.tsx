@@ -6,23 +6,23 @@ import {
   blueStopIcon,
   redBusIcon,
   redStopIcon,
-} from '@/constants/map.ts'
+} from '@/common/constants/map.ts'
 import {
   BLUE_MORNING_ROUTE,
   BLUE_NORMAL_ROUTE,
   RED_MORNING_ROUTE,
   RED_NORMAL_ROUTE,
-} from '@/data/routes.ts'
+} from '@/common/data/routes.ts'
 import {
   BLUE_MORNING_STOP,
   BLUE_NORMAL_STOP,
   BUS_STOP_METADATA,
   RED_MORNING_STOP,
   RED_NORMAL_STOP,
-} from '@/data/stops.ts'
-import { useGlobalStore } from '@/store/global.ts'
-import { useRefStore } from '@/store/ref.ts'
-import { OperationalStatus } from '@/types/bus.ts'
+} from '@/common/data/stops.ts'
+import { OperationalStatus } from '@/common/types/bus.ts'
+import { useGlobalStore } from '@/lib/store/global.ts'
+import { useRefStore } from '@/lib/store/ref.ts'
 
 export default function MapContent() {
   const { selectedLine, selectedStop, message } = useGlobalStore()

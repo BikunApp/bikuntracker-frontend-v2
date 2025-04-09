@@ -2,7 +2,11 @@ import { createFileRoute } from '@tanstack/react-router'
 import { TriangleAlert } from 'lucide-react'
 
 import bikunRoutePngUrl from '@/assets/bikun-route.png'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/common/components/ui/alert.tsx'
 export const Route = createFileRoute('/bus-schedule')({
   component: Page,
 })

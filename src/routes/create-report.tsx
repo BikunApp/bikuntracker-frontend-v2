@@ -3,10 +3,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ChevronLeft, Info, SendHorizonal } from 'lucide-react'
 import { useState } from 'react'
 
-import { Button } from '@/components/ui/button.tsx'
-import { Textarea } from '@/components/ui/textarea.tsx'
-import { ROUTES } from '@/constants/routes.ts'
-import { useAuthStore } from '@/store/auth.ts'
+import { Button } from '@/common/components/ui/button.tsx'
+import { Textarea } from '@/common/components/ui/textarea.tsx'
+import { ROUTES } from '@/common/constants/routes.ts'
+import { useAuthStore } from '@/lib/store/auth.ts'
 
 export const Route = createFileRoute('/create-report')({
   component: Page,

@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import Drawer from '@/components/drawer/index.tsx'
-import Map from '@/components/map/index.tsx'
-import NavigationBar from '@/components/navigation/index.tsx'
+import Drawer from '@/common/components/drawer/index.tsx'
+import Map from '@/common/components/map/index.tsx'
+import NavigationBar from '@/common/components/navigation/index.tsx'
 
 export const Route = createFileRoute('/')({
   component: Page,

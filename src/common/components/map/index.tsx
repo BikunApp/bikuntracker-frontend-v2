@@ -7,8 +7,8 @@ import {
   DEFAULT_ZOOM,
   MAX_BOUNDS,
   TILE_URL,
-} from '@/constants/map.ts'
-import { useRefStore } from '@/store/ref.ts'
+} from '@/common/constants/map.ts'
+import { useRefStore } from '@/lib/store/ref.ts'
 
 import MapContent from './content.tsx'
 

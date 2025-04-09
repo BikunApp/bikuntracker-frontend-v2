@@ -5,10 +5,10 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerTitle,
-} from '@/components/ui/drawer.tsx'
-import { BUS_STOP_METADATA } from '@/data/stops.ts'
-import { useGlobalStore } from '@/store/global.ts'
-import { useRefStore } from '@/store/ref.ts'
+} from '@/common/components/ui/drawer.tsx'
+import { BUS_STOP_METADATA } from '@/common/data/stops.ts'
+import { useGlobalStore } from '@/lib/store/global.ts'
+import { useRefStore } from '@/lib/store/ref.ts'
 
 export default function NavigationDrawerContent() {
   const { setSelectedStop } = useGlobalStore()

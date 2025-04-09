@@ -1,11 +1,11 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-import Navbar from '@/components/navbar/index.tsx'
-import useWebsocket from '@/hooks/useWebsocket.ts'
+import Navbar from '@/common/components/navbar/index.tsx'
+import useWebsocket from '@/common/hooks/useWebsocket.ts'
+import { useAuthStore } from '@/lib/store/auth.ts'
+import { useGlobalStore } from '@/lib/store/global.ts'
 import { getCurrentUser } from '@/services/auth.ts'
-import { useAuthStore } from '@/store/auth.ts'
-import { useGlobalStore } from '@/store/global.ts'
 
 export const Route = createRootRoute({
   component: RootComponent,

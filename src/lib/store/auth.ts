@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import type { User } from '@/schema/auth'
+import type { User } from '@/common/schema/auth.ts'
 
 export interface AuthStore {
   user?: User

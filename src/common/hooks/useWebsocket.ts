@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { type WebsocketMessage, websocketMessageSchema } from '@/schema/ws.ts'
+import {
+  type WebsocketMessage,
+  websocketMessageSchema,
+} from '@/common/schema/ws.ts'
 
 export interface UseWebsocketProps {
   onMessage: (message?: WebsocketMessage) => void

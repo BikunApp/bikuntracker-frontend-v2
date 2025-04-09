@@ -1,9 +1,9 @@
 import { PencilIcon } from 'lucide-react'
 import { MapPin, TrainTrack } from 'lucide-react'
 
-import { Drawer, DrawerTrigger } from '@/components/ui/drawer.tsx'
+import { Drawer, DrawerTrigger } from '@/common/components/ui/drawer.tsx'
+import { useGlobalStore } from '@/lib/store/global.ts'
 import { cn } from '@/lib/utils.ts'
-import { useGlobalStore } from '@/store/global.ts'
 
 import NavigationDrawerContent from './drawer-content.tsx'
 
@@ -11,13 +11,13 @@ export default function NavigationBar() {
   const { selectedLine, selectedStop } = useGlobalStore()
 
   return (
-    <div className="absolute left-4 right-4 top-8 z-50 flex items-center rounded-3xl bg-white">
+    <div className="absolute top-8 right-4 left-4 z-50 flex items-center rounded-3xl bg-white">
       <Drawer>
-        <div className="ml-6 mr-2 flex grow flex-col">
+        <div className="mr-2 ml-6 flex grow flex-col">
           <NavigationDrawerContent />
           <DrawerTrigger>
             <div className="mt-3 flex items-center">
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary">
+              <div className="bg-primary flex h-5 w-5 items-center justify-center rounded-full">
                 <MapPin size={12} className="text-white" />
               </div>
               <div className="ml-2 text-xs font-medium">
@@ -27,7 +27,7 @@ export default function NavigationBar() {
               </div>
             </div>
           </DrawerTrigger>
-          <div className="my-1.5 h-[1px] w-full bg-light-grey" />
+          <div className="bg-light-grey my-1.5 h-[1px] w-full" />
           <button className="mb-3 flex items-center">
             <div
               className={cn(
@@ -51,7 +51,7 @@ export default function NavigationBar() {
           </button>
         </div>
         <DrawerTrigger>
-          <div className="mr-4 flex h-7 w-7 items-center justify-center rounded-full bg-primary">
+          <div className="bg-primary mr-4 flex h-7 w-7 items-center justify-center rounded-full">
             <PencilIcon size={14} className="text-white" />
           </div>
         </DrawerTrigger>

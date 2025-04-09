@@ -10,13 +10,13 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion.tsx'
-import { Button } from '@/components/ui/button.tsx'
+} from '@/common/components/ui/accordion.tsx'
+import { Button } from '@/common/components/ui/button.tsx'
 import {
   ERROR_REPORT_URL,
   FEATURE_IDEA_URL,
   HELP_EMAIL_URL,
-} from '@/constants/help.ts'
+} from '@/common/constants/help.ts'
 
 export const Route = createFileRoute('/general')({
   component: Page,

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 import type { z } from 'zod'
 
-import { AccessTokenKey, RefreshTokenKey } from '@/constants/keys.ts'
+import { AccessTokenKey, RefreshTokenKey } from '@/common/constants/keys.ts'
 import { storeJwtWithExpiry } from '@/lib/utils.ts'
 
 import { refreshToken } from './auth.ts'

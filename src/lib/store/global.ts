@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
-import type { WebsocketMessage } from '@/schema/ws.ts'
-import type { BusStop } from '@/types/bus.ts'
-import type { Line } from '@/types/global.ts'
+import type { WebsocketMessage } from '@/common/schema/ws.ts'
+import type { BusStop } from '@/common/types/bus.ts'
+import type { Line } from '@/common/types/global.ts'
 
 export interface GlobalStore {
   selectedLine?: Line

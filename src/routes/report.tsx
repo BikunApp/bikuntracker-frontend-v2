@@ -3,11 +3,11 @@ import { createFileRoute } from '@tanstack/react-router'
 import { CircleAlert, Flag, PhoneCall } from 'lucide-react'
 
 import announcementPngUrl from '@/assets/icons/accouncement.png'
-import { Button } from '@/components/ui/button.tsx'
-import { ERROR_REPORT_URL, HELP_EMAIL_URL } from '@/constants/help.ts'
-import { BackPathnameKey } from '@/constants/keys.ts'
-import { ROUTES } from '@/constants/routes.ts'
-import { useAuthStore } from '@/store/auth.ts'
+import { Button } from '@/common/components/ui/button.tsx'
+import { ERROR_REPORT_URL, HELP_EMAIL_URL } from '@/common/constants/help.ts'
+import { BackPathnameKey } from '@/common/constants/keys.ts'
+import { ROUTES } from '@/common/constants/routes.ts'
+import { useAuthStore } from '@/lib/store/auth.ts'
 
 export const Route = createFileRoute('/report')({
   component: Page,
