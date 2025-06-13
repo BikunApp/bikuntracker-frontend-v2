@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import { GeoJSON, Marker, Popup } from 'react-leaflet'
+import {CircleMarker, GeoJSON, Marker, Popup } from 'react-leaflet'
 
 import {
   blueBusIcon,
@@ -95,43 +95,53 @@ export default function MapContent() {
             coordinate => !selectedLine || coordinate.color === selectedLine,
           )
           .map(coordinate => (
-            <Marker
-              ref={
-                coordinate.color === 'red' || coordinate.color === 'grey'
-                  ? setRedBusMarkerFactory(coordinate.id)
-                  : setBlueBusMarkerFactory(coordinate.id)
-              }
+            <CircleMarker
               key={coordinate.imei}
-              icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
-              position={L.latLng(coordinate.latitude, coordinate.longitude)}
-              zIndexOffset={100}
+              center={L.latLng(coordinate.latitude, coordinate.longitude)}
+              radius={30}
+              // pathOptions={}
+              pathOptions={{
+                color: coordinate.color === 'red' ? '#D6003C' : '#473E91',
+                fillOpacity: 0.3,
+                weight: 1,
+              }}
             >
-              <Popup>
-                <p>
-                  <span className="w-full font-semibold text-center">
-                    Bus
-                    {' ' + coordinate.id}
-                  </span>
-                  <br />
-                  {coordinate.message && (
-                    <span>
-                      Status:
-                      {' ' + coordinate.message}
+              <Marker
+                ref={
+                  coordinate.color === 'red' || coordinate.color === 'grey'
+                    ? setRedBusMarkerFactory(coordinate.id)
+                    : setBlueBusMarkerFactory(coordinate.id)
+                }
+                icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
+                position={L.latLng(coordinate.latitude, coordinate.longitude)}
+                zIndexOffset={100}
+              >
+                <Popup>
+                  <div>
+                    {/* <span className="w-full font-semibold text-center">
+                      Bus
+                      {' ' + coordinate.id}
                     </span>
-                  )}
-                  {
-                    coordinate.speed > 0 && (
-                      <span>
-                        <br />
-                        Speed:
-                        {' ' + coordinate.speed}
-                        km/h
-                      </span>
-                    )
-                  }
-                </p>
-              </Popup>
-            </Marker>
+                    <br /> */}
+                    {coordinate.message && (
+                      <p>
+                        Status:
+                        {' ' + coordinate.message}
+                      </p>
+                    )}
+                    {
+                      coordinate.speed >= 0 && (
+                        <p>
+                          Speed:
+                          {'  ' + coordinate.speed}
+                          km/h
+                        </p>
+                      )
+                    }
+                  </div>
+                </Popup>
+              </Marker>
+            </CircleMarker>
           ))}
       {message && (
         <>
