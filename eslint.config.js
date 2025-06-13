@@ -42,6 +42,8 @@ export default tseslint.config(
       "@stylistic/jsx-one-expression-per-line": "off",
       "@stylistic/brace-style": "off",
       '@stylistic/arrow-parens': 'off',
+      '@stylistic/jsx-closing-tag-location': 'off',
+      '@stylistic/jsx-curly-newline': 'off',
     },
   },
   {

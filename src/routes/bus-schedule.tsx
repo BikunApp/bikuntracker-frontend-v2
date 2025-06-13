@@ -1,15 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { TriangleAlert } from 'lucide-react'
+import { createFileRoute } from "@tanstack/react-router";
+import { TriangleAlert } from "lucide-react";
 
-import bikunRoutePngUrl from '@/assets/bikun-route.png'
+import bikunRoutePngUrl from "@/assets/bikun-route.png";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from '@/common/components/ui/alert.tsx'
-export const Route = createFileRoute('/bus-schedule')({
+} from "@/common/components/ui/alert.tsx";
+export const Route = createFileRoute("/bus-schedule")({
   component: Page,
-})
+});
 
 export default function Page() {
   return (
@@ -58,5 +58,5 @@ export default function Page() {
         </Alert>
       </div>
     </div>
-  )
+  );
 }
