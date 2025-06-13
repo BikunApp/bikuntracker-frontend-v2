@@ -1,5 +1,5 @@
 import L from 'leaflet'
-import {CircleMarker, GeoJSON, Marker, Popup } from 'react-leaflet'
+import { CircleMarker, GeoJSON, Marker, Popup } from 'react-leaflet'
 
 import {
   blueBusIcon,
@@ -94,55 +94,98 @@ export default function MapContent() {
           .filter(
             coordinate => !selectedLine || coordinate.color === selectedLine,
           )
-          .map(coordinate => (
-            <CircleMarker
-              key={coordinate.imei}
-              center={L.latLng(coordinate.latitude, coordinate.longitude)}
-              radius={30}
-              // pathOptions={}
-              pathOptions={{
-                color: coordinate.color === 'red' ? '#D6003C' : '#473E91',
-                fillOpacity: 0.3,
-                weight: 1,
-              }}
-            >
-              <Marker
-                ref={
-                  coordinate.color === 'red' || coordinate.color === 'grey'
-                    ? setRedBusMarkerFactory(coordinate.id)
-                    : setBlueBusMarkerFactory(coordinate.id)
-                }
-                icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
-                position={L.latLng(coordinate.latitude, coordinate.longitude)}
-                zIndexOffset={100}
-              >
-                <Popup>
-                  <div>
-                    {/* <span className="w-full font-semibold text-center">
-                      Bus
-                      {' ' + coordinate.id}
-                    </span>
-                    <br /> */}
-                    {coordinate.message && (
-                      <p>
-                        Status:
-                        {' ' + coordinate.message}
-                      </p>
+          .map((coordinate) => {
+            if (coordinate.speed > 0) {
+              return (
+                <CircleMarker
+                  key={coordinate.imei}
+                  center={L.latLng(coordinate.latitude, coordinate.longitude)}
+                  radius={30}
+                  // pathOptions={}
+                  pathOptions={{
+                    color: coordinate.color === 'red' ? '#D6003C' : '#473E91',
+                    fillOpacity: 0.3,
+                    weight: 1,
+                  }}
+                >
+                  <Marker
+                    ref={
+                      coordinate.color === 'red' || coordinate.color === 'grey'
+                        ? setRedBusMarkerFactory(coordinate.id)
+                        : setBlueBusMarkerFactory(coordinate.id)
+                    }
+                    icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
+                    position={L.latLng(
+                      coordinate.latitude,
+                      coordinate.longitude,
                     )}
-                    {
-                      coordinate.speed >= 0 && (
+                    zIndexOffset={100}
+                  >
+                    <Popup>
+                      <div>
+                        {/* <span className='w-full font-semibold text-center'>
+                          Bus
+                          {' ' + coordinate.id}
+                        </span>
+                        <br /> */}
+                        {coordinate.message && (
+                          <p>
+                            Status:
+                            {' ' + coordinate.message}
+                          </p>
+                        )}
+                        {coordinate.speed >= 0 && (
+                          <p>
+                            Speed:
+                            {'  ' + coordinate.speed}
+                            km/h
+                          </p>
+                        )}
+                      </div>
+                    </Popup>
+                  </Marker>
+                </CircleMarker>
+              )
+            }
+            else {
+              return (
+                <Marker
+                  key={coordinate.imei}
+                  ref={
+                    coordinate.color === 'red' || coordinate.color === 'grey'
+                      ? setRedBusMarkerFactory(coordinate.id)
+                      : setBlueBusMarkerFactory(coordinate.id)
+                  }
+                  icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
+                  position={L.latLng(coordinate.latitude, coordinate.longitude)}
+                  zIndexOffset={100}
+                >
+                  <Popup>
+                    <div>
+                      {/* <span className='w-full font-semibold text-center'>
+                        Bus
+                        {' ' + coordinate.id}
+                      </span>
+                      <br /> */}
+                      {coordinate.message && (
+                        <p>
+                          Status:
+                          {' ' + coordinate.message}
+                        </p>
+                      )}
+                      {coordinate.speed >= 0 && (
                         <p>
                           Speed:
                           {'  ' + coordinate.speed}
                           km/h
                         </p>
-                      )
-                    }
-                  </div>
-                </Popup>
-              </Marker>
-            </CircleMarker>
-          ))}
+                      )}
+                    </div>
+                  </Popup>
+                </Marker>
+              )
+            }
+          })}
       {message && (
         <>
           {(!selectedLine || selectedLine === 'blue') && (
