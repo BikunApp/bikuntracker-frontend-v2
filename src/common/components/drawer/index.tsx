@@ -1,11 +1,11 @@
-import { Crosshair, MoveLeft } from 'lucide-react'
+import { Crosshair, MoveLeft } from "lucide-react";
 
-import { useGlobalStore } from '@/lib/store/global.ts'
-import { useRefStore } from '@/lib/store/ref.ts'
-import { cn } from '@/lib/utils.ts'
+import { useGlobalStore } from "@/lib/store/global.ts";
+import { useRefStore } from "@/lib/store/ref.ts";
+import { cn } from "@/lib/utils.ts";
 
 export default function Drawer() {
-  const { fitBoundsToSelectedStop, centerMap } = useRefStore()
+  const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
     closestBus,
     selectedLine,
@@ -13,7 +13,7 @@ export default function Drawer() {
     setSelectedLine,
     setSelectedStop,
     setClosestBus,
-  } = useGlobalStore()
+  } = useGlobalStore();
 
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
@@ -21,10 +21,10 @@ export default function Drawer() {
         {selectedStop && (
           <button
             onClick={() => {
-              setSelectedLine(undefined)
-              setSelectedStop(undefined)
-              setClosestBus(undefined)
-              centerMap()
+              setSelectedLine(undefined);
+              setSelectedStop(undefined);
+              setClosestBus(undefined);
+              centerMap();
             }}
             className="absolute -top-12 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
           >
@@ -34,15 +34,14 @@ export default function Drawer() {
         <button
           onClick={() => {
             if (selectedStop) {
-              fitBoundsToSelectedStop(selectedStop)
-            }
-            else {
-              centerMap()
+              fitBoundsToSelectedStop(selectedStop);
+            } else {
+              centerMap();
             }
           }}
           className={cn(
-            'bg-primary absolute right-4 flex h-10 w-10 items-center justify-center rounded-full shadow-2xl',
-            { '-top-[60px]': selectedStop, '-top-[120px]': !selectedStop },
+            "bg-primary absolute right-4 flex h-10 w-10 items-center justify-center rounded-full shadow-2xl",
+            { "-top-[60px]": selectedStop, "-top-[120px]": !selectedStop },
           )}
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
@@ -59,12 +58,10 @@ export default function Drawer() {
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
                     Bus
-                    {' ' + closestBus}
+                    {" " + closestBus}
                   </div>
                   <div className="text-primary text-xs">
-                    Next
-                    {' '}
-                    <b>Balairung</b>
+                    Next <b>Balairung</b>
                   </div>
                 </div>
               </div>
@@ -74,42 +71,42 @@ export default function Drawer() {
                 <div
                   className={cn(
                     {
-                      'w-1/2': selectedLine === 'red',
-                      'w-0': selectedLine === 'blue',
+                      "w-1/2": selectedLine === "red",
+                      "w-0": selectedLine === "blue",
                     },
-                    'transition-all duration-300',
+                    "transition-all duration-300",
                   )}
-                >
-                </div>
+                ></div>
                 <div
-                  className={cn('w-1/2 rounded-2xl', {
-                    'bg-primary-red': selectedLine === 'red',
-                    'bg-primary': selectedLine === 'blue',
+                  className={cn("w-1/2 rounded-2xl", {
+                    "bg-primary-red": selectedLine === "red",
+                    "bg-primary": selectedLine === "blue",
                   })}
-                >
-                </div>
+                ></div>
               </div>
               <div className="absolute inset-0 z-20">
                 <button
                   onClick={() =>
-                    selectedLine === 'blue'
+                    selectedLine === "blue"
                       ? setSelectedLine(undefined)
-                      : setSelectedLine('blue')}
-                  className={cn('h-full w-1/2 text-center', {
-                    'text-primary': selectedLine !== 'blue',
-                    'text-white': selectedLine === 'blue',
+                      : setSelectedLine("blue")
+                  }
+                  className={cn("h-full w-1/2 text-center", {
+                    "text-primary": selectedLine !== "blue",
+                    "text-white": selectedLine === "blue",
                   })}
                 >
                   Blue Line
                 </button>
                 <button
                   onClick={() =>
-                    selectedLine === 'red'
+                    selectedLine === "red"
                       ? setSelectedLine(undefined)
-                      : setSelectedLine('red')}
-                  className={cn('h-full w-1/2 text-center', {
-                    'text-primary-red': selectedLine !== 'red',
-                    'text-white': selectedLine === 'red',
+                      : setSelectedLine("red")
+                  }
+                  className={cn("h-full w-1/2 text-center", {
+                    "text-primary-red": selectedLine !== "red",
+                    "text-white": selectedLine === "red",
                   })}
                 >
                   Red Line
@@ -120,5 +117,5 @@ export default function Drawer() {
         )}
       </div>
     </div>
-  )
+  );
 }

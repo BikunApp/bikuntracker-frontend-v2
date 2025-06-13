@@ -1,21 +1,21 @@
-import { useNavigate } from '@tanstack/react-router'
-import { createFileRoute } from '@tanstack/react-router'
-import { ChevronLeft, Info, SendHorizonal } from 'lucide-react'
-import { useState } from 'react'
+import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { ChevronLeft, Info, SendHorizonal } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from '@/common/components/ui/button.tsx'
-import { Textarea } from '@/common/components/ui/textarea.tsx'
-import { ROUTES } from '@/common/constants/routes.ts'
-import { useAuthStore } from '@/lib/store/auth.ts'
+import { Button } from "@/common/components/ui/button.tsx";
+import { Textarea } from "@/common/components/ui/textarea.tsx";
+import { ROUTES } from "@/common/constants/routes.ts";
+import { useAuthStore } from "@/lib/store/auth.ts";
 
-export const Route = createFileRoute('/create-report')({
+export const Route = createFileRoute("/create-report")({
   component: Page,
-})
+});
 
 export default function Page() {
-  const { user } = useAuthStore()
-  const navigate = useNavigate()
-  const [description, setDescription] = useState<string>('')
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
+  const [description, setDescription] = useState<string>("");
 
   return (
     <div className="flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20">
@@ -30,13 +30,12 @@ export default function Page() {
         <div className="border-primary-purple-100 flex w-full flex-col rounded-2xl border-2 bg-white p-4">
           <div className="text-primary mb-2 text-sm font-bold">Pelapor</div>
           <div className="text-400 text-xs">{user?.name}</div>
-          <div className="text-400 text-xs">{'(' + user?.email + ')'}</div>
+          <div className="text-400 text-xs">{"(" + user?.email + ")"}</div>
         </div>
         <div className="text-400 mt-2 flex gap-2">
           <Info />
           <div className="text-xs">
-            Anda akan dihubungi melalui email yang tertera di atas.
-            {' '}
+            Anda akan dihubungi melalui email yang tertera di atas.{" "}
           </div>
         </div>
         <div className="mt-4 flex flex-col">
@@ -45,7 +44,7 @@ export default function Page() {
             className="border-light-grey mt-2 border-2 p-4 text-xs"
             rows={7}
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Boleh tolong ceritakan apa kejadiannya, di bagian bus mana terjadinya, serta ciri-ciri pelakunya? (min. 30 karakter)"
           />
         </div>
@@ -56,5 +55,5 @@ export default function Page() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
