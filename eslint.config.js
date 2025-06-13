@@ -40,6 +40,8 @@ export default tseslint.config(
       ...customStylistic.rules,
       "@stylistic/operator-linebreak": "off",
       "@stylistic/jsx-one-expression-per-line": "off",
+      "@stylistic/brace-style": "off",
+      '@stylistic/arrow-parens': 'off',
     },
   },
   {
