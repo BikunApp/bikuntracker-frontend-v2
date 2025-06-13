@@ -36,7 +36,7 @@ export default function MapContent() {
   return (
     <>
       {message &&
-        (!selectedLine || selectedLine === 'merah') &&
+        (!selectedLine || selectedLine === 'red') &&
         (message.operationalStatus === OperationalStatus.MorningRoute
           ? RED_MORNING_STOP
           : RED_NORMAL_STOP
@@ -63,7 +63,7 @@ export default function MapContent() {
           )
         })}
       {message &&
-        (!selectedLine || selectedLine === 'biru') &&
+        (!selectedLine || selectedLine === 'blue') &&
         (message.operationalStatus === OperationalStatus.MorningRoute
           ? BLUE_MORNING_STOP
           : BLUE_NORMAL_STOP
@@ -97,24 +97,45 @@ export default function MapContent() {
           .map(coordinate => (
             <Marker
               ref={
-                coordinate.color === 'merah'
+                coordinate.color === 'red' || coordinate.color === 'grey'
                   ? setRedBusMarkerFactory(coordinate.id)
                   : setBlueBusMarkerFactory(coordinate.id)
               }
               key={coordinate.imei}
-              icon={coordinate.color === 'merah' ? redBusIcon : blueBusIcon}
+              icon={coordinate.color === 'red' ? redBusIcon : blueBusIcon}
               position={L.latLng(coordinate.latitude, coordinate.longitude)}
               zIndexOffset={100}
             >
               <Popup>
-                Bus
-                {' ' + coordinate.id}
+                <p>
+                  <span className="w-full font-semibold text-center">
+                    Bus
+                    {' ' + coordinate.id}
+                  </span>
+                  <br />
+                  {coordinate.message && (
+                    <span>
+                      Status:
+                      {' ' + coordinate.message}
+                    </span>
+                  )}
+                  {
+                    coordinate.speed > 0 && (
+                      <span>
+                        <br />
+                        Speed:
+                        {' ' + coordinate.speed}
+                        km/h
+                      </span>
+                    )
+                  }
+                </p>
               </Popup>
             </Marker>
           ))}
       {message && (
         <>
-          {(!selectedLine || selectedLine === 'biru') && (
+          {(!selectedLine || selectedLine === 'blue') && (
             <GeoJSON
               data={
                 message.operationalStatus === OperationalStatus.MorningRoute
@@ -124,7 +145,7 @@ export default function MapContent() {
               style={{ color: '#473E91' }}
             />
           )}
-          {(!selectedLine || selectedLine === 'merah') && (
+          {(!selectedLine || selectedLine === 'red') && (
             <GeoJSON
               data={
                 message.operationalStatus === OperationalStatus.MorningRoute

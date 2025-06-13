@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const busCoordinateSchema = z.object({
   id: z.number(),
-  color: z.string().refine(color => color === 'merah' || color === 'biru'),
+  color: z.string().refine(color => color === 'red' || color === 'blue' || color === 'grey'),
   imei: z.string(),
   vehicle_name: z.string(),
   longitude: z.number(),
@@ -11,6 +11,9 @@ export const busCoordinateSchema = z.object({
   speed: z.number(),
   total_mileage: z.number(),
   gps_time: z.string().transform(s => new Date(s)),
+  current_halte: z.string(),
+  message: z.string(),
+  next_halte: z.string(),
 })
 
 export type BusCoordinate = z.infer<typeof busCoordinateSchema>

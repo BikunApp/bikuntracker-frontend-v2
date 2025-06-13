@@ -1,1 +1,1 @@
-export type Line = 'merah' | 'biru'
+export type Line = 'red' | 'blue'

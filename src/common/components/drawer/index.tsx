@@ -74,8 +74,8 @@ export default function Drawer() {
                 <div
                   className={cn(
                     {
-                      'w-1/2': selectedLine === 'merah',
-                      'w-0': selectedLine === 'biru',
+                      'w-1/2': selectedLine === 'red',
+                      'w-0': selectedLine === 'blue',
                     },
                     'transition-all duration-300',
                   )}
@@ -83,8 +83,8 @@ export default function Drawer() {
                 </div>
                 <div
                   className={cn('w-1/2 rounded-2xl', {
-                    'bg-primary-red': selectedLine === 'merah',
-                    'bg-primary': selectedLine === 'biru',
+                    'bg-primary-red': selectedLine === 'red',
+                    'bg-primary': selectedLine === 'blue',
                   })}
                 >
                 </div>
@@ -92,24 +92,24 @@ export default function Drawer() {
               <div className="absolute inset-0 z-20">
                 <button
                   onClick={() =>
-                    selectedLine === 'biru'
+                    selectedLine === 'blue'
                       ? setSelectedLine(undefined)
-                      : setSelectedLine('biru')}
+                      : setSelectedLine('blue')}
                   className={cn('h-full w-1/2 text-center', {
-                    'text-primary': selectedLine !== 'biru',
-                    'text-white': selectedLine === 'biru',
+                    'text-primary': selectedLine !== 'blue',
+                    'text-white': selectedLine === 'blue',
                   })}
                 >
                   Blue Line
                 </button>
                 <button
                   onClick={() =>
-                    selectedLine === 'merah'
+                    selectedLine === 'red'
                       ? setSelectedLine(undefined)
-                      : setSelectedLine('merah')}
+                      : setSelectedLine('red')}
                   className={cn('h-full w-1/2 text-center', {
-                    'text-primary-red': selectedLine !== 'merah',
-                    'text-white': selectedLine === 'merah',
+                    'text-primary-red': selectedLine !== 'red',
+                    'text-white': selectedLine === 'red',
                   })}
                 >
                   Red Line
