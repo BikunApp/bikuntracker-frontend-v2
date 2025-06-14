@@ -1,14 +1,14 @@
-import { PencilIcon } from 'lucide-react'
-import { MapPin, TrainTrack } from 'lucide-react'
+import { PencilIcon } from "lucide-react";
+import { MapPin, TrainTrack } from "lucide-react";
 
-import { Drawer, DrawerTrigger } from '@/common/components/ui/drawer.tsx'
-import { useGlobalStore } from '@/lib/store/global.ts'
-import { cn } from '@/lib/utils.ts'
+import { Drawer, DrawerTrigger } from "@/common/components/ui/drawer.tsx";
+import { useGlobalStore } from "@/lib/store/global.ts";
+import { cn } from "@/lib/utils.ts";
 
-import NavigationDrawerContent from './drawer-content.tsx'
+import NavigationDrawerContent from "./drawer-content.tsx";
 
 export default function NavigationBar() {
-  const { selectedLine, selectedStop } = useGlobalStore()
+  const { selectedLine, selectedStop } = useGlobalStore();
 
   return (
     <div className="absolute top-8 right-4 left-4 z-50 flex items-center rounded-3xl bg-white">
@@ -23,7 +23,7 @@ export default function NavigationBar() {
               <div className="ml-2 text-xs font-medium">
                 {selectedStop
                   ? `Halte ${selectedStop}`
-                  : 'Pilih halte kamu saat ini'}
+                  : "Pilih halte kamu saat ini"}
               </div>
             </div>
           </DrawerTrigger>
@@ -31,22 +31,21 @@ export default function NavigationBar() {
           <button className="mb-3 flex items-center">
             <div
               className={cn(
-                'flex h-5 w-5 items-center justify-center rounded-full transition-all duration-300',
+                "flex h-5 w-5 items-center justify-center rounded-full transition-all duration-300",
                 {
-                  'bg-primary': selectedLine === 'biru',
-                  'bg-primary-red': selectedLine === 'merah',
-                  'bg-yellow-500': !selectedLine,
+                  "bg-primary": selectedLine === "blue",
+                  "bg-primary-red": selectedLine === "red",
+                  "bg-yellow-500": !selectedLine,
                 },
               )}
             >
               <TrainTrack size={12} className="text-white" />
             </div>
             <div className="ml-2 text-xs font-medium">
-              Jalur
-              {' '}
+              Jalur{" "}
               {selectedLine
                 ? selectedLine.charAt(0).toUpperCase() + selectedLine.slice(1)
-                : 'Belum Dipilih'}
+                : "Belum Dipilih"}
             </div>
           </button>
         </div>
@@ -57,5 +56,5 @@ export default function NavigationBar() {
         </DrawerTrigger>
       </Drawer>
     </div>
-  )
+  );
 }

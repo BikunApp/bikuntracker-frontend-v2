@@ -2,6 +2,7 @@ import L from "leaflet";
 import { create } from "zustand";
 
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@/common/constants/map.ts";
+import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import type { BusStop } from "@/common/types/bus.ts";
 
 import { useGlobalStore } from "./global.ts";
@@ -61,6 +62,7 @@ export const useRefStore = create<RefStore>((set, get) => ({
   setMap: (map) => set((state) => ({ ...state, map })),
 
   fitBoundsToSelectedStop: (selectedStop) => {
+    nearestBus();
     const calculatedClosestBus = 3; // TODO: Change this actual calculation later
     const { setClosestBus } = useGlobalStore.getState();
     setClosestBus(calculatedClosestBus);
@@ -78,3 +80,37 @@ export const useRefStore = create<RefStore>((set, get) => ({
     get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
   },
 }));
+
+const nearestBus = () => {
+  const { selectedStop } = useGlobalStore.getState();
+  if (!selectedStop) return;
+  const metadata = BUS_STOP_METADATA.get(selectedStop);
+  const selectedLine = useGlobalStore.getState().selectedLine;
+  const position =
+    selectedLine === "red"
+      ? metadata?.positionRedLine
+      : metadata?.positionBlueLine;
+
+  const coordinates = useGlobalStore.getState().message?.coordinates;
+  // const '
+  const buses = coordinates;
+
+  // Temukan bus terdekat
+  let closestBus = null;
+  let minDistance = Infinity;
+
+  buses?.forEach((bus) => {
+    const busLatLng = L.latLng(bus.latitude, bus.longitude);
+    const distance = position?.distanceTo(busLatLng); // dalam meter
+
+    if (distance !== undefined && distance < minDistance) {
+      minDistance = distance;
+      closestBus = bus;
+    }
+  });
+
+  if (closestBus) {
+    console.log("Bus terdekat:", closestBus);
+    console.log("Jaraknya (meter):", minDistance);
+  }
+};

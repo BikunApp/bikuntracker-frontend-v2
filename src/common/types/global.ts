@@ -1,1 +1,1 @@
-export type Line = 'red' | 'blue'
+export type Line = "red" | "blue";

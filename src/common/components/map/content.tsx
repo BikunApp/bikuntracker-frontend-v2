@@ -32,7 +32,7 @@ export default function MapContent() {
     setBlueBusMarkerFactory,
     setBlueBusStopMarkerFactory,
   } = useRefStore();
-
+  console.log(selectedStop);
   return (
     <>
       {message &&
@@ -103,6 +103,7 @@ export default function MapContent() {
                   radius={30}
                   // pathOptions={}
                   pathOptions={{
+                    className: "animate-pulse",
                     color: coordinate.color === "red" ? "#D6003C" : "#473E91",
                     fillOpacity: 0.3,
                     weight: 1,
@@ -122,25 +123,12 @@ export default function MapContent() {
                     zIndexOffset={100}
                   >
                     <Popup>
-                      <div>
-                        {/* <span className='w-full font-semibold text-center'>
+                      <div className="h-full w-full">
+                        <p className="w-full text-center font-semibold">
                           Bus
-                          {' ' + coordinate.id}
-                        </span>
-                        <br /> */}
-                        {coordinate.message && (
-                          <p>
-                            Status:
-                            {" " + coordinate.message}
-                          </p>
-                        )}
-                        {coordinate.speed >= 0 && (
-                          <p>
-                            Speed:
-                            {"  " + coordinate.speed}
-                            km/h
-                          </p>
-                        )}
+                          {" " + coordinate.id}
+                        </p>
+                        {coordinate.message && coordinate.message}
                       </div>
                     </Popup>
                   </Marker>

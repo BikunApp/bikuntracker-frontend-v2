@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
-import { BusCoordinate } from "@/common/schema/ws";
+import { useEffect, useRef, useState } from "react";
+
+import type { BusCoordinate } from "@/common/schema/ws";
 
 interface AnimatedBusPosition {
   latitude: number;
