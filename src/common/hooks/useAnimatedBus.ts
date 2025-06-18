@@ -1,4 +1,3 @@
-import L from "leaflet";
 import { useEffect, useRef, useState } from "react";
 
 import type { BusCoordinate } from "@/common/schema/ws";
