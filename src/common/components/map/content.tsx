@@ -121,7 +121,12 @@ export default function MapContent() {
                   // pathOptions={}
                   pathOptions={{
                     className: "animate-pulse",
-                    color: coordinate.color === "red" ? "#D6003C" : "#473E91",
+                    color:
+                      coordinate.color === "red"
+                        ? "#D6003C"
+                        : coordinate.color === "grey"
+                          ? "#808080"
+                          : "#473E91",
                     fillOpacity: 0.3,
                     weight: 1,
                   }}
