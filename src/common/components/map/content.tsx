@@ -21,6 +21,7 @@ import {
   RED_MORNING_STOP,
   RED_NORMAL_STOP,
 } from "@/common/data/stops.ts";
+import { useAnimatedBusPositions } from "@/common/hooks/useAnimatedBus.ts";
 import { OperationalStatus } from "@/common/types/bus.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
@@ -33,6 +34,12 @@ export default function MapContent() {
     setBlueBusMarkerFactory,
     setBlueBusStopMarkerFactory,
   } = useRefStore();
+  // Use animated positions for smooth bus movement
+  const animatedPositions = useAnimatedBusPositions({
+    coordinates: message?.coordinates || [],
+    animationDuration: 2000, // 2 seconds animation
+  });
+
   console.log(selectedStop);
   return (
     <>
@@ -89,18 +96,27 @@ export default function MapContent() {
               )}
             </Marker>
           );
-        })}
+        })}{" "}
       {message?.coordinates &&
         message.coordinates
           .filter(
             (coordinate) => !selectedLine || coordinate.color === selectedLine,
           )
           .map((coordinate) => {
+            // Get animated position for this bus
+            const animatedPos = animatedPositions.get(coordinate.imei);
+            const currentLat = animatedPos
+              ? animatedPos.latitude
+              : coordinate.latitude;
+            const currentLng = animatedPos
+              ? animatedPos.longitude
+              : coordinate.longitude;
+
             if (coordinate.speed > 0) {
               return (
                 <CircleMarker
                   key={coordinate.imei}
-                  center={L.latLng(coordinate.latitude, coordinate.longitude)}
+                  center={L.latLng(currentLat, currentLng)}
                   radius={30}
                   // pathOptions={}
                   pathOptions={{
@@ -123,10 +139,7 @@ export default function MapContent() {
                           ? greyBusIcon
                           : blueBusIcon
                     }
-                    position={L.latLng(
-                      coordinate.latitude,
-                      coordinate.longitude,
-                    )}
+                    position={L.latLng(currentLat, currentLng)}
                     zIndexOffset={100}
                   >
                     <Popup>
@@ -157,7 +170,7 @@ export default function MapContent() {
                         ? greyBusIcon
                         : blueBusIcon
                   }
-                  position={L.latLng(coordinate.latitude, coordinate.longitude)}
+                  position={L.latLng(currentLat, currentLng)}
                   zIndexOffset={100}
                 >
                   <Popup>
