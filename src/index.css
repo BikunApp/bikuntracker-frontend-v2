@@ -58,9 +58,9 @@
   --color-danger-100: #fee2e2;
   --color-danger-400: #f97072;
   --color-danger-500: #ee2e31;
-
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-pulse: pulse 2s infinite;
 
   @keyframes accordion-down {
     from {
@@ -79,6 +79,15 @@
 
     to {
       height: 0;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
     }
   }
 }
@@ -166,4 +175,32 @@
 
 .drawer-almost-dvh {
   height: calc(100dvh - 100px);
+}
+
+/* Ensure pulse animation works for Leaflet elements */
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Enhanced bus pulse animation for better visibility */
+.bus-pulse-animation {
+  animation: bus-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bus-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
