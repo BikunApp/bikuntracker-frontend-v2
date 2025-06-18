@@ -6,6 +6,7 @@ import {
   blueStopIcon,
   redBusIcon,
   redStopIcon,
+  greyBusIcon,
 } from "@/common/constants/map.ts";
 import {
   BLUE_MORNING_ROUTE,
@@ -115,7 +116,13 @@ export default function MapContent() {
                         ? setRedBusMarkerFactory(coordinate.id)
                         : setBlueBusMarkerFactory(coordinate.id)
                     }
-                    icon={coordinate.color === "red" ? redBusIcon : blueBusIcon}
+                    icon={
+                      coordinate.color === "red"
+                        ? redBusIcon
+                        : coordinate.color === "grey"
+                          ? greyBusIcon
+                          : blueBusIcon
+                    }
                     position={L.latLng(
                       coordinate.latitude,
                       coordinate.longitude,
@@ -143,7 +150,13 @@ export default function MapContent() {
                       ? setRedBusMarkerFactory(coordinate.id)
                       : setBlueBusMarkerFactory(coordinate.id)
                   }
-                  icon={coordinate.color === "red" ? redBusIcon : blueBusIcon}
+                  icon={
+                    coordinate.color === "red"
+                      ? redBusIcon
+                      : coordinate.color === "grey"
+                        ? greyBusIcon
+                        : blueBusIcon
+                  }
                   position={L.latLng(coordinate.latitude, coordinate.longitude)}
                   zIndexOffset={100}
                 >

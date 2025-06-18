@@ -4,6 +4,7 @@ import blueBusSvgUrl from "@/assets/blue-bus.svg";
 import blueStopUrl from "@/assets/blue-stop.svg";
 import redBusSvgUrl from "@/assets/red-bus.svg";
 import redStopUrl from "@/assets/red-stop.svg";
+import greyBusSvgUrl from "@/assets/grey-bus.svg";
 
 export const southWestCorner = L.latLng(-6.379516352175614, 106.81855955493938);
 export const northEastCorner = L.latLng(-6.336917163507337, 106.8362044663807);
@@ -37,4 +38,10 @@ export const redStopIcon = L.icon({
   iconUrl: redStopUrl,
   iconSize: [34, 40],
   iconAnchor: [17, 20],
+});
+
+export const greyBusIcon = L.icon({
+  iconUrl: greyBusSvgUrl,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
 });
