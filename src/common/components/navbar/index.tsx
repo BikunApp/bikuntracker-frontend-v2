@@ -1,21 +1,21 @@
-import { useLocation, useNavigate } from '@tanstack/react-router'
-import { Flag, House, Info, Map } from 'lucide-react'
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { Flag, House, Info, Map } from "lucide-react";
 
-import { ROUTES } from '@/common/constants/routes.ts'
-import { cn } from '@/lib/utils.ts'
+import { ROUTES } from "@/common/constants/routes.ts";
+import { cn } from "@/lib/utils.ts";
 
 export default function Navbar() {
-  const navigate = useNavigate()
-  const route = useLocation()
+  const navigate = useNavigate();
+  const route = useLocation();
 
   return (
     <div className="text-light-grey fixed right-0 bottom-0 left-0 z-20 flex bg-white text-xs">
       <button
         onClick={() => navigate({ to: ROUTES.index })}
         className={cn(
-          'flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300',
+          "flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300",
           {
-            'text-primary font-bold': route.pathname === ROUTES.index,
+            "text-primary font-bold": route.pathname === ROUTES.index,
           },
         )}
       >
@@ -28,9 +28,9 @@ export default function Navbar() {
       <button
         onClick={() => navigate({ to: ROUTES.busSchedule })}
         className={cn(
-          'flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300',
+          "flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300",
           {
-            'text-primary font-bold': route.pathname === ROUTES.busSchedule,
+            "text-primary font-bold": route.pathname === ROUTES.busSchedule,
           },
         )}
       >
@@ -43,9 +43,9 @@ export default function Navbar() {
       <button
         onClick={() => navigate({ to: ROUTES.report })}
         className={cn(
-          'flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300',
+          "flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300",
           {
-            'text-primary font-bold': route.pathname.includes(ROUTES.report),
+            "text-primary font-bold": route.pathname.includes(ROUTES.report),
           },
         )}
       >
@@ -58,9 +58,9 @@ export default function Navbar() {
       <button
         onClick={() => navigate({ to: ROUTES.general })}
         className={cn(
-          'flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300',
+          "flex w-1/4 flex-col items-center justify-center gap-0.5 py-4 transition-all duration-300",
           {
-            'text-primary font-bold': route.pathname === ROUTES.general,
+            "text-primary font-bold": route.pathname === ROUTES.general,
           },
         )}
       >
@@ -71,5 +71,5 @@ export default function Navbar() {
         <div>General</div>
       </button>
     </div>
-  )
+  );
 }

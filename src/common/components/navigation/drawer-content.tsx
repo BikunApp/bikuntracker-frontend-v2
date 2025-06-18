@@ -1,35 +1,35 @@
-import { MapPin, Star } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { MapPin, Star } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import {
   DrawerClose,
   DrawerContent,
   DrawerTitle,
-} from '@/common/components/ui/drawer.tsx'
-import { BUS_STOP_METADATA } from '@/common/data/stops.ts'
-import { useGlobalStore } from '@/lib/store/global.ts'
-import { useRefStore } from '@/lib/store/ref.ts'
+} from "@/common/components/ui/drawer.tsx";
+import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
+import { useGlobalStore } from "@/lib/store/global.ts";
+import { useRefStore } from "@/lib/store/ref.ts";
 
 export default function NavigationDrawerContent() {
-  const { setSelectedStop } = useGlobalStore()
-  const { fitBoundsToSelectedStop } = useRefStore()
-  const [favorites, setFavorites] = useState<string[]>([])
-  const [filter, setFilter] = useState<string>('')
+  const { setSelectedStop } = useGlobalStore();
+  const { fitBoundsToSelectedStop } = useRefStore();
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
-    const localFavorites = localStorage.getItem('favorites')
+    const localFavorites = localStorage.getItem("favorites");
     if (localFavorites) {
-      setFavorites(JSON.parse(localFavorites))
+      setFavorites(JSON.parse(localFavorites));
     }
-  }, [])
+  }, []);
 
   const toggleFavorite = (halteName: string) => {
     const updatedLocalFavorites = favorites.includes(halteName)
-      ? favorites.filter(currentHalte => currentHalte !== halteName)
-      : [...favorites, halteName]
-    setFavorites(updatedLocalFavorites)
-    localStorage.setItem('favorites', JSON.stringify(updatedLocalFavorites))
-  }
+      ? favorites.filter((currentHalte) => currentHalte !== halteName)
+      : [...favorites, halteName];
+    setFavorites(updatedLocalFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedLocalFavorites));
+  };
 
   return (
     <DrawerContent className="drawer-almost-dvh font-poppins">
@@ -44,7 +44,7 @@ export default function NavigationDrawerContent() {
           className="w-full rounded-xl bg-gray-200 px-4 py-2 pl-9 text-sm"
           placeholder="Halte kamu saat ini"
           value={filter}
-          onChange={e => setFilter(e.target.value)}
+          onChange={(e) => setFilter(e.target.value)}
         />
       </div>
       <div className="bg-light-grey mt-3 h-[1px] w-full" />
@@ -67,8 +67,8 @@ export default function NavigationDrawerContent() {
                 <DrawerClose>
                   <div
                     onClick={() => {
-                      setSelectedStop(busStop)
-                      fitBoundsToSelectedStop(busStop)
+                      setSelectedStop(busStop);
+                      fitBoundsToSelectedStop(busStop);
                     }}
                     className="flex grow items-center"
                   >
@@ -80,7 +80,7 @@ export default function NavigationDrawerContent() {
                     <div className="ml-4 flex flex-col gap-1.5">
                       <div className="mr-auto text-sm font-semibold">
                         Halte
-                        {' ' + metadata.name}
+                        {" " + metadata.name}
                       </div>
                       <div className="text-400 mr-auto text-xs">
                         {metadata.additionalInfo}
@@ -90,7 +90,7 @@ export default function NavigationDrawerContent() {
                 </DrawerClose>
                 <Star
                   onClick={() => toggleFavorite(metadata.name)}
-                  className={`my-auto mr-4 ml-auto ${favorites.includes(metadata.name) ? 'fill-current text-yellow-400' : ''}`}
+                  className={`my-auto mr-4 ml-auto ${favorites.includes(metadata.name) ? "fill-current text-yellow-400" : ""}`}
                   strokeWidth={1.1}
                 />
               </div>
@@ -99,5 +99,5 @@ export default function NavigationDrawerContent() {
           ))}
       </div>
     </DrawerContent>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-import type { FeatureCollection } from 'geojson'
+import type { FeatureCollection } from "geojson";
 
 export const BLUE_MORNING_ROUTE: FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
         coordinates: [
@@ -130,22 +130,22 @@ export const BLUE_MORNING_ROUTE: FeatureCollection = {
           [106.83176880721743, -6.363394643115029],
           [106.83173711850145, -6.363334078731057],
         ],
-        type: 'LineString',
+        type: "LineString",
       },
     },
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
         coordinates: [
           [106.83173712646743, -6.363334030749826],
           [106.83173561772446, -6.36332986561888],
         ],
-        type: 'LineString',
+        type: "LineString",
       },
     },
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
         coordinates: [
@@ -182,17 +182,17 @@ export const BLUE_MORNING_ROUTE: FeatureCollection = {
           [106.82818277379545, -6.348118774676706],
           [106.82901010696673, -6.3482847724273626],
         ],
-        type: 'LineString',
+        type: "LineString",
       },
     },
   ],
-}
+};
 
 export const RED_MORNING_ROUTE: FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
         coordinates: [
@@ -275,11 +275,11 @@ export const RED_MORNING_ROUTE: FeatureCollection = {
           [106.8297793835385, -6.371606329832659],
           [106.82947456561845, -6.371622274076628],
         ],
-        type: 'LineString',
+        type: "LineString",
       },
     },
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
         coordinates: [
@@ -367,20 +367,20 @@ export const RED_MORNING_ROUTE: FeatureCollection = {
           [106.82871492440091, -6.348202625240091],
           [106.82902547282316, -6.348251755851919],
         ],
-        type: 'LineString',
+        type: "LineString",
       },
     },
   ],
-}
+};
 
 export const BLUE_NORMAL_ROUTE: FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
-        type: 'LineString',
+        type: "LineString",
         coordinates: [
           [106.82976588606834, -6.348390363595637],
           [106.829931512475, -6.348414355448589],
@@ -565,16 +565,16 @@ export const BLUE_NORMAL_ROUTE: FeatureCollection = {
       },
     },
   ],
-}
+};
 
 export const RED_NORMAL_ROUTE: FeatureCollection = {
-  type: 'FeatureCollection',
+  type: "FeatureCollection",
   features: [
     {
-      type: 'Feature',
+      type: "Feature",
       properties: {},
       geometry: {
-        type: 'LineString',
+        type: "LineString",
         coordinates: [
           [106.82976588606834, -6.348390363595637],
           [106.829931512475, -6.348414355448589],
@@ -743,4 +743,4 @@ export const RED_NORMAL_ROUTE: FeatureCollection = {
       },
     },
   ],
-}
+};

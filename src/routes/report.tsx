@@ -1,22 +1,22 @@
-import { useLocation, useNavigate } from '@tanstack/react-router'
-import { createFileRoute } from '@tanstack/react-router'
-import { CircleAlert, Flag, PhoneCall } from 'lucide-react'
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { CircleAlert, Flag, PhoneCall } from "lucide-react";
 
-import announcementPngUrl from '@/assets/icons/accouncement.png'
-import { Button } from '@/common/components/ui/button.tsx'
-import { ERROR_REPORT_URL, HELP_EMAIL_URL } from '@/common/constants/help.ts'
-import { BackPathnameKey } from '@/common/constants/keys.ts'
-import { ROUTES } from '@/common/constants/routes.ts'
-import { useAuthStore } from '@/lib/store/auth.ts'
+import announcementPngUrl from "@/assets/icons/accouncement.png";
+import { Button } from "@/common/components/ui/button.tsx";
+import { ERROR_REPORT_URL, HELP_EMAIL_URL } from "@/common/constants/help.ts";
+import { BackPathnameKey } from "@/common/constants/keys.ts";
+import { ROUTES } from "@/common/constants/routes.ts";
+import { useAuthStore } from "@/lib/store/auth.ts";
 
-export const Route = createFileRoute('/report')({
+export const Route = createFileRoute("/report")({
   component: Page,
-})
+});
 
 export default function Page() {
-  const { user } = useAuthStore()
-  const navigate = useNavigate()
-  const route = useLocation()
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
+  const route = useLocation();
 
   return (
     <div className="font-poppins flex min-h-dvh w-full flex-col items-center bg-[#F9F9FE] pb-20">
@@ -44,11 +44,10 @@ export default function Page() {
         <Button
           onClick={() => {
             if (user) {
-              navigate({ to: ROUTES.createReport })
-            }
-            else {
-              sessionStorage.setItem(BackPathnameKey, route.pathname)
-              navigate({ to: ROUTES.ssoLogin })
+              navigate({ to: ROUTES.createReport });
+            } else {
+              sessionStorage.setItem(BackPathnameKey, route.pathname);
+              navigate({ to: ROUTES.ssoLogin });
             }
           }}
           variant="danger"
@@ -97,5 +96,5 @@ export default function Page() {
         </div>
       </div>
     </div>
-  )
+  );
 }

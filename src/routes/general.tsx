@@ -1,26 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Lightbulb,
   MessageCircleWarning,
   MessageSquareMore,
-} from 'lucide-react'
+} from "lucide-react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/common/components/ui/accordion.tsx'
-import { Button } from '@/common/components/ui/button.tsx'
+} from "@/common/components/ui/accordion.tsx";
+import { Button } from "@/common/components/ui/button.tsx";
 import {
   ERROR_REPORT_URL,
   FEATURE_IDEA_URL,
   HELP_EMAIL_URL,
-} from '@/common/constants/help.ts'
+} from "@/common/constants/help.ts";
 
-export const Route = createFileRoute('/general')({
+export const Route = createFileRoute("/general")({
   component: Page,
-})
+});
 
 export default function Page() {
   return (
@@ -165,5 +165,5 @@ export default function Page() {
         </Accordion>
       </div>
     </div>
-  )
+  );
 }
