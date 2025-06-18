@@ -118,9 +118,7 @@ export default function MapContent() {
                   key={coordinate.imei}
                   center={L.latLng(currentLat, currentLng)}
                   radius={30}
-                  // pathOptions={}
                   pathOptions={{
-                    className: "animate-pulse",
                     color:
                       coordinate.color === "red"
                         ? "#D6003C"
@@ -130,6 +128,7 @@ export default function MapContent() {
                     fillOpacity: 0.3,
                     weight: 1,
                   }}
+                  className="bus-pulse-animation"
                 >
                   <Marker
                     ref={
