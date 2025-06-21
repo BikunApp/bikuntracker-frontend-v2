@@ -57,7 +57,7 @@ export default function Drawer() {
               <div className="ml-4 flex justify-between">
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
-                    {"Bus " + closestBus.id || "Terdekat Tidak Ditemukan"}
+                    {"Bus " + (closestBus.id === undefined ? "Terdekat Tidak Ditemukan" : closestBus.id)}
                   </div>
                   <div className="text-primary text-xs">
                     {closestBus.message && (
