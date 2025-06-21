@@ -37,7 +37,7 @@ export default function MapContent() {
   // Use animated positions for smooth bus movement
   const animatedPositions = useAnimatedBusPositions({
     coordinates: message?.coordinates || [],
-    animationDuration: 2000, // 2 seconds animation
+    animationDuration: 700, // 700 ms animation
   });
 
   return (
