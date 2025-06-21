@@ -151,7 +151,8 @@ export default function MapContent() {
                           Bus
                           {" " + coordinate.id}
                         </p>
-                        {coordinate.message && coordinate.message}
+                        {/* {coordinate.message && coordinate.message} */}
+                        {coordinate.current_halte && coordinate.current_halte}
                       </div>
                     </Popup>
                   </Marker>
@@ -178,11 +179,6 @@ export default function MapContent() {
                 >
                   <Popup>
                     <div>
-                      {/* <span className='w-full font-semibold text-center'>
-                        Bus
-                        {' ' + coordinate.id}
-                      </span>
-                      <br /> */}
                       {coordinate.message && (
                         <p>
                           Status:

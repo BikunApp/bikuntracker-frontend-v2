@@ -9,6 +9,7 @@ export interface GlobalStore {
   selectedStop?: BusStop;
   message?: WebsocketMessage;
   closestBus?: number;
+  // closesBusRoute?: ;
   setSelectedLine: (line?: Line) => void;
   setSelectedStop: (stop?: BusStop) => void;
   setMessage: (message?: WebsocketMessage) => void;
