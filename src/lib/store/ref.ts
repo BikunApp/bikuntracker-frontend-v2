@@ -69,13 +69,18 @@ export const useRefStore = create<RefStore>((set, get) => ({
   setMap: (map) => set((state) => ({ ...state, map })),
 
   fitBoundsToSelectedStop: (selectedStop) => {
-    const result = nearestBus(); // TODO: Change this actual calculation later
+    const result = nearestBus();
     const calculatedClosestBus: { bus: BusCoordinate; distance: number } =
       result || { bus: {} as BusCoordinate, distance: Infinity };
     const { setClosestBus } = useGlobalStore.getState();
-    setClosestBus(calculatedClosestBus.bus.id);
+    setClosestBus(calculatedClosestBus.bus);
     const busStopMarker = get().getBusStopMarker(selectedStop);
-    const closestBusMarker = get().getBusMarker(calculatedClosestBus.bus.id);
+    const closestBusMarker = new L.Marker(
+      L.latLng(
+        calculatedClosestBus.bus.latitude,
+        calculatedClosestBus.bus.longitude,
+      ),
+    );
     if (busStopMarker && closestBusMarker) {
       const featureGroup = L.featureGroup([busStopMarker, closestBusMarker]);
       get().map?.fitBounds(featureGroup.getBounds(), {

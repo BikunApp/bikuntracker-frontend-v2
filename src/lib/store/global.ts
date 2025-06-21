@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import type { WebsocketMessage } from "@/common/schema/ws.ts";
+import type { BusCoordinate, WebsocketMessage } from "@/common/schema/ws.ts";
 import type { BusStop } from "@/common/types/bus.ts";
 import type { Line } from "@/common/types/global.ts";
 
@@ -8,12 +8,11 @@ export interface GlobalStore {
   selectedLine?: Line;
   selectedStop?: BusStop;
   message?: WebsocketMessage;
-  closestBus?: number;
-  // closesBusRoute?: ;
+  closestBus?: BusCoordinate;
   setSelectedLine: (line?: Line) => void;
   setSelectedStop: (stop?: BusStop) => void;
   setMessage: (message?: WebsocketMessage) => void;
-  setClosestBus: (closestBus?: number) => void;
+  setClosestBus: (closestBus?: BusCoordinate) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({

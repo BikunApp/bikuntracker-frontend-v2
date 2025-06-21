@@ -151,8 +151,8 @@ export default function MapContent() {
                           Bus
                           {" " + coordinate.id}
                         </p>
-                        {/* {coordinate.message && coordinate.message} */}
-                        {coordinate.current_halte && coordinate.current_halte}
+                        {coordinate.message && coordinate.message}
+                        {/* {coordinate.current_halte && coordinate.current_halte} */}
                       </div>
                     </Popup>
                   </Marker>
