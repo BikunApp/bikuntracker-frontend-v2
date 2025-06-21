@@ -14,7 +14,7 @@ export default function Drawer() {
     setSelectedStop,
     setClosestBus,
   } = useGlobalStore();
-
+  // console.log(closestBus.id);
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
@@ -50,18 +50,21 @@ export default function Drawer() {
           <div className="p-6">
             <div className="mb-5 flex">
               <div className="bg-primary flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white">
-                {closestBus.toString().length === 2
-                  ? closestBus
-                  : `0${closestBus}`}
+                {closestBus?.id != null && closestBus.id.toString().length === 2
+                  ? closestBus.id.toString()
+                  : `0${closestBus?.id ?? "0"}`}
               </div>
               <div className="ml-4 flex justify-between">
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
-                    Bus
-                    {" " + closestBus}
+                    {"Bus " + closestBus.id || "Terdekat Tidak Ditemukan"}
                   </div>
                   <div className="text-primary text-xs">
-                    Next <b>Balairung</b>
+                    {closestBus.message && (
+                      <p>
+                        Status: <b>{closestBus.message}</b>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -86,11 +89,16 @@ export default function Drawer() {
               </div>
               <div className="absolute inset-0 z-20">
                 <button
-                  onClick={() =>
-                    selectedLine === "blue"
-                      ? setSelectedLine(undefined)
-                      : setSelectedLine("blue")
-                  }
+                  onClick={() => {
+                    if (selectedLine === "blue") {
+                      setSelectedLine(undefined);
+                    } else {
+                      setSelectedLine("blue");
+                      if (selectedStop) {
+                        fitBoundsToSelectedStop(selectedStop);
+                      }
+                    }
+                  }}
                   className={cn("h-full w-1/2 text-center", {
                     "text-primary": selectedLine !== "blue",
                     "text-white": selectedLine === "blue",
@@ -99,11 +107,16 @@ export default function Drawer() {
                   Blue Line
                 </button>
                 <button
-                  onClick={() =>
-                    selectedLine === "red"
-                      ? setSelectedLine(undefined)
-                      : setSelectedLine("red")
-                  }
+                  onClick={() => {
+                    if (selectedLine === "red") {
+                      setSelectedLine(undefined);
+                    } else {
+                      setSelectedLine("red");
+                      if (selectedStop) {
+                        fitBoundsToSelectedStop(selectedStop);
+                      }
+                    }
+                  }}
                   className={cn("h-full w-1/2 text-center", {
                     "text-primary-red": selectedLine !== "red",
                     "text-white": selectedLine === "red",

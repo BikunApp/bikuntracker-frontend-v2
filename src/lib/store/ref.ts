@@ -2,10 +2,17 @@ import L from "leaflet";
 import { create } from "zustand";
 
 import { DEFAULT_CENTER, DEFAULT_ZOOM } from "@/common/constants/map.ts";
-import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
+import {
+  BLUE_MORNING_STOP,
+  BLUE_NORMAL_STOP,
+  BUS_STOP_METADATA,
+  RED_MORNING_STOP,
+  RED_NORMAL_STOP,
+} from "@/common/data/stops.ts";
 import type { BusStop } from "@/common/types/bus.ts";
 
 import { useGlobalStore } from "./global.ts";
+import { BusCoordinate } from "@/common/schema/ws.ts";
 
 export interface RefStore {
   map?: L.Map;
@@ -62,12 +69,18 @@ export const useRefStore = create<RefStore>((set, get) => ({
   setMap: (map) => set((state) => ({ ...state, map })),
 
   fitBoundsToSelectedStop: (selectedStop) => {
-    nearestBus();
-    const calculatedClosestBus = 3; // TODO: Change this actual calculation later
+    const result = nearestBus();
+    const calculatedClosestBus: { bus: BusCoordinate; distance: number } =
+      result || { bus: {} as BusCoordinate, distance: Infinity };
     const { setClosestBus } = useGlobalStore.getState();
-    setClosestBus(calculatedClosestBus);
+    setClosestBus(calculatedClosestBus.bus || undefined);
     const busStopMarker = get().getBusStopMarker(selectedStop);
-    const closestBusMarker = get().getBusMarker(calculatedClosestBus);
+    const closestBusMarker = new L.Marker(
+      L.latLng(
+        calculatedClosestBus.bus.latitude,
+        calculatedClosestBus.bus.longitude,
+      ),
+    );
     if (busStopMarker && closestBusMarker) {
       const featureGroup = L.featureGroup([busStopMarker, closestBusMarker]);
       get().map?.fitBounds(featureGroup.getBounds(), {
@@ -80,6 +93,17 @@ export const useRefStore = create<RefStore>((set, get) => ({
     get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
   },
 }));
+
+const findRoute = () => {
+  const operational = useGlobalStore.getState().message?.operationalStatus;
+  const selectedLine = useGlobalStore.getState().selectedLine;
+  if (operational === undefined) return;
+  if (operational === 0) {
+    return selectedLine === "red" ? RED_MORNING_STOP : BLUE_MORNING_STOP;
+  } else {
+    return selectedLine === "red" ? RED_NORMAL_STOP : BLUE_NORMAL_STOP;
+  }
+};
 
 const nearestBus = () => {
   const { selectedStop } = useGlobalStore.getState();
@@ -96,21 +120,68 @@ const nearestBus = () => {
   const buses = coordinates;
 
   // Temukan bus terdekat
-  let closestBus = null;
+  let closestBus: BusCoordinate | undefined = undefined;
   let minDistance = Infinity;
 
-  buses?.forEach((bus) => {
-    const busLatLng = L.latLng(bus.latitude, bus.longitude);
-    const distance = position?.distanceTo(busLatLng); // dalam meter
+  if (!selectedLine) {
+    buses
+      ?.filter((bus) => {
+        return bus.speed !== 0;
+      })
+      .forEach((bus) => {
+        const busLatLng = L.latLng(bus.latitude, bus.longitude);
+        const distance = position?.distanceTo(busLatLng); // dalam meter
 
-    if (distance !== undefined && distance < minDistance) {
-      minDistance = distance;
-      closestBus = bus;
+        if (distance !== undefined && distance < minDistance) {
+          minDistance = distance;
+          closestBus = bus;
+        }
+      });
+  } else {
+    const route = findRoute();
+    let index = route?.indexOf(selectedStop);
+    if (index !== undefined && route) {
+      index = index - 1 === -1 ? route.length - 1 : index - 1;
     }
-  });
+    const originalIndex = index;
+    while (index !== undefined && index >= 0 && route && index < route.length) {
+      let find = false;
+      buses
+        ?.filter((bus) => {
+          return index !== undefined &&
+            bus.speed !== 0 &&
+            selectedLine == bus.color &&
+            route
+            ? bus.current_halte.includes(route[index])
+            : false;
+        })
+        .forEach((bus) => {
+          const busLatLng = L.latLng(bus.latitude, bus.longitude);
+          const distance = position?.distanceTo(busLatLng); // dalam meter
+          if (distance !== undefined && distance < minDistance) {
+            minDistance = distance;
+            closestBus = bus;
+            find = true;
+          }
+        });
+      index--;
+      if (index < 0) {
+        index = route.length - 1;
+      }
+      if (find) {
+        break;
+      }
+      if (index === originalIndex) {
+        break;
+      }
+    }
+  }
 
   if (closestBus) {
-    console.log("Bus terdekat:", closestBus);
-    console.log("Jaraknya (meter):", minDistance);
+    return {
+      bus: closestBus,
+      distance: minDistance,
+    };
   }
+  return undefined;
 };

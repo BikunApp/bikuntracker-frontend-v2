@@ -63,7 +63,7 @@ export default function NavigationDrawerContent() {
           )
           .map(([busStop, metadata]) => (
             <div key={metadata.name} className="flex flex-col">
-              <div className="flex cursor-pointer items-center text-left">
+              <div className="flex cursor-pointer items-center justify-between gap-5 text-left">
                 <DrawerClose>
                   <div
                     onClick={() => {
@@ -77,7 +77,7 @@ export default function NavigationDrawerContent() {
                       alt={metadata.name}
                       className="h-11 w-11"
                     />
-                    <div className="ml-4 flex flex-col gap-1.5">
+                    <div className="ml-4 flex flex-col gap-1.5 text-start">
                       <div className="mr-auto text-sm font-semibold">
                         Halte
                         {" " + metadata.name}
@@ -88,11 +88,13 @@ export default function NavigationDrawerContent() {
                     </div>
                   </div>
                 </DrawerClose>
-                <Star
-                  onClick={() => toggleFavorite(metadata.name)}
-                  className={`my-auto mr-4 ml-auto ${favorites.includes(metadata.name) ? "fill-current text-yellow-400" : ""}`}
-                  strokeWidth={1.1}
-                />
+                <button className="w-[20%] max-sm:w-[10%]">
+                  <Star
+                    onClick={() => toggleFavorite(metadata.name)}
+                    className={`my-auto mr-4 ml-auto h-6 w-6 ${favorites.includes(metadata.name) ? "fill-current text-yellow-400" : ""}`}
+                    strokeWidth={1.1}
+                  />
+                </button>
               </div>
               <div className="bg-light-grey mt-1.5 mb-4 ml-[60px] h-[1px]"></div>
             </div>
