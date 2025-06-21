@@ -15,7 +15,7 @@ interface UseAnimatedBusPositionsProps {
 
 export function useAnimatedBusPositions({
   coordinates,
-  animationDuration = 2500, // 2.5 detik animasi untuk interval 3 detik
+  animationDuration = 1000, // 1 detik animasi untuk interval 1 detik
 }: UseAnimatedBusPositionsProps) {
   const [animatedPositions, setAnimatedPositions] = useState<
     Map<string, AnimatedBusPosition>
