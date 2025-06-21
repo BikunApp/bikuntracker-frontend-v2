@@ -73,7 +73,7 @@ export const useRefStore = create<RefStore>((set, get) => ({
     const calculatedClosestBus: { bus: BusCoordinate; distance: number } =
       result || { bus: {} as BusCoordinate, distance: Infinity };
     const { setClosestBus } = useGlobalStore.getState();
-    setClosestBus(calculatedClosestBus.bus);
+    setClosestBus(calculatedClosestBus.bus || undefined);
     const busStopMarker = get().getBusStopMarker(selectedStop);
     const closestBusMarker = new L.Marker(
       L.latLng(
@@ -124,27 +124,34 @@ const nearestBus = () => {
   let minDistance = Infinity;
 
   if (!selectedLine) {
-    buses?.forEach((bus) => {
-      const busLatLng = L.latLng(bus.latitude, bus.longitude);
-      const distance = position?.distanceTo(busLatLng); // dalam meter
+    buses
+      ?.filter((bus) => {
+        return bus.speed !== 0;
+      })
+      .forEach((bus) => {
+        const busLatLng = L.latLng(bus.latitude, bus.longitude);
+        const distance = position?.distanceTo(busLatLng); // dalam meter
 
-      if (distance !== undefined && distance < minDistance) {
-        minDistance = distance;
-        closestBus = bus;
-      }
-    });
+        if (distance !== undefined && distance < minDistance) {
+          minDistance = distance;
+          closestBus = bus;
+        }
+      });
   } else {
     const route = findRoute();
     let index = route?.indexOf(selectedStop);
     if (index !== undefined && route) {
       index = index - 1 === -1 ? route.length - 1 : index - 1;
     }
-    console.log("Index dari halte yang dipilih:", index);
+    const originalIndex = index;
     while (index !== undefined && index >= 0 && route && index < route.length) {
       let find = false;
       buses
         ?.filter((bus) => {
-          return index !== undefined && selectedLine == bus.color && route
+          return index !== undefined &&
+            bus.speed !== 0 &&
+            selectedLine == bus.color &&
+            route
             ? bus.current_halte.includes(route[index])
             : false;
         })
@@ -162,20 +169,19 @@ const nearestBus = () => {
         index = route.length - 1;
       }
       if (find) {
-        console.log("Bus ditemukan pada halte:", route[index]);
+        break;
+      }
+      if (index === originalIndex) {
         break;
       }
     }
   }
 
   if (closestBus) {
-    console.log("Bus terdekat:", closestBus);
-    console.log("Jaraknya (meter):", minDistance);
     return {
       bus: closestBus,
       distance: minDistance,
     };
   }
-  console.log("Tidak ada bus terdekat yang ditemukan.");
   return undefined;
 };

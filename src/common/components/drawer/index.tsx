@@ -50,18 +50,21 @@ export default function Drawer() {
           <div className="p-6">
             <div className="mb-5 flex">
               <div className="bg-primary flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white">
-                {closestBus && closestBus.id.toString().length === 2
+                {closestBus?.id != null && closestBus.id.toString().length === 2
                   ? closestBus.id.toString()
-                  : `0${closestBus.id}`}
+                  : `0${closestBus?.id ?? "0"}`}
               </div>
               <div className="ml-4 flex justify-between">
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
-                    Bus
-                    {" " + closestBus.id}
+                    {"Bus " + closestBus.id || "Terdekat Tidak Ditemukan"}
                   </div>
                   <div className="text-primary text-xs">
-                    Status: <b>{closestBus.message}</b>
+                    {closestBus.message && (
+                      <p>
+                        Status: <b>{closestBus.message}</b>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
