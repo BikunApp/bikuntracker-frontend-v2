@@ -40,7 +40,6 @@ export default function MapContent() {
     animationDuration: 2000, // 2 seconds animation
   });
 
-  console.log(selectedStop);
   return (
     <>
       {message &&

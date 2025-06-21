@@ -108,6 +108,7 @@ const nearestBus = () => {
       closestBus = bus;
     }
   });
+  // while()
 
   if (closestBus) {
     console.log("Bus terdekat:", closestBus);

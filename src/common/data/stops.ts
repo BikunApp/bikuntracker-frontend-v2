@@ -274,8 +274,8 @@ export const BLUE_NORMAL_STOP = [
   BusStop.Balairung,
   BusStop.MUI,
   BusStop.FH,
-  BusStop.StasiunUIAsrama,
-  BusStop.MenwaAsrama,
+  BusStop.StasiunUI,
+  BusStop.Menwa,
 ];
 
 export const BLUE_MORNING_STOP = [
@@ -315,8 +315,8 @@ export const RED_NORMAL_STOP = [
   BusStop.FIB,
   BusStop.FISIP,
   BusStop.FPsi,
-  BusStop.StasiunUIAsrama,
-  BusStop.MenwaAsrama,
+  BusStop.StasiunUI,
+  BusStop.Menwa,
 ];
 
 export const RED_MORNING_STOP = [
