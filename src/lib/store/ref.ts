@@ -68,29 +68,68 @@ export const useRefStore = create<RefStore>((set, get) => ({
   // Setter for the map
   setMap: (map) => set((state) => ({ ...state, map })),
 
+  centerMap: () => {
+    get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
+  },
   fitBoundsToSelectedStop: (selectedStop) => {
     const result = nearestBus();
     const calculatedClosestBus: { bus: BusCoordinate; distance: number } =
       result || { bus: {} as BusCoordinate, distance: Infinity };
+
     const { setClosestBus } = useGlobalStore.getState();
     setClosestBus(calculatedClosestBus.bus || undefined);
+
     const busStopMarker = get().getBusStopMarker(selectedStop);
-    const closestBusMarker = new L.Marker(
-      L.latLng(
-        calculatedClosestBus.bus.latitude,
-        calculatedClosestBus.bus.longitude,
-      ),
-    );
-    if (busStopMarker && closestBusMarker) {
-      const featureGroup = L.featureGroup([busStopMarker, closestBusMarker]);
-      get().map?.fitBounds(featureGroup.getBounds(), {
-        paddingBottomRight: [20, 240],
-        paddingTopLeft: [20, 160],
+
+    // Inline waitForBusMarker function
+    const waitForBusMarker = (busId: number, timeout = 3000) => {
+      const start = Date.now();
+      return new Promise<L.Marker>((resolve, reject) => {
+        (function loop() {
+          const marker = get().getBusMarker(busId);
+          if (marker) return resolve(marker);
+          if (Date.now() - start > timeout)
+            return reject(new Error("Timeout waiting for bus marker"));
+          setTimeout(loop, 100);
+        })();
       });
-    }
-  },
-  centerMap: () => {
-    get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
+    };
+
+    waitForBusMarker(calculatedClosestBus.bus.id)
+      .then((closestBusMarker) => {
+        if (busStopMarker && closestBusMarker) {
+          console.log(busStopMarker);
+          busStopMarker.togglePopup();
+          closestBusMarker.togglePopup();
+          const featureGroup = L.featureGroup([
+            busStopMarker,
+            closestBusMarker,
+          ]);
+          get().map?.fitBounds(featureGroup.getBounds(), {
+            paddingBottomRight: [20, 240],
+            paddingTopLeft: [20, 160],
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback marker jika marker belum sempat dibuat
+        const fallbackMarker = new L.Marker(
+          L.latLng(
+            calculatedClosestBus.bus.latitude,
+            calculatedClosestBus.bus.longitude,
+          ),
+        );
+        if (busStopMarker) {
+          console.log(busStopMarker, fallbackMarker);
+          busStopMarker.togglePopup();
+          fallbackMarker.togglePopup();
+          const featureGroup = L.featureGroup([busStopMarker, fallbackMarker]);
+          get().map?.fitBounds(featureGroup.getBounds(), {
+            paddingBottomRight: [20, 240],
+            paddingTopLeft: [20, 160],
+          });
+        }
+      });
   },
 }));
 
@@ -116,7 +155,6 @@ const nearestBus = () => {
       : metadata?.positionBlueLine;
 
   const coordinates = useGlobalStore.getState().message?.coordinates;
-  // const '
   const buses = coordinates;
 
   // Temukan bus terdekat
@@ -165,15 +203,32 @@ const nearestBus = () => {
             find = true;
           }
         });
-      index--;
-      if (index < 0) {
-        index = route.length - 1;
+      if (originalIndex !== undefined && index === originalIndex + 1) {
+        buses
+          ?.filter((bus) => {
+            return bus.speed !== 0 && bus.color === selectedLine;
+          })
+          .forEach((bus) => {
+            const busLatLng = L.latLng(bus.latitude, bus.longitude);
+            const distance = position?.distanceTo(busLatLng); // dalam meter
+
+            if (distance !== undefined && distance < minDistance) {
+              minDistance = distance;
+              closestBus = bus;
+            }
+          });
+        break;
       }
       if (find) {
+        console.log(
+          `Found bus at ${route[index]} with distance ${minDistance}`,
+        );
         break;
       }
-      if (index === originalIndex) {
-        break;
+      index--;
+
+      if (index < 0) {
+        index = route.length - 1;
       }
     }
   }
