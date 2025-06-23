@@ -140,16 +140,17 @@ const nearestBus = () => {
   } else {
     const route = findRoute();
     let index = route?.indexOf(selectedStop);
-    if (index !== undefined && route) {
-      index = index - 1 === -1 ? route.length - 1 : index - 1;
-    }
     const originalIndex = index;
     while (index !== undefined && index >= 0 && route && index < route.length) {
+      console.log(`Searching for bus at ${route[index]}`);
       let find = false;
       buses
         ?.filter((bus) => {
           return index !== undefined &&
+            originalIndex !== undefined &&
+            route !== undefined &&
             bus.speed !== 0 &&
+            !bus.message.includes(`Depart from ${route[originalIndex]}`) &&
             selectedLine == bus.color &&
             route
             ? bus.current_halte.includes(route[index])
