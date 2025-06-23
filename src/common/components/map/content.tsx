@@ -178,20 +178,12 @@ export default function MapContent() {
                   zIndexOffset={100}
                 >
                   <Popup>
-                    <div>
-                      {coordinate.message && (
-                        <p>
-                          Status:
-                          {" " + coordinate.message}
-                        </p>
-                      )}
-                      {coordinate.speed >= 0 && (
-                        <p>
-                          Speed:
-                          {"  " + coordinate.speed}
-                          km/h
-                        </p>
-                      )}
+                    <div className="h-full w-full">
+                      <p className="w-full text-center font-semibold">
+                        Bus
+                        {" " + coordinate.id}
+                      </p>
+                      Sedang tidak beroperasi
                     </div>
                   </Popup>
                 </Marker>
