@@ -149,10 +149,9 @@ export default function MapContent() {
                       <div className="h-full w-full">
                         <p className="w-full text-center font-semibold">
                           Bus
-                          {" " + coordinate.id}
+                          {" " + coordinate.bus_number}
                         </p>
                         {coordinate.message && coordinate.message}
-                        {/* {coordinate.current_halte && coordinate.current_halte} */}
                       </div>
                     </Popup>
                   </Marker>
@@ -181,7 +180,7 @@ export default function MapContent() {
                     <div className="h-full w-full">
                       <p className="w-full text-center font-semibold">
                         Bus
-                        {" " + coordinate.id}
+                        {" " + coordinate.bus_number}
                       </p>
                       Sedang tidak beroperasi
                     </div>

@@ -5,6 +5,7 @@ export const busCoordinateSchema = z.object({
   color: z.string().refine(color => color === "red" || color === "blue" || color === "grey"),
   imei: z.string(),
   vehicle_name: z.string(),
+  bus_number: z.string(),
   longitude: z.number(),
   latitude: z.number(),
   status: z.string(),

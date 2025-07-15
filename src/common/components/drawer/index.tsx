@@ -50,14 +50,14 @@ export default function Drawer() {
           <div className="p-6">
             <div className="mb-5 flex">
               <div className="bg-primary flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white">
-                {closestBus?.id != null && closestBus.id.toString().length === 2
-                  ? closestBus.id.toString()
+                {closestBus?.bus_number != null && closestBus.bus_number.length === 2
+                  ? closestBus.bus_number.toString()
                   : `0${closestBus?.id ?? "0"}`}
               </div>
               <div className="ml-4 flex justify-between">
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
-                    {"Bus " + (closestBus.id === undefined ? "Terdekat Tidak Ditemukan" : closestBus.id)}
+                    {"Bus " + (closestBus.bus_number === undefined ? "Terdekat Tidak Ditemukan" : closestBus.bus_number)}
                   </div>
                   <div className="text-primary text-xs">
                     {closestBus.message && (
