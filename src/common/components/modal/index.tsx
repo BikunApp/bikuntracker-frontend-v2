@@ -11,13 +11,17 @@ interface ModalProps {
 
 const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={modalType === "development" ? setOpen : () => {}}
+    >
       {modalType === "development"
         ? developmentModal(setOpen)
-        : notOperationalModal()}
+        : notOperationalModal(setOpen)}
     </Dialog>
   );
 };
+
 const developmentModal = (setOpen: (open: boolean) => void) => {
   return (
     <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
@@ -46,9 +50,12 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
   );
 };
 
-const notOperationalModal = () => {
+const notOperationalModal = (setOpen: (open: boolean) => void) => {
   return (
-    <DialogContent className="font-poppins flex flex-col gap-3">
+    <DialogContent
+      className="font-poppins flex flex-col gap-3"
+      showCloseButton={false}
+    >
       <img
         src="/assets/not-operational.png"
         alt="Not Operational"
@@ -77,7 +84,10 @@ const notOperationalModal = () => {
         ))}
       </div>
       <Link to="/bus-schedule" className="w-full">
-        <Button className="w-full rounded-[20px] py-7 text-base font-bold">
+        <Button
+          className="w-full rounded-[20px] py-7 text-base font-bold"
+          onClick={() => setOpen(false)}
+        >
           Lihat jadwal
         </Button>
       </Link>

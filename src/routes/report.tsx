@@ -15,7 +15,7 @@ export const Route = createFileRoute("/report")({
 
 export default function Page() {
   return (
-    <div className="font-poppins flex min-h-dvh w-full flex-col items-center gap-6 bg-[#F9F9FE] pb-20">
+    <div className="font-poppins flex min-h-dvh w-full flex-col items-center gap-6  pb-20">
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
         Laporkan
       </div>
@@ -26,7 +26,7 @@ export default function Page() {
             alt="Announcement"
             className="w-1/2 max-w-[500px] self-center max-md:w-[70%]"
           />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 px-2">
             <h4 className="text-primary-purple-700 text-center font-bold">
               Kami masih dalam pengembangan!
             </h4>
