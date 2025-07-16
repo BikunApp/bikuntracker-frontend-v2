@@ -3,6 +3,6 @@ export const HELP_EMAIL_URL =
 
 export const ERROR_REPORT_URL = "https://forms.gle/3wmAWuCbeHjSUakQ7";
 
-export const FEATURE_IDEA_URL = "https://forms.gle/7rPtxC5LjZv9GJxd6";
+export const FEATURE_IDEA_URL = "https://forms.gle/kxMYBCKGWghXbcXF6";
 export const SEXUAL_VIOLENCE_PHONE = "0822-9978-8860";
 export const SEXUAL_VIOLENCE_EMAIL = "advokasi.hopehelps@gmail.com";

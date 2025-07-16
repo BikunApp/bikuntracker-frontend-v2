@@ -11,9 +11,11 @@ import {
 import { useRefStore } from "@/lib/store/ref.ts";
 
 import MapContent from "./content.tsx";
+import { useGlobalStore } from "@/lib/store/global.ts";
 
 export default function Map() {
   const { setMap: setMapRef } = useRefStore();
+  const { message } = useGlobalStore();
 
   const setMap = useCallback((map: LeafletMap | null) => {
     if (map) setMapRef(map);
