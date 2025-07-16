@@ -1,10 +1,22 @@
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
-import { CircleAlert, Megaphone, Phone, Mail } from "lucide-react";
+import {
+  CircleAlert,
+  Megaphone,
+  Phone,
+  Mail,
+  PhoneCall,
+  Link,
+} from "lucide-react";
 
 import announcementPngUrl from "@/assets/icons/accouncement.png";
 import { Button } from "@/common/components/ui/button.tsx";
-import { ERROR_REPORT_URL, HELP_EMAIL_URL } from "@/common/constants/help.ts";
+import {
+  ERROR_REPORT_URL,
+  HELP_EMAIL_URL,
+  SEXUAL_VIOLENCE_PHONE,
+  SEXUAL_VIOLENCE_EMAIL,
+} from "@/common/constants/help.ts";
 import { BackPathnameKey } from "@/common/constants/keys.ts";
 import { ROUTES } from "@/common/constants/routes.ts";
 import { useAuthStore } from "@/lib/store/auth.ts";
@@ -23,7 +35,7 @@ export default function Page() {
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
         Laporkan
       </div>
-      <div className="font-poppins flex flex-col gap-5 px-20 max-lg:px-16 max-sm:px-6 md:px-10">
+      <div className="font-poppins flex flex-col gap-5 px-80 max-lg:px-40 max-sm:px-6">
         <div className="flex w-full flex-col gap-4">
           <img
             src="/assets/image1.png"
@@ -40,13 +52,16 @@ export default function Page() {
               menghadirkan layanan yang lebih baik bagi IKM UI.
             </p>
           </div>
-          <Button
-            variant="danger"
-            className="rounded-2xl py-6 text-base font-bold"
-          >
-            <CircleAlert className="mr-2 size-5 stroke-3" />
-            Laporkan Error
-          </Button>
+
+          <a href={ERROR_REPORT_URL} className="w-full">
+            <Button
+              variant="danger"
+              className="w-full rounded-2xl py-6 text-base font-bold"
+            >
+              <CircleAlert className="mr-2 size-5 stroke-3" />
+              Laporkan Error
+            </Button>
+          </a>
         </div>
         <div className="flex flex-col gap-4 rounded-[20px] bg-white px-6 py-4 shadow-md">
           <div className="flex items-center gap-3 self-center">
@@ -85,16 +100,35 @@ export default function Page() {
           </div>
           <Button className="rounded-full py-6 text-base font-bold">
             <Phone className="mr-2 size-5" />
-            0822-9978-8860
+            {SEXUAL_VIOLENCE_PHONE}
           </Button>
           <Button className="rounded-full py-6 text-sm font-bold">
             <Mail className="mr-2 size-5" />
-            advokasi.hopehelps@gmail.com
+            {SEXUAL_VIOLENCE_EMAIL}
           </Button>
           <p className="text-primary-purple-700 text-center text-xs">
             *Jika dalam keadaan darurat, kirim pesan 'EMERGENCY' melalui
             WhatsApp
           </p>
+        </div>
+        <div className="flex flex-col gap-2 rounded-[20px] bg-white px-6 py-4 shadow-md">
+          <div className="flex items-center gap-2">
+            <PhoneCall className="text-primary-purple-700 size-5 stroke-3" />
+            <h4 className="text-primary-purple-700 text-center font-bold">
+              Call Center
+            </h4>
+          </div>
+          <p className="text-400 text-xs">
+            Punya pertanyaan atau saran? Hubungi kontak kami di bawah ini:
+          </p>
+          <a href={HELP_EMAIL_URL} className="w-full">
+            <Button
+              variant="default"
+              className="bg-primary-purple-100 text-primary-purple-700 hover:bg-primary-purple-100/80 w-full rounded-full py-6 text-base font-bold"
+            >
+              help@ristek.cs.ui.ac.id
+            </Button>
+          </a>
         </div>
       </div>
     </div>
