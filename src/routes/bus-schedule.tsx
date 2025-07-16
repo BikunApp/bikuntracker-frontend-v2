@@ -48,7 +48,7 @@ export default function Page() {
           <TriangleAlert className="stroke-warning-500 h-5 w-5" />
           <AlertTitle className="ml-2">Catat!</AlertTitle>
           <AlertDescription className="ml-2">
-            Di hari kerja (Selain Sabtu), jam 5.30 - 9.30 WIB, Bikun akan keluar
+            Di hari kerja (Selain Sabtu), jam 6.30 - 9.30 WIB, Bikun akan keluar
             melalui hutan kota
           </AlertDescription>
         </Alert>
