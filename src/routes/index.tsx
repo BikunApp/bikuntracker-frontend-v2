@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
 export default function Page() {
   const { message } = useGlobalStore();
   const type =
-    message?.operationalStatus === 2 ? "notOperational" : "development";
+    message?.operationalStatus === 1 ? "notOperational" : "development";
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>

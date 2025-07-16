@@ -21,8 +21,8 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
     <DialogContent className="flex flex-col gap-6">
       <img
         src="/assets/development.png"
-        alt="Not Operational"
-        className="mt-6 w-[70%] max-md:w-[90%] self-center"
+        alt="development Mode"
+        className="mt-6 w-[70%] self-center max-md:w-[90%]"
       />
       <div className="font-poppins text-center">
         <p className="font-bold">
@@ -45,7 +45,57 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
 };
 
 const notOperationalModal = (setOpen: (open: boolean) => void) => {
-  return <DialogContent>Notoperational</DialogContent>;
+  const OperationalHours = [
+    {
+      label: "Senin - Jumat",
+      time: "06:50 - 21:30",
+    },
+    {
+      label: "Sabtu",
+      time: "06:50 - 16:10",
+    },
+    {
+      label: "Minggu",
+      time: "Tidak Beroperasi",
+    },
+  ];
+  return (
+    <DialogContent className="font-poppins flex flex-col gap-3">
+      <img
+        src="/assets/not-operational.png"
+        alt="Not Operational"
+        className="w-[70%] self-center"
+      />
+      <div className="text-center">
+        <p className="font-bold">
+          Maaf, saat ini Bis Kuning sedang tidak beroperasi!
+        </p>
+        <p className="text-400 text-sm">
+          Untuk informasi lebih lanjut terkait informasi Bis Kuning yang
+          beroperasi, silakan lihat jadwal terbaru di halaman kami.
+        </p>
+      </div>
+      <div className="flex flex-col gap-3">
+        <p className="text-primary-purple-700 text-center font-bold">
+          Jam Operasional
+        </p>
+        {OperationalHours.map((item, index) => (
+          <div key={index} className="flex w-full items-center justify-between">
+            <p className="text-sm">{item.label}</p>
+            <div className="bg-primary-purple-100 text-primary-purple-700 w-1/2 rounded-full py-3 text-center text-xs font-bold">
+              {item.time}
+            </div>
+          </div>
+        ))}
+      </div>
+      <Button
+        className="rounded-[20px] py-7 text-base font-bold"
+        onClick={() => setOpen(false)}
+      >
+        Tutup
+      </Button>
+    </DialogContent>
+  );
 };
 
 export default Modal;
