@@ -1,35 +1,19 @@
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  CircleAlert,
-  Megaphone,
-  Phone,
-  Mail,
-  PhoneCall,
-  Link,
-} from "lucide-react";
+import { CircleAlert, Mail, Megaphone, Phone, PhoneCall } from "lucide-react";
 
-import announcementPngUrl from "@/assets/icons/accouncement.png";
 import { Button } from "@/common/components/ui/button.tsx";
 import {
   ERROR_REPORT_URL,
   HELP_EMAIL_URL,
-  SEXUAL_VIOLENCE_PHONE,
   SEXUAL_VIOLENCE_EMAIL,
+  SEXUAL_VIOLENCE_PHONE,
 } from "@/common/constants/help.ts";
-import { BackPathnameKey } from "@/common/constants/keys.ts";
-import { ROUTES } from "@/common/constants/routes.ts";
-import { useAuthStore } from "@/lib/store/auth.ts";
 
 export const Route = createFileRoute("/report")({
   component: Page,
 });
 
 export default function Page() {
-  const { user } = useAuthStore();
-  const navigate = useNavigate();
-  const route = useLocation();
-
   return (
     <div className="font-poppins flex min-h-dvh w-full flex-col items-center gap-6 bg-[#F9F9FE] pb-20">
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
