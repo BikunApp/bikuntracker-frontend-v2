@@ -13,6 +13,8 @@ export interface GlobalStore {
   setSelectedStop: (stop?: BusStop) => void;
   setMessage: (message?: WebsocketMessage) => void;
   setClosestBus: (closestBus?: BusCoordinate) => void;
+  hasSeenModal: boolean;
+  setHasSeenModal?: (hasSeen: boolean) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -25,4 +27,6 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
   setSelectedStop: (stop) => set((state) => ({ ...state, selectedStop: stop })),
   setMessage: (message) => set((state) => ({ ...state, message })),
   setClosestBus: (closestBus) => set((state) => ({ ...state, closestBus })),
+  hasSeenModal: false,
+  setHasSeenModal: (hasSeen) => set((state) => ({ ...state, hasSeenModal: hasSeen}))
 }));
