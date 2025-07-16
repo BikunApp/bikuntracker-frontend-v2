@@ -26,7 +26,7 @@ export default function Page() {
   const shouldShowNotOperational = isNotOperational();
 
   const modalType = shouldShowNotOperational ? "notOperational" : "development";
- console.log(isNotOperational())
+
   useEffect(() => {
     if (shouldShowNotOperational) {
       setIsOpen(true);
