@@ -14,7 +14,6 @@ export default function Drawer() {
     setSelectedStop,
     setClosestBus,
   } = useGlobalStore();
-  // console.log(closestBus.id);
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
