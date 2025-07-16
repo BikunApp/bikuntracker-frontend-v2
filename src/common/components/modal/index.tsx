@@ -1,5 +1,7 @@
 import { Dialog, DialogContent } from "../ui/dialog.tsx";
 import { Button } from "../ui/button.tsx";
+import { Link } from "@tanstack/react-router";
+import { busSchedule } from "@/common/constants/busSchedule.ts";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,7 +14,7 @@ const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
     <Dialog open={isOpen} onOpenChange={setOpen}>
       {modalType === "development"
         ? developmentModal(setOpen)
-        : notOperationalModal(setOpen)}
+        : notOperationalModal()}
     </Dialog>
   );
 };
@@ -44,21 +46,7 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
   );
 };
 
-const notOperationalModal = (setOpen: (open: boolean) => void) => {
-  const OperationalHours = [
-    {
-      label: "Senin - Jumat",
-      time: "06:50 - 21:30",
-    },
-    {
-      label: "Sabtu",
-      time: "06:50 - 16:10",
-    },
-    {
-      label: "Minggu",
-      time: "Tidak Beroperasi",
-    },
-  ];
+const notOperationalModal = () => {
   return (
     <DialogContent className="font-poppins flex flex-col gap-3">
       <img
@@ -79,7 +67,7 @@ const notOperationalModal = (setOpen: (open: boolean) => void) => {
         <p className="text-primary-purple-700 text-center font-bold">
           Jam Operasional
         </p>
-        {OperationalHours.map((item, index) => (
+        {busSchedule.map((item, index) => (
           <div key={index} className="flex w-full items-center justify-between">
             <p className="text-sm">{item.label}</p>
             <div className="bg-primary-purple-100 text-primary-purple-700 w-1/2 rounded-full py-3 text-center text-xs font-bold">
@@ -88,12 +76,11 @@ const notOperationalModal = (setOpen: (open: boolean) => void) => {
           </div>
         ))}
       </div>
-      <Button
-        className="rounded-[20px] py-7 text-base font-bold"
-        onClick={() => setOpen(false)}
-      >
-        Tutup
-      </Button>
+      <Link to="/bus-schedule" className="w-full">
+        <Button className="w-full rounded-[20px] py-7 text-base font-bold">
+          Lihat jadwal
+        </Button>
+      </Link>
     </DialogContent>
   );
 };

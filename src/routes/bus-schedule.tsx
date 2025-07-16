@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TriangleAlert } from "lucide-react";
+import { busSchedule } from "@/common/constants/busSchedule.ts";
 
 import bikunRoutePngUrl from "@/assets/bikun-route.png";
 import {
@@ -26,24 +27,19 @@ export default function Page() {
         />
       </div>
       <div className="my-3 text-xl font-bold">Jadwal Bikun</div>
-      <div className="text-400 w-full pl-6 text-left text-sm font-medium">
-        Senin - Jumat
-      </div>
-      <div className="mt-1 mb-4 w-full pl-6 text-left font-bold">
-        06:50 - 21:30 WIB
-      </div>
-      <div className="text-400 w-full pl-6 text-left text-sm font-medium">
-        Sabtu
-      </div>
-      <div className="mt-1 mb-4 w-full pl-6 text-left font-bold">
-        06:50 - 16.10 WIB
-      </div>
-      <div className="text-400 w-full pl-6 text-left text-sm font-medium">
-        Minggu
-      </div>
-      <div className="mt-1 w-full pl-6 text-left font-bold">
-        Tidak beroperasi
-      </div>
+      {busSchedule.map((item, index) => (
+        <>
+          <div
+            key={index}
+            className="text-400 w-full pl-6 text-left text-sm font-medium"
+          >
+            {item.label}
+          </div>
+          <div className="mt-1 mb-4 w-full pl-6 text-left font-bold">
+            {item.time}
+          </div>
+        </>
+      ))}
       <div className="mx-6 mt-6 mb-2">
         <Alert
           variant="default"

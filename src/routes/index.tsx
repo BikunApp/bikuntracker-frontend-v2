@@ -13,8 +13,9 @@ export const Route = createFileRoute("/")({
 
 export default function Page() {
   const { message } = useGlobalStore();
+  const isAlwaysShowModal = true;
   const type =
-    message?.operationalStatus === 1 ? "notOperational" : "development";
+    message?.operationalStatus === 2 ? "notOperational" : "development";
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
@@ -23,7 +24,9 @@ export default function Page() {
       <div className="absolute top-0 right-0 bottom-0 left-0 z-0">
         <Map />
       </div>
-      <Modal isOpen={isOpen} setOpen={setIsOpen} modalType={type} />
+      {isAlwaysShowModal && (
+        <Modal isOpen={isOpen} setOpen={setIsOpen} modalType={type} />
+      )}
     </>
   );
 }
