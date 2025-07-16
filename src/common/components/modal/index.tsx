@@ -20,7 +20,7 @@ const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
 };
 const developmentModal = (setOpen: (open: boolean) => void) => {
   return (
-    <DialogContent className="flex flex-col gap-6">
+    <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
       <img
         src="/assets/development.png"
         alt="development Mode"

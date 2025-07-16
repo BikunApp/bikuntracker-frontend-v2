@@ -32,32 +32,36 @@ export default function Page() {
       <div className="w-full p-4">
         <Accordion type="single" className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Apa itu Bikun Tracker App?</AccordionTrigger>
+            <AccordionTrigger>Apa itu Bikun Tracker?</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-3">
-              <div>Apakah kamu pernah ketinggalan bikun? </div>
               <div>
-                Atau pernahkah kamu cemas akan bikun yang tidak kunjung datang?
+                Pernah ketinggalan Bikun atau bingung kapan Bikun akan sampai di
+                halte kamu? Tenang, Bikun Tracker hadir untuk membantumu
+                memantau posisi bus kuning secara real-time!{" "}
               </div>
               <div>
-                Tidak perlu takut, kini aplikasi Bikun Tracker hadir untuk
-                memungkinkan kamu memantau posisi bis kuning di UI, serta
-                mengetahui kapan bikun terdekat akan tiba di haltemu.
+                Bikun Tracker adalah situs pelacak bus kuning Universitas
+                Indonesia (UI) yang dirancang untuk membantu pengguna Bikun
+                melihat posisi dan jadwal keberangkatan bus secara langsung.
+                Melalui website ini, kamu dapat memilih jalur (biru atau merah),
+                melihat posisi bus yang sedang beroperasi, serta mengetahui rute
+                yang dilalui, sehingga dapat mempermudah kamu melakukan
+                mobilisasi dalam kampus. Kamu juga dapat melakukan pelaporan
+                dugaan kekerasan seksual yang terjadi di Bikun kepada HopeHelps
+                UI lewat fitur Pelaporan Kekerasan Seksual.
               </div>
               <div>
-                Kamu bisa langsung memilih halte posisi dan melihat bikun
-                terdekat dari haltemu. Kamu juga dapat menyimpan halte yang
-                sering kamu kunjungi pada halaman pemilihan halte.
+                Saat ini, Bikun Tracker masih dalam tahap pengembangan. Oleh
+                karena itu, beberapa data seperti posisi kendaraan atau estimasi
+                waktu kedatangan mungkin belum sepenuhnya akurat. Tim pengembang
+                terus melakukan penyempurnaan untuk meningkatkan akurasi dan
+                keandalan layanan ini.
               </div>
               <div>
-                Bila kamu sudah registrasi, kamu dapat menyimpan halte yang
-                sering kamu kunjungi serta dapat melaporkan dugaan kekerasan
-                seksual kepada HopeHelps UI lewat fitur pelaporan kekerasan
-                seksual.
-              </div>
-              <div>
-                Aplikasi ini dipersembahkan gratis kepada seluruh civitas UI
-                sebagai hasil kerja sama RISTEK Fasilkom UI, Hive FTUI, serta
-                Direktorat Operasional dan Pemeliharaan Fasilitas (DOPF) UI.
+                Bikun Tracker dipersembahkan gratis kepada seluruh pengguna
+                Bikun sebagai hasil kerja sama RISTEK Fasilkom UI, Hive FTUI,
+                serta Direktorat Operasional, Pemeliharaan Fasilitas, dan
+                Manajemen Aset (DOPFMA) UI.
               </div>
             </AccordionContent>
           </AccordionItem>

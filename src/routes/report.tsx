@@ -82,12 +82,22 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <Button className="rounded-full py-6 text-base font-bold">
-            <Phone className="mr-2 size-5" />
-            {SEXUAL_VIOLENCE_PHONE}
+          <Button asChild className="rounded-full py-6 text-base font-bold">
+            <a
+              href={`https://wa.me/${SEXUAL_VIOLENCE_PHONE.replace(/-/g, "").replace(/^0/, "62")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center"
+            >
+              <span className="inline-flex items-center">
+                <Phone className="mr-2 size-5" />
+                {SEXUAL_VIOLENCE_PHONE}
+              </span>
+            </a>
           </Button>
-          <Button className="rounded-full py-6 text-sm font-bold">
-            <Mail className="mr-2 size-5" />
+
+          <Button className="bg-primary-purple-100 text-primary-purple-700 hover:bg-primary-purple-100/80 rounded-full py-6 text-base font-bold">
+            <Mail className="text-primary-purple-700 mr-2 size-5" />
             {SEXUAL_VIOLENCE_EMAIL}
           </Button>
           <p className="text-primary-purple-700 text-center text-xs">
