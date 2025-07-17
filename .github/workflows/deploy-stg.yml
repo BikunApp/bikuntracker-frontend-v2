@@ -1,8 +1,8 @@
-name: Deploy to vercel
+name: Deploy Staging to vercel
 on:
   push:
     branches:
-      - main
+      - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest
