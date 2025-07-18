@@ -78,7 +78,7 @@ export default function Page() {
                 Operasional Umum
               </p>
               <div className="border-primary-purple-700 text-primary-purple-700 w-full rounded-full border-3 py-1 text-center">
-                24/7
+                09.00-17.00
               </div>
             </div>
           </div>
