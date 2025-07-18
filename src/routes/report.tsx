@@ -19,7 +19,7 @@ export default function Page() {
       <div className="w-full bg-white py-4 text-center text-xl font-bold">
         Laporkan
       </div>
-      <div className="font-poppins flex flex-col gap-5 px-80 max-lg:px-40 max-sm:px-6">
+      <div className="font-poppins flex flex-col gap-5 w-1/2 max-lg:w-[70%] max-md:w-[90%] max-sm:w-[95%]">
         <div className="flex w-full flex-col gap-4">
           <img
             src="/assets/image1.png"
