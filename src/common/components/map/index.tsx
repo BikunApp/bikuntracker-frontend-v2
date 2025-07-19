@@ -37,6 +37,7 @@ export default function Map() {
         attribution='&copy; <a href="https://www.google.com/help/legalnotices_maps/">Google</a> Maps'
         subdomains={["mt0", "mt1", "mt2", "mt3"]}
         url={TILE_URL}
+        detectRetina={true}
       />
     </MapContainer>
   );
