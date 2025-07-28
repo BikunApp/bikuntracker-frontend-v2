@@ -17,7 +17,26 @@ function isNotOperational(): boolean {
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
   const jakartaOffset = 7 * 60 * 60000;
   const jakartaTime = new Date(utc + jakartaOffset);
-  return jakartaTime.getHours() >= 22;
+
+  const day = jakartaTime.getDay();
+  const hour = jakartaTime.getHours();
+
+  if (day === 0) {
+    // Minggu Bikun gak Operasional
+    return true;
+  }
+
+  if (day >= 1 && day <= 5) {
+    // Senin - Jumat
+    return hour >= 22;
+  }
+
+  if (day === 6) {
+    // Sabtu
+    return hour >= 17;
+  }
+
+  return false;
 }
 
 export default function Page() {
