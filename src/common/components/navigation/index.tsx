@@ -60,7 +60,7 @@ export default function NavigationBar() {
           </div>
           <div className="bg-primary-purple-100 flex justify-between items-center px-4 py-2">
             <img src="/assets/bikun-logo.png" alt="logo" className="w-30" />
-            <img src="/assets/credit.png" alt="logo" className="w-[227px] h-[20px]" />
+            <img src="/assets/credit.png" alt="logo" className="w-[227px] h-[20px] max-sm:w-[175px] max-sm:h-[16px]" />
           </div>
         </div>
       </Drawer>
