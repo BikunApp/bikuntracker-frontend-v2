@@ -14,7 +14,7 @@ export default function NavigationBar() {
     <div className="absolute top-8 right-4 left-4 z-50 flex items-center overflow-hidden rounded-3xl bg-white">
       <Drawer>
         <div className="w-full flex-col">
-          <div className="flex w-full px-4">
+          <div className="flex gap-2 w-full px-4">
             <div className="flex grow flex-col">
               <NavigationDrawerContent />
               <DrawerTrigger>
