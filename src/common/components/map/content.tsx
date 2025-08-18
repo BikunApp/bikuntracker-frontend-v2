@@ -201,7 +201,7 @@ export default function MapContent() {
               }
               color="#473E91"
               weight={8}
-              arrowSpacing="5%"
+              arrowSpacing="4%"
               arrowSize={25}
             />
           )}
@@ -214,7 +214,7 @@ export default function MapContent() {
               }
               color="#D6003C"
               weight={8}
-              arrowSpacing="5%"
+              arrowSpacing="4%"
               arrowSize={25}
             />
           )}
