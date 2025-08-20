@@ -45,15 +45,8 @@ export default function Page() {
   const shouldShowNotOperational = isNotOperational();
 
   const modalType = shouldShowNotOperational ? "notOperational" : "development";
-  const isStaging =
-    import.meta.env.MODE === "staging" ||
-    import.meta.env.VITE_APP_ENV === "staging";
 
   useEffect(() => {
-    if (isStaging) {
-      setIsOpen(false);
-      return;
-    }
     if (shouldShowNotOperational) {
       setIsOpen(true);
     } else if (!hasSeenModal) {
