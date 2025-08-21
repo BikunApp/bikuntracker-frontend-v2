@@ -35,6 +35,9 @@ importers:
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
+      leaflet-polylinedecorator:
+        specifier: ^1.6.0
+        version: 1.6.0
       lucide-react:
         specifier: ^0.487.0
         version: 0.487.0(react@19.1.0)
@@ -87,6 +90,9 @@ importers:
       '@types/leaflet':
         specifier: ^1.9.17
         version: 1.9.17
+      '@types/leaflet-polylinedecorator':
+        specifier: ^1.6.4
+        version: 1.6.4
       '@types/node':
         specifier: ^22.14.0
         version: 22.14.0
@@ -1057,6 +1063,9 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
+  '@types/leaflet-polylinedecorator@1.6.4':
+    resolution: {integrity: sha512-meH/jC58Drt/9aqLhuzMCUQjHgMTud+UuQBK5gT6E8M6OfM/rftz/VgvdxOCCAQC9isrp4pqahDgEswesb5X3A==}
+
   '@types/leaflet@1.9.17':
     resolution: {integrity: sha512-IJ4K6t7I3Fh5qXbQ1uwL3CFVbCi6haW9+53oLWgdKlLP7EaS21byWFJxxqOx9y8I0AP0actXSJLVMbyvxhkUTA==}
 
@@ -1578,6 +1587,12 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  leaflet-polylinedecorator@1.6.0:
+    resolution: {integrity: sha512-kn3krmZRetgvN0wjhgYL8kvyLS0tUogAl0vtHuXQnwlYNjbl7aLQpkoFUo8UB8gVZoB0dhI4Tb55VdTJAcYzzQ==}
+
+  leaflet-rotatedmarker@0.2.0:
+    resolution: {integrity: sha512-yc97gxLXwbZa+Gk9VCcqI0CkvIBC9oNTTjFsHqq4EQvANrvaboib4UdeQLyTnEqDpaXHCqzwwVIDHtvz2mUiDg==}
 
   leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
@@ -2932,6 +2947,10 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
+  '@types/leaflet-polylinedecorator@1.6.4':
+    dependencies:
+      '@types/leaflet': 1.9.17
+
   '@types/leaflet@1.9.17':
     dependencies:
       '@types/geojson': 7946.0.16
@@ -3480,6 +3499,12 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  leaflet-polylinedecorator@1.6.0:
+    dependencies:
+      leaflet-rotatedmarker: 0.2.0
+
+  leaflet-rotatedmarker@0.2.0: {}
 
   leaflet@1.9.4: {}
 

@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { CircleMarker, GeoJSON, Marker, Popup } from "react-leaflet";
+import { CircleMarker, Marker, Popup } from "react-leaflet";
 
 import {
   blueBusIcon,
@@ -8,6 +8,7 @@ import {
   redStopIcon,
   greyBusIcon,
 } from "@/common/constants/map.ts";
+import { RouteWithArrows } from "./route-with-arrows.tsx";
 import {
   BLUE_MORNING_ROUTE,
   BLUE_NORMAL_ROUTE,
@@ -37,7 +38,7 @@ export default function MapContent() {
   // Use animated positions for smooth bus movement
   const animatedPositions = useAnimatedBusPositions({
     coordinates: message?.coordinates || [],
-    animationDuration: 900, // 900 ms animation
+    animationDuration: 700,
   });
 
   return (
@@ -191,24 +192,30 @@ export default function MapContent() {
           })}
       {message && (
         <>
-          {(!selectedLine || selectedLine === "blue") && (
-            <GeoJSON
-              data={
-                message.operationalStatus === OperationalStatus.MorningRoute
-                  ? BLUE_MORNING_ROUTE
-                  : BLUE_NORMAL_ROUTE
-              }
-              style={{ color: "#473E91" }}
-            />
-          )}
           {(!selectedLine || selectedLine === "red") && (
-            <GeoJSON
+            <RouteWithArrows
               data={
                 message.operationalStatus === OperationalStatus.MorningRoute
                   ? RED_MORNING_ROUTE
                   : RED_NORMAL_ROUTE
               }
-              style={{ color: "#D6003C" }}
+              color="#D6003C"
+              weight={10}
+              arrowSpacing="4%"
+              arrowSize={25}
+            />
+          )}
+          {(!selectedLine || selectedLine === "blue") && (
+            <RouteWithArrows
+              data={
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? BLUE_MORNING_ROUTE
+                  : BLUE_NORMAL_ROUTE
+              }
+              color="#473E91"
+              weight={8}
+              arrowSpacing="4%"
+              arrowSize={25}
             />
           )}
         </>
