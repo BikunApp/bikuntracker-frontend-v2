@@ -12,7 +12,7 @@ import {
 import type { BusStop } from "@/common/types/bus.ts";
 
 import { useGlobalStore } from "./global.ts";
-import { BusCoordinate } from "@/common/schema/ws.ts";
+import type { BusCoordinate } from "@/common/schema/ws.ts";
 
 export interface RefStore {
   map?: L.Map;
