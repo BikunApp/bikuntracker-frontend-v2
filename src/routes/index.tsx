@@ -43,10 +43,27 @@ export default function Page() {
   const { hasSeenModal, setHasSeenModal } = useGlobalStore();
   const [isOpen, setIsOpen] = useState(false);
   const shouldShowNotOperational = isNotOperational();
+  const isWisudaPeriod = true; // Ganti ke true pas wisuda
 
-  const modalType = shouldShowNotOperational ? "notOperational" : "development";
+  const modalType = (() => {
+    if (isWisudaPeriod) return "wisuda";
+    if (shouldShowNotOperational) return "notOperational";
+    return "development";
+  })();
+
+  const isStaging =
+    import.meta.env.MODE === "staging" ||
+    import.meta.env.VITE_APP_ENV === "staging";
 
   useEffect(() => {
+    if (isStaging) {
+      setIsOpen(false);
+      return;
+    }
+    if (isWisudaPeriod) {
+      setIsOpen(true);
+      return;
+    }
     if (shouldShowNotOperational) {
       setIsOpen(true);
     } else if (!hasSeenModal) {

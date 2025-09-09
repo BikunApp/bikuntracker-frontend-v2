@@ -10,10 +10,11 @@ import {
 } from "@/common/constants/map.ts";
 import { RouteWithArrows } from "./route-with-arrows.tsx";
 import {
-  BLUE_MORNING_ROUTE,
-  BLUE_NORMAL_ROUTE,
-  RED_MORNING_ROUTE,
-  RED_NORMAL_ROUTE,
+  // BLUE_MORNING_ROUTE,
+  // BLUE_NORMAL_ROUTE,
+  // RED_MORNING_ROUTE,
+  // RED_NORMAL_ROUTE,
+  WISUDA_ROUTE,
 } from "@/common/data/routes.ts";
 import {
   BLUE_MORNING_STOP,
@@ -192,12 +193,12 @@ export default function MapContent() {
           })}
       {message && (
         <>
-          {(!selectedLine || selectedLine === "red") && (
+          {/* {(!selectedLine || selectedLine === "red") && (
             <RouteWithArrows
               data={
-                message.operationalStatus === OperationalStatus.MorningRoute
-                  ? RED_MORNING_ROUTE
-                  : RED_NORMAL_ROUTE
+          message.operationalStatus === OperationalStatus.MorningRoute
+            ? RED_MORNING_ROUTE
+            : RED_NORMAL_ROUTE
               }
               color="#D6003C"
               weight={10}
@@ -208,16 +209,25 @@ export default function MapContent() {
           {(!selectedLine || selectedLine === "blue") && (
             <RouteWithArrows
               data={
-                message.operationalStatus === OperationalStatus.MorningRoute
-                  ? BLUE_MORNING_ROUTE
-                  : BLUE_NORMAL_ROUTE
+          message.operationalStatus === OperationalStatus.MorningRoute
+            ? BLUE_MORNING_ROUTE
+            : BLUE_NORMAL_ROUTE
               }
               color="#473E91"
               weight={8}
               arrowSpacing="4%"
               arrowSize={25}
             />
-          )}
+          )} */}
+          <RouteWithArrows
+            data={
+              WISUDA_ROUTE
+            }
+            color="#FFD700"
+            weight={8}
+            arrowSpacing="4%"
+            arrowSize={25}
+          />
         </>
       )}
     </>

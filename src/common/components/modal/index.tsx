@@ -6,18 +6,29 @@ import { busSchedule } from "@/common/constants/busSchedule.ts";
 interface ModalProps {
   isOpen: boolean;
   setOpen: (open: boolean) => void;
-  modalType: "development" | "notOperational";
+  modalType: "development" | "notOperational" | "wisuda";
 }
 
 const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
+  const renderModalContent = () => {
+    switch (modalType) {
+      case "development":
+        return developmentModal(setOpen);
+      case "wisuda":
+        return wisudaModal(setOpen);
+      case "notOperational":
+        return notOperationalModal(setOpen);
+      default:
+        return null;
+    }
+  };
+
   return (
     <Dialog
       open={isOpen}
       onOpenChange={modalType === "development" ? setOpen : () => {}}
     >
-      {modalType === "development"
-        ? developmentModal(setOpen)
-        : notOperationalModal(setOpen)}
+      {renderModalContent()}
     </Dialog>
   );
 };
@@ -38,6 +49,34 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
           Saat ini Bikun Tracker sedang dalam tahap pengembangan, sehingga
           beberapa data mungkin belum sepenuhnya akurat. Kami sedang bekerja
           keras untuk memperbaikinya agar pengalaman kamu semakin nyaman.
+        </p>
+      </div>
+      <Button
+        className="rounded-[20px] py-7 text-base font-bold"
+        onClick={() => setOpen(false)}
+      >
+        Tutup
+      </Button>
+    </DialogContent>
+  );
+};
+
+const wisudaModal = (setOpen: (open: boolean) => void) => {
+  return (
+    <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
+      <img
+        src="/assets/development.png"
+        alt="development Mode"
+        className="mt-6 w-[70%] self-center max-md:w-[90%]"
+      />
+      <div className="font-poppins text-center">
+        <p className="font-bold">
+         INFORMASI PENYESUAIAN RUTE BIKUN
+        </p>
+        <p className="text-400 text-sm">
+          Dalam rangka Gladi Resik dan Wisuda UI Semester Genap 2024/2025 pada 8-13 September 2025, akan 
+          diberlakukan rekayasa lalu lintas dan sentralisasi akses masuk. Selama periode ini, rute Bikun hanya 
+          melayani satu jalur yang melewati Balairung dan Hutan Kota.
         </p>
       </div>
       <Button
@@ -74,8 +113,8 @@ const notOperationalModal = (setOpen: (open: boolean) => void) => {
         <p className="text-primary-purple-700 text-center font-bold">
           Jam Operasional
         </p>
-        {busSchedule.map((item, index) => (
-          <div key={index} className="flex w-full items-center justify-between">
+        {busSchedule.map((item) => (
+          <div key={item.label} className="flex w-full items-center justify-between">
             <p className="text-sm">{item.label}</p>
             <div className="bg-primary-purple-100 text-primary-purple-700 w-1/2 rounded-full py-3 text-center text-xs font-bold">
               {item.time}
