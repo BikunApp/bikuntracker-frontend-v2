@@ -43,7 +43,7 @@ export default function Page() {
   const { hasSeenModal, setHasSeenModal } = useGlobalStore();
   const [isOpen, setIsOpen] = useState(false);
   const shouldShowNotOperational = isNotOperational();
-  const isWisudaPeriod = false; // Ganti ke true pas wisuda
+  const isWisudaPeriod = true; // Ganti ke true pas wisuda
 
   const modalType = (() => {
     if (isWisudaPeriod) return "wisuda";
