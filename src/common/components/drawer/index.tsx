@@ -8,7 +8,7 @@ export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
     closestBus,
-    selectedLine,
+    // selectedLine,
     selectedStop,
     setSelectedLine,
     setSelectedStop,
