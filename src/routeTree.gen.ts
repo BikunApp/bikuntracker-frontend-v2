@@ -8,168 +8,151 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SsoLoginRouteImport } from './routes/sso-login'
+import { Route as ReportRouteImport } from './routes/report'
+import { Route as GeneralRouteImport } from './routes/general'
+import { Route as CreateReportRouteImport } from './routes/create-report'
+import { Route as BusScheduleRouteImport } from './routes/bus-schedule'
+import { Route as IndexRouteImport } from './routes/index'
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as SsoLoginImport } from "./routes/sso-login";
-import { Route as ReportImport } from "./routes/report";
-import { Route as GeneralImport } from "./routes/general";
-import { Route as CreateReportImport } from "./routes/create-report";
-import { Route as BusScheduleImport } from "./routes/bus-schedule";
-import { Route as IndexImport } from "./routes/index";
-
-// Create/Update Routes
-
-const SsoLoginRoute = SsoLoginImport.update({
-  id: "/sso-login",
-  path: "/sso-login",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const ReportRoute = ReportImport.update({
-  id: "/report",
-  path: "/report",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const GeneralRoute = GeneralImport.update({
-  id: "/general",
-  path: "/general",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const CreateReportRoute = CreateReportImport.update({
-  id: "/create-report",
-  path: "/create-report",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const BusScheduleRoute = BusScheduleImport.update({
-  id: "/bus-schedule",
-  path: "/bus-schedule",
-  getParentRoute: () => rootRoute,
-} as any);
-
-const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
-  getParentRoute: () => rootRoute,
-} as any);
-
-// Populate the FileRoutesByPath interface
-
-declare module "@tanstack/react-router" {
-  interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/bus-schedule": {
-      id: "/bus-schedule";
-      path: "/bus-schedule";
-      fullPath: "/bus-schedule";
-      preLoaderRoute: typeof BusScheduleImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/create-report": {
-      id: "/create-report";
-      path: "/create-report";
-      fullPath: "/create-report";
-      preLoaderRoute: typeof CreateReportImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/general": {
-      id: "/general";
-      path: "/general";
-      fullPath: "/general";
-      preLoaderRoute: typeof GeneralImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/report": {
-      id: "/report";
-      path: "/report";
-      fullPath: "/report";
-      preLoaderRoute: typeof ReportImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/sso-login": {
-      id: "/sso-login";
-      path: "/sso-login";
-      fullPath: "/sso-login";
-      preLoaderRoute: typeof SsoLoginImport;
-      parentRoute: typeof rootRoute;
-    };
-  }
-}
-
-// Create and export the route tree
+const SsoLoginRoute = SsoLoginRouteImport.update({
+  id: '/sso-login',
+  path: '/sso-login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GeneralRoute = GeneralRouteImport.update({
+  id: '/general',
+  path: '/general',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateReportRoute = CreateReportRouteImport.update({
+  id: '/create-report',
+  path: '/create-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusScheduleRoute = BusScheduleRouteImport.update({
+  id: '/bus-schedule',
+  path: '/bus-schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/bus-schedule": typeof BusScheduleRoute;
-  "/create-report": typeof CreateReportRoute;
-  "/general": typeof GeneralRoute;
-  "/report": typeof ReportRoute;
-  "/sso-login": typeof SsoLoginRoute;
+  '/': typeof IndexRoute
+  '/bus-schedule': typeof BusScheduleRoute
+  '/create-report': typeof CreateReportRoute
+  '/general': typeof GeneralRoute
+  '/report': typeof ReportRoute
+  '/sso-login': typeof SsoLoginRoute
 }
-
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/bus-schedule": typeof BusScheduleRoute;
-  "/create-report": typeof CreateReportRoute;
-  "/general": typeof GeneralRoute;
-  "/report": typeof ReportRoute;
-  "/sso-login": typeof SsoLoginRoute;
+  '/': typeof IndexRoute
+  '/bus-schedule': typeof BusScheduleRoute
+  '/create-report': typeof CreateReportRoute
+  '/general': typeof GeneralRoute
+  '/report': typeof ReportRoute
+  '/sso-login': typeof SsoLoginRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/bus-schedule": typeof BusScheduleRoute;
-  "/create-report": typeof CreateReportRoute;
-  "/general": typeof GeneralRoute;
-  "/report": typeof ReportRoute;
-  "/sso-login": typeof SsoLoginRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/bus-schedule': typeof BusScheduleRoute
+  '/create-report': typeof CreateReportRoute
+  '/general': typeof GeneralRoute
+  '/report': typeof ReportRoute
+  '/sso-login': typeof SsoLoginRoute
 }
-
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/bus-schedule"
-    | "/create-report"
-    | "/general"
-    | "/report"
-    | "/sso-login";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/bus-schedule'
+    | '/create-report'
+    | '/general'
+    | '/report'
+    | '/sso-login'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/bus-schedule"
-    | "/create-report"
-    | "/general"
-    | "/report"
-    | "/sso-login";
+    | '/'
+    | '/bus-schedule'
+    | '/create-report'
+    | '/general'
+    | '/report'
+    | '/sso-login'
   id:
-    | "__root__"
-    | "/"
-    | "/bus-schedule"
-    | "/create-report"
-    | "/general"
-    | "/report"
-    | "/sso-login";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/bus-schedule'
+    | '/create-report'
+    | '/general'
+    | '/report'
+    | '/sso-login'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  BusScheduleRoute: typeof BusScheduleRoute
+  CreateReportRoute: typeof CreateReportRoute
+  GeneralRoute: typeof GeneralRoute
+  ReportRoute: typeof ReportRoute
+  SsoLoginRoute: typeof SsoLoginRoute
 }
 
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  BusScheduleRoute: typeof BusScheduleRoute;
-  CreateReportRoute: typeof CreateReportRoute;
-  GeneralRoute: typeof GeneralRoute;
-  ReportRoute: typeof ReportRoute;
-  SsoLoginRoute: typeof SsoLoginRoute;
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/sso-login': {
+      id: '/sso-login'
+      path: '/sso-login'
+      fullPath: '/sso-login'
+      preLoaderRoute: typeof SsoLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/general': {
+      id: '/general'
+      path: '/general'
+      fullPath: '/general'
+      preLoaderRoute: typeof GeneralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-report': {
+      id: '/create-report'
+      path: '/create-report'
+      fullPath: '/create-report'
+      preLoaderRoute: typeof CreateReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bus-schedule': {
+      id: '/bus-schedule'
+      path: '/bus-schedule'
+      fullPath: '/bus-schedule'
+      preLoaderRoute: typeof BusScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -179,44 +162,7 @@ const rootRouteChildren: RootRouteChildren = {
   GeneralRoute: GeneralRoute,
   ReportRoute: ReportRoute,
   SsoLoginRoute: SsoLoginRoute,
-};
-
-export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/bus-schedule",
-        "/create-report",
-        "/general",
-        "/report",
-        "/sso-login"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/bus-schedule": {
-      "filePath": "bus-schedule.tsx"
-    },
-    "/create-report": {
-      "filePath": "create-report.tsx"
-    },
-    "/general": {
-      "filePath": "general.tsx"
-    },
-    "/report": {
-      "filePath": "report.tsx"
-    },
-    "/sso-login": {
-      "filePath": "sso-login.tsx"
-    }
-  }
 }
-ROUTE_MANIFEST_END */
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
