@@ -2,6 +2,9 @@ import { Dialog, DialogContent } from "../ui/dialog.tsx";
 import { Button } from "../ui/button.tsx";
 import { Link } from "@tanstack/react-router";
 import { busSchedule } from "@/common/constants/busSchedule.ts";
+import { DAMRI_DOWN, DEVELOPMENT } from "@/common/constants/modalCopyWriting.ts";
+
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -34,22 +37,26 @@ const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
 };
 
 const developmentModal = (setOpen: (open: boolean) => void) => {
+  const isDamriDown = true;
+
+  const imageSrc = isDamriDown
+    ? "/assets/bikun-down.svg"
+    : "/assets/development.png";
+
+  const message = isDamriDown ? DAMRI_DOWN : DEVELOPMENT;
+
   return (
     <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
       <img
-        src="/assets/development.png"
-        alt="development Mode"
+        src={imageSrc}
+        alt={isDamriDown ? "Down" : "Development Mode"}
         className="mt-6 w-[70%] self-center max-md:w-[90%]"
       />
       <div className="font-poppins text-center">
         <p className="font-bold">
           Terima kasih telah menggunakan Bikun Tracker!
         </p>
-        <p className="text-400 text-sm">
-          Saat ini Bikun Tracker sedang dalam tahap pengembangan, sehingga
-          beberapa data mungkin belum sepenuhnya akurat. Kami sedang bekerja
-          keras untuk memperbaikinya agar pengalaman kamu semakin nyaman.
-        </p>
+        <p className="text-400 text-sm whitespace-pre-line">{message}</p>
       </div>
       <Button
         className="rounded-[20px] py-7 text-base font-bold"
@@ -70,12 +77,11 @@ const wisudaModal = (setOpen: (open: boolean) => void) => {
         className="mt-6 w-[70%] self-center max-md:w-[90%]"
       />
       <div className="font-poppins text-center">
-        <p className="font-bold">
-         INFORMASI PENYESUAIAN RUTE BIKUN
-        </p>
+        <p className="font-bold">INFORMASI PENYESUAIAN RUTE BIKUN</p>
         <p className="text-400 text-sm">
-          Dalam rangka Gladi Resik dan Wisuda UI Semester Genap 2024/2025 pada 8-13 September 2025, akan 
-          diberlakukan rekayasa lalu lintas dan sentralisasi akses masuk. Selama periode ini, rute Bikun hanya 
+          Dalam rangka Gladi Resik dan Wisuda UI Semester Genap 2024/2025 pada
+          8-13 September 2025, akan diberlakukan rekayasa lalu lintas dan
+          sentralisasi akses masuk. Selama periode ini, rute Bikun hanya
           melayani satu jalur yang melewati Balairung dan Hutan Kota.
         </p>
       </div>
@@ -114,7 +120,10 @@ const notOperationalModal = (setOpen: (open: boolean) => void) => {
           Jam Operasional
         </p>
         {busSchedule.map((item) => (
-          <div key={item.label} className="flex w-full items-center justify-between">
+          <div
+            key={item.label}
+            className="flex w-full items-center justify-between"
+          >
             <p className="text-sm">{item.label}</p>
             <div className="bg-primary-purple-100 text-primary-purple-700 w-1/2 rounded-full py-3 text-center text-xs font-bold">
               {item.time}
