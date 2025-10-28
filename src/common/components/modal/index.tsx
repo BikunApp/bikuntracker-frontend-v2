@@ -2,9 +2,10 @@ import { Dialog, DialogContent } from "../ui/dialog.tsx";
 import { Button } from "../ui/button.tsx";
 import { Link } from "@tanstack/react-router";
 import { busSchedule } from "@/common/constants/busSchedule.ts";
-import { DAMRI_DOWN, DEVELOPMENT } from "@/common/constants/modalCopyWriting.ts";
-
-
+import {
+  DAMRI_DOWN,
+  DEVELOPMENT,
+} from "@/common/constants/modalCopyWriting.ts";
 
 interface ModalProps {
   isOpen: boolean;
@@ -50,8 +51,11 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
       <img
         src={imageSrc}
         alt={isDamriDown ? "Down" : "Development Mode"}
-        className="mt-6 w-[70%] self-center max-md:w-[90%]"
+        className={`mt-6 self-center max-md:w-[80%] ${
+          isDamriDown ? "w-[55%]" : "w-[70%]"
+        }`}
       />
+
       <div className="font-poppins text-center">
         <p className="font-bold">
           Terima kasih telah menggunakan Bikun Tracker!

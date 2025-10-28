@@ -56,10 +56,10 @@ export default function Page() {
     import.meta.env.VITE_APP_ENV === "staging";
 
   useEffect(() => {
-    if (isStaging) {
-      setIsOpen(false);
-      return;
-    }
+    // if (isStaging) {
+    //   setIsOpen(false);
+    //   return;
+    // }
     if (isWisudaPeriod) {
       setIsOpen(true);
       return;
