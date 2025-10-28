@@ -10,7 +10,7 @@ import {
 interface ModalProps {
   isOpen: boolean;
   setOpen: (open: boolean) => void;
-  modalType: "development" | "notOperational" | "wisuda";
+  modalType: "development" | "notOperational" | "wisuda" | "damriDown";
 }
 
 const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
@@ -22,6 +22,8 @@ const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
         return wisudaModal(setOpen);
       case "notOperational":
         return notOperationalModal(setOpen);
+      case "damriDown":
+        return damriDownModal();
       default:
         return null;
     }
@@ -38,29 +40,18 @@ const Modal = ({ isOpen, setOpen, modalType }: ModalProps) => {
 };
 
 const developmentModal = (setOpen: (open: boolean) => void) => {
-  const isDamriDown = true;
-
-  const imageSrc = isDamriDown
-    ? "/assets/bikun-down.svg"
-    : "/assets/development.png";
-
-  const message = isDamriDown ? DAMRI_DOWN : DEVELOPMENT;
-
   return (
     <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
       <img
-        src={imageSrc}
-        alt={isDamriDown ? "Down" : "Development Mode"}
-        className={`mt-6 self-center max-md:w-[80%] ${
-          isDamriDown ? "w-[55%]" : "w-[70%]"
-        }`}
+        src="/assets/development.png"
+        alt="Development Mode"
+        className="mt-6 w-[70%] self-center max-md:w-[90%]"
       />
-
       <div className="font-poppins text-center">
         <p className="font-bold">
           Terima kasih telah menggunakan Bikun Tracker!
         </p>
-        <p className="text-400 text-sm whitespace-pre-line">{message}</p>
+        <p className="text-400 text-sm whitespace-pre-line">{DEVELOPMENT}</p>
       </div>
       <Button
         className="rounded-[20px] py-7 text-base font-bold"
@@ -71,6 +62,25 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
     </DialogContent>
   );
 };
+
+const damriDownModal = () => {
+  return (
+    <DialogContent className="flex flex-col gap-6" showCloseButton={false}>
+      <img
+        src="/assets/bikun-down.svg"
+        alt="Down"
+        className="mt-6 self-center max-md:w-[80%] w-[55%]"
+      />
+      <div className="font-poppins text-center">
+        <p className="font-bold">
+          Terima kasih telah menggunakan Bikun Tracker!
+        </p>
+        <p className="text-400 text-sm whitespace-pre-line">{DAMRI_DOWN}</p>
+      </div>
+    </DialogContent>
+  );
+};
+
 
 const wisudaModal = (setOpen: (open: boolean) => void) => {
   return (
