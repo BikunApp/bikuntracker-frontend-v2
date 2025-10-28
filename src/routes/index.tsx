@@ -44,8 +44,10 @@ export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const shouldShowNotOperational = isNotOperational();
   const isWisudaPeriod = false; // Ganti ke true pas wisuda
+  const isDamriDown = true; // Ganti ke false kalau damri sudah aman
 
   const modalType = (() => {
+    if (isDamriDown) return "damriDown"
     if (isWisudaPeriod) return "wisuda";
     if (shouldShowNotOperational) return "notOperational";
     return "development";
@@ -58,6 +60,10 @@ export default function Page() {
   useEffect(() => {
     if (isStaging) {
       setIsOpen(false);
+      return;
+    }
+    if (isDamriDown){
+      setIsOpen(true);
       return;
     }
     if (isWisudaPeriod) {
