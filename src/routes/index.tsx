@@ -44,7 +44,7 @@ export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const shouldShowNotOperational = isNotOperational();
   const isWisudaPeriod = false; // Ganti ke true pas wisuda
-  const isDamriDown = true; // Ganti ke false kalau damri sudah aman
+  const isDamriDown = false; // Ganti ke false kalau damri sudah aman
 
   const modalType = (() => {
     if (isDamriDown) return "damriDown"
