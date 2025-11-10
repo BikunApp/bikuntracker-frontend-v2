@@ -3,8 +3,9 @@ import { Button } from "../ui/button.tsx";
 import { Link } from "@tanstack/react-router";
 import { busSchedule } from "@/common/constants/busSchedule.ts";
 import {
+  CHANGE_ROUTE,
   DAMRI_DOWN,
-  DEVELOPMENT,
+  // DEVELOPMENT,
 } from "@/common/constants/modalCopyWriting.ts";
 
 interface ModalProps {
@@ -51,7 +52,7 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
         <p className="font-bold">
           Terima kasih telah menggunakan Bikun Tracker!
         </p>
-        <p className="text-400 text-sm whitespace-pre-line">{DEVELOPMENT}</p>
+        <p className="text-400 text-sm whitespace-pre-line">{CHANGE_ROUTE}</p>
       </div>
       <Button
         className="rounded-[20px] py-7 text-base font-bold"
