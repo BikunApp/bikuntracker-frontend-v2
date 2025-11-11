@@ -208,12 +208,11 @@ export default function MapContent() {
           )}
           {(!selectedLine || selectedLine === "blue") && (
             <RouteWithArrows
-              // data={
-              //     message.operationalStatus === OperationalStatus.MorningRoute
-              //       ? BLUE_MORNING_ROUTE
-              //       : BLUE_NORMAL_ROUTE
-              //   } //old code
-              data={BLUE_NORMAL_ROUTE}
+              data={
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? BLUE_MORNING_ROUTE
+                  : BLUE_NORMAL_ROUTE
+              }
               color="#473E91"
               weight={8}
               arrowSpacing="4%"
