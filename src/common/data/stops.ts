@@ -14,6 +14,8 @@ import fikUIStopPngUrl from "@/assets/bus-stops/fik-ui.png";
 import fikUIStopWebpUrl from "@/assets/bus-stops/fik-ui.webp";
 import fisipUIStopPngUrl from "@/assets/bus-stops/fisip-ui.png";
 import fisipUIStopWebpUrl from "@/assets/bus-stops/fisip-ui.webp";
+import fiauiStopWebpUrl from "@/assets/bus-stops/fia-ui.webp";
+import farmasiuiWebpUrl from "@/assets/bus-stops/farmasi-ui.webp";
 import fkmUIStopPngUrl from "@/assets/bus-stops/fkm-ui.png";
 import fkmUIStopWebpUrl from "@/assets/bus-stops/fkm-ui.webp";
 import fmipaUIStopPngUrl from "@/assets/bus-stops/fmipa-ui.png";
@@ -254,6 +256,50 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
       positionBlueLine: L.latLng(-6.353451953365802, 106.83164477348328),
     },
   ],
+  [
+    BusStop.FIA,
+    {
+      name: "Fakultas Ilmu Administrasi",
+      additionalInfo: "Near SOR UI, FMIPA UI",
+      imageSrc: fiauiStopWebpUrl,
+      fallbackImageSrc: fiauiStopWebpUrl,
+      positionRedLine: undefined,
+      positionBlueLine: L.latLng(-6.366781, 106.824907),
+    },
+  ],
+  [
+    BusStop.FF,
+    {
+      name: "Fakultas Farmasi",
+      additionalInfo: "Near FMIPA UI",
+      imageSrc: farmasiuiWebpUrl,
+      fallbackImageSrc: farmasiuiWebpUrl,
+      positionRedLine: undefined,
+      positionBlueLine: L.latLng(-6.36813, 106.82731),
+    },
+  ],
+  [
+    BusStop.BalaiSidang,
+    {
+      name: "Balai Sidang",
+      additionalInfo: "Near Balairung UI",
+      imageSrc: balairungUIStopPngUrl,
+      fallbackImageSrc: balairungUIStopPngUrl,
+      positionRedLine: undefined,
+      positionBlueLine: L.latLng(-6.369147, 106.82845),
+    },
+  ],
+  [
+    BusStop.RSUI,
+    {
+      name: "Rumah Sakit UI",
+      additionalInfo: "Near FKM UI, RIK UI",
+      imageSrc: rikUIStopWebpUrl,
+      fallbackImageSrc: rikUIStopWebpUrl,
+      positionRedLine: L.latLng(-6.37285, 106.82869),
+      positionBlueLine: undefined,
+    },
+  ],
 ]);
 
 export const BLUE_NORMAL_STOP = [
@@ -267,10 +313,9 @@ export const BLUE_NORMAL_STOP = [
   BusStop.FT,
   BusStop.Vokasi,
   BusStop.SOR,
-  BusStop.FMIPA,
-  BusStop.FIK,
-  BusStop.RSUI_FKM,
-  BusStop.RIK,
+  BusStop.FIA,
+  BusStop.FF,
+  BusStop.BalaiSidang,
   BusStop.Balairung,
   BusStop.MUI,
   BusStop.FH,
@@ -306,6 +351,7 @@ export const RED_NORMAL_STOP = [
   BusStop.Balairung,
   BusStop.RIK,
   BusStop.RSUI_FKM,
+  BusStop.RSUI,
   BusStop.FIK,
   BusStop.FMIPA,
   BusStop.SOR,

@@ -16,16 +16,20 @@ export enum BusStop {
   FEB = "Fakultas Ekonomi dan Bisnis",
   FT = "Fakultas Teknik",
   Vokasi = "Vokasi",
+  FF = "Fakultas Farmasi",
+  BalaiSidang = "Balai Sidang",
   SOR = "SOR",
   FMIPA = "FMIPA",
   FIK = "Fakultas Ilmu Keperawatan",
   RSUI_FKM = "Fakultas Kesehatan Masyarakat",
+  RSUI = "Rumah Sakit UI",
   RIK = "RIK",
   Balairung = "Balairung",
   MUI = "MUI/Perpus UI",
   FH = "Fakultas Hukum",
   StasiunUIAsrama = "Stasiun UI (Ke Asrama)",
   MenwaAsrama = "Menwa (Ke Asrama)",
+  FIA = "Fakultas Ilmu Administrasi",
 }
 
 export interface BusStopMetadata {
@@ -33,6 +37,6 @@ export interface BusStopMetadata {
   additionalInfo: string;
   imageSrc: string;
   fallbackImageSrc: string;
-  positionRedLine: L.LatLng;
-  positionBlueLine: L.LatLng;
+  positionRedLine: L.LatLng | undefined;
+  positionBlueLine: L.LatLng | undefined;
 }
