@@ -297,7 +297,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
       imageSrc: balairungUIStopPngUrl,
       fallbackImageSrc: balairungUIStopPngUrl,
       positionRedLine: undefined,
-      positionBlueLine: L.latLng(-6.369147, 106.82845),
+      positionBlueLine: L.latLng(-6.36907, 106.82868),
     },
   ],
   [
