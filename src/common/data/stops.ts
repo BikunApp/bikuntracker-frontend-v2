@@ -14,7 +14,7 @@ import fikUIStopPngUrl from "@/assets/bus-stops/fik-ui.png";
 import fikUIStopWebpUrl from "@/assets/bus-stops/fik-ui.webp";
 import fisipUIStopPngUrl from "@/assets/bus-stops/fisip-ui.png";
 import fisipUIStopWebpUrl from "@/assets/bus-stops/fisip-ui.webp";
-import fiauiStopWebpUrl from "@/assets/bus-stops/fia-ui.webp";
+// import fiauiStopWebpUrl from "@/assets/bus-stops/fia-ui.webp";
 import farmasiuiWebpUrl from "@/assets/bus-stops/farmasi-ui.webp";
 import fkmUIStopPngUrl from "@/assets/bus-stops/fkm-ui.png";
 import fkmUIStopWebpUrl from "@/assets/bus-stops/fkm-ui.webp";
@@ -267,17 +267,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
       positionBlueLine: L.latLng(-6.353451953365802, 106.83164477348328),
     },
   ],
-  [
-    BusStop.FIA,
-    {
-      name: "Fakultas Ilmu Administrasi",
-      additionalInfo: "Near SOR UI, FMIPA UI",
-      imageSrc: fiauiStopWebpUrl,
-      fallbackImageSrc: fiauiStopWebpUrl,
-      positionRedLine: undefined,
-      positionBlueLine: L.latLng(-6.366781, 106.824907),
-    },
-  ],
+
   [
     BusStop.FF,
     {
@@ -324,7 +314,6 @@ export const BLUE_NORMAL_STOP = [
   BusStop.FT,
   BusStop.Vokasi,
   BusStop.SOR,
-  BusStop.FIA,
   BusStop.FF,
   BusStop.BalaiSidang,
   BusStop.Balairung2,
