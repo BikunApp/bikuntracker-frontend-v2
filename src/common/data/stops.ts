@@ -213,6 +213,17 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
     },
   ],
   [
+    BusStop.Balairung2,
+    {
+      name: "Balairung",
+      additionalInfo: "Near Fakultas Hukum UI, Balairung UI",
+      imageSrc: balairungUIStopWebpUrl,
+      fallbackImageSrc: balairungUIStopPngUrl,
+      positionRedLine: undefined,
+      positionBlueLine: L.latLng(-6.36913, 106.82963),
+    },
+  ],
+  [
     BusStop.MUI,
     {
       name: "MUI/Perpus UI",
@@ -295,7 +306,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
       name: "Rumah Sakit UI",
       additionalInfo: "Near FKM UI, RIK UI",
       imageSrc: rikUIStopWebpUrl,
-      fallbackImageSrc: rikUIStopWebpUrl,
+      fallbackImageSrc: fkmUIStopPngUrl,
       positionRedLine: L.latLng(-6.37285, 106.82869),
       positionBlueLine: undefined,
     },
@@ -316,6 +327,7 @@ export const BLUE_NORMAL_STOP = [
   BusStop.FIA,
   BusStop.FF,
   BusStop.BalaiSidang,
+  BusStop.Balairung2,
   BusStop.Balairung,
   BusStop.MUI,
   BusStop.FH,
