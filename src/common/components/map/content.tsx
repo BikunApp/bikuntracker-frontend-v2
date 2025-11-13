@@ -54,7 +54,8 @@ export default function MapContent() {
           if (!metadata) return undefined;
           const shouldShow = !selectedStop || selectedStop === stop;
           return (
-            <Marker
+            metadata.positionRedLine && (
+              <Marker
               ref={setRedBusStopMarkerFactory(stop)}
               key={`red-stop-${metadata.name}`}
               icon={redStopIcon}
@@ -69,6 +70,7 @@ export default function MapContent() {
                 </Popup>
               )}
             </Marker>
+            )
           );
         })}
       {message &&
