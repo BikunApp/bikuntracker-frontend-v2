@@ -1,5 +1,6 @@
 import { Crosshair, MoveLeft } from "lucide-react";
 
+import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn } from "@/lib/utils.ts";
@@ -14,6 +15,29 @@ export default function Drawer() {
     setSelectedStop,
     setClosestBus,
   } = useGlobalStore();
+
+  const selectedStopMetadata = selectedStop ? BUS_STOP_METADATA.get(selectedStop) : null;
+  const hasRedLine = selectedStopMetadata?.positionRedLine !== undefined;
+  const hasBlueLine = selectedStopMetadata?.positionBlueLine !== undefined;
+
+  const handleLineSelection = (line: "red" | "blue") => {
+    if (selectedLine === line) {
+      setSelectedLine(undefined);
+    } else {
+      setSelectedLine(line);
+      if (selectedStop) {
+        fitBoundsToSelectedStop(selectedStop);
+      }
+    }
+  };
+
+  const getBackgroundPosition = () => {
+    if (selectedLine === "red" && hasRedLine) {
+      return hasBlueLine ? "w-1/2" : "w-full";
+    }
+    return "w-0";
+  };
+  
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
@@ -74,62 +98,51 @@ export default function Drawer() {
                 </div>
               </div>
             </div>
-            {/* commment this if wisuda */}
+            {/* comment this if wisuda */}
             <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-md">
               <div className="absolute inset-0 z-10 flex">
                 <div
                   className={cn(
-                    {
-                      "w-1/2": selectedLine === "red",
-                      "w-0": selectedLine === "blue",
-                    },
+                    getBackgroundPosition(),
                     "transition-all duration-300",
                   )}
                 ></div>
                 <div
-                  className={cn("w-1/2 rounded-2xl", {
+                  className={cn("rounded-2xl", {
+                    "w-1/2": (hasRedLine && hasBlueLine),
+                    "w-full": (!hasRedLine && hasBlueLine) || (hasRedLine && !hasBlueLine),
                     "bg-primary-red": selectedLine === "red",
                     "bg-primary": selectedLine === "blue",
                   })}
                 ></div>
               </div>
-              <div className="absolute inset-0 z-20">
-                <button
-                  onClick={() => {
-                    if (selectedLine === "blue") {
-                      setSelectedLine(undefined);
-                    } else {
-                      setSelectedLine("blue");
-                      if (selectedStop) {
-                        fitBoundsToSelectedStop(selectedStop);
-                      }
-                    }
-                  }}
-                  className={cn("h-full w-1/2 text-center", {
-                    "text-primary": selectedLine !== "blue",
-                    "text-white": selectedLine === "blue",
-                  })}
-                >
-                  Blue Line
-                </button>
-                <button
-                  onClick={() => {
-                    if (selectedLine === "red") {
-                      setSelectedLine(undefined);
-                    } else {
-                      setSelectedLine("red");
-                      if (selectedStop) {
-                        fitBoundsToSelectedStop(selectedStop);
-                      }
-                    }
-                  }}
-                  className={cn("h-full w-1/2 text-center", {
-                    "text-primary-red": selectedLine !== "red",
-                    "text-white": selectedLine === "red",
-                  })}
-                >
-                  Red Line
-                </button>
+              <div className="absolute inset-0 z-20 flex">
+                {hasBlueLine && (
+                  <button
+                    onClick={() => handleLineSelection("blue")}
+                    className={cn("h-full text-center", {
+                      "w-1/2": hasRedLine && hasBlueLine,
+                      "w-full": !hasRedLine,
+                      "text-primary": selectedLine !== "blue",
+                      "text-white": selectedLine === "blue",
+                    })}
+                  >
+                    Blue Line
+                  </button>
+                )}
+                {hasRedLine && (
+                  <button
+                    onClick={() => handleLineSelection("red")}
+                    className={cn("h-full text-center", {
+                      "w-1/2": hasRedLine && hasBlueLine,
+                      "w-full": !hasBlueLine,
+                      "text-primary-red": selectedLine !== "red",
+                      "text-white": selectedLine === "red",
+                    })}
+                  >
+                    Red Line
+                  </button>
+                )}
               </div>
             </div>
           </div>
