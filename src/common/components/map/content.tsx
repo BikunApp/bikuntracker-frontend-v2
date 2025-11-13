@@ -196,9 +196,9 @@ export default function MapContent() {
           {(!selectedLine || selectedLine === "red") && (
             <RouteWithArrows
               data={
-          message.operationalStatus === OperationalStatus.MorningRoute
-            ? RED_MORNING_ROUTE
-            : RED_NORMAL_ROUTE
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? RED_MORNING_ROUTE
+                  : RED_NORMAL_ROUTE
               }
               color="#D6003C"
               weight={10}
@@ -209,9 +209,9 @@ export default function MapContent() {
           {(!selectedLine || selectedLine === "blue") && (
             <RouteWithArrows
               data={
-          message.operationalStatus === OperationalStatus.MorningRoute
-            ? BLUE_MORNING_ROUTE
-            : BLUE_NORMAL_ROUTE
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? BLUE_MORNING_ROUTE
+                  : BLUE_NORMAL_ROUTE
               }
               color="#473E91"
               weight={8}
