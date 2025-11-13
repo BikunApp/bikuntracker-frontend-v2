@@ -14,7 +14,6 @@ import fikUIStopPngUrl from "@/assets/bus-stops/fik-ui.png";
 import fikUIStopWebpUrl from "@/assets/bus-stops/fik-ui.webp";
 import fisipUIStopPngUrl from "@/assets/bus-stops/fisip-ui.png";
 import fisipUIStopWebpUrl from "@/assets/bus-stops/fisip-ui.webp";
-// import fiauiStopWebpUrl from "@/assets/bus-stops/fia-ui.webp";
 import farmasiuiWebpUrl from "@/assets/bus-stops/farmasi-ui.webp";
 import fkmUIStopPngUrl from "@/assets/bus-stops/fkm-ui.png";
 import fkmUIStopWebpUrl from "@/assets/bus-stops/fkm-ui.webp";
