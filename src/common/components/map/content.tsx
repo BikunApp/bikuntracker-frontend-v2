@@ -81,23 +81,25 @@ export default function MapContent() {
           if (!metadata) return undefined;
           const shouldShow = !selectedStop || selectedStop === stop;
           return (
-            <Marker
-              ref={setBlueBusStopMarkerFactory(stop)}
-              key={`blue-stop-${metadata.name}`}
-              icon={blueStopIcon}
-              position={metadata.positionBlueLine}
-              zIndexOffset={10}
-              opacity={shouldShow ? 1 : 0}
-            >
-              {shouldShow && (
-                <Popup>
-                  Halte
-                  {" " + stop}
-                </Popup>
-              )}
-            </Marker>
+            metadata.positionBlueLine && (
+              <Marker
+                ref={setBlueBusStopMarkerFactory(stop)}
+                key={`blue-stop-${metadata.name}`}
+                icon={blueStopIcon}
+                position={metadata.positionBlueLine}
+                zIndexOffset={10}
+                opacity={shouldShow ? 1 : 0}
+              >
+                {shouldShow && (
+                  <Popup>
+                    Halte
+                    {" " + stop}
+                  </Popup>
+                )}
+              </Marker>
+            )
           );
-        })}{" "}
+        })}
       {message?.coordinates &&
         message.coordinates
           .filter(
