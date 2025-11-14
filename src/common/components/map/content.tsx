@@ -54,7 +54,8 @@ export default function MapContent() {
           if (!metadata) return undefined;
           const shouldShow = !selectedStop || selectedStop === stop;
           return (
-            <Marker
+            metadata.positionRedLine && (
+              <Marker
               ref={setRedBusStopMarkerFactory(stop)}
               key={`red-stop-${metadata.name}`}
               icon={redStopIcon}
@@ -69,6 +70,7 @@ export default function MapContent() {
                 </Popup>
               )}
             </Marker>
+            )
           );
         })}
       {message &&
@@ -81,23 +83,25 @@ export default function MapContent() {
           if (!metadata) return undefined;
           const shouldShow = !selectedStop || selectedStop === stop;
           return (
-            <Marker
-              ref={setBlueBusStopMarkerFactory(stop)}
-              key={`blue-stop-${metadata.name}`}
-              icon={blueStopIcon}
-              position={metadata.positionBlueLine}
-              zIndexOffset={10}
-              opacity={shouldShow ? 1 : 0}
-            >
-              {shouldShow && (
-                <Popup>
-                  Halte
-                  {" " + stop}
-                </Popup>
-              )}
-            </Marker>
+            metadata.positionBlueLine && (
+              <Marker
+                ref={setBlueBusStopMarkerFactory(stop)}
+                key={`blue-stop-${metadata.name}`}
+                icon={blueStopIcon}
+                position={metadata.positionBlueLine}
+                zIndexOffset={10}
+                opacity={shouldShow ? 1 : 0}
+              >
+                {shouldShow && (
+                  <Popup>
+                    Halte
+                    {" " + stop}
+                  </Popup>
+                )}
+              </Marker>
+            )
           );
-        })}{" "}
+        })}
       {message?.coordinates &&
         message.coordinates
           .filter(
@@ -196,9 +200,9 @@ export default function MapContent() {
           {(!selectedLine || selectedLine === "red") && (
             <RouteWithArrows
               data={
-          message.operationalStatus === OperationalStatus.MorningRoute
-            ? RED_MORNING_ROUTE
-            : RED_NORMAL_ROUTE
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? RED_MORNING_ROUTE
+                  : RED_NORMAL_ROUTE
               }
               color="#D6003C"
               weight={10}
@@ -209,9 +213,9 @@ export default function MapContent() {
           {(!selectedLine || selectedLine === "blue") && (
             <RouteWithArrows
               data={
-          message.operationalStatus === OperationalStatus.MorningRoute
-            ? BLUE_MORNING_ROUTE
-            : BLUE_NORMAL_ROUTE
+                message.operationalStatus === OperationalStatus.MorningRoute
+                  ? BLUE_MORNING_ROUTE
+                  : BLUE_NORMAL_ROUTE
               }
               color="#473E91"
               weight={8}
