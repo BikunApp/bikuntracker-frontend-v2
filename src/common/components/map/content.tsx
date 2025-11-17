@@ -56,20 +56,20 @@ export default function MapContent() {
           return (
             metadata.positionRedLine && (
               <Marker
-              ref={setRedBusStopMarkerFactory(stop)}
-              key={`red-stop-${metadata.name}`}
-              icon={redStopIcon}
-              position={metadata.positionRedLine}
-              zIndexOffset={10}
-              opacity={shouldShow ? 1 : 0}
-            >
-              {shouldShow && (
-                <Popup>
-                  Halte
-                  {" " + stop}
-                </Popup>
-              )}
-            </Marker>
+                ref={setRedBusStopMarkerFactory(stop)}
+                key={`red-stop-${metadata.name}`}
+                icon={redStopIcon}
+                position={metadata.positionRedLine}
+                zIndexOffset={10}
+                opacity={shouldShow ? 1 : 0}
+              >
+                {shouldShow && (
+                  <Popup>
+                    Halte
+                    {" " + stop}
+                  </Popup>
+                )}
+              </Marker>
             )
           );
         })}
