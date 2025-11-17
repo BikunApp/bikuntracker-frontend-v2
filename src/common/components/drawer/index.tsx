@@ -1,7 +1,6 @@
 import { Crosshair, MoveLeft } from "lucide-react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
-// import { hasOnlyOneLine, getSingleAvailableLine } from "@/lib/busStopUtils";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn } from "@/lib/utils.ts";
