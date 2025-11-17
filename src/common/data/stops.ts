@@ -201,7 +201,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
     },
   ],
   [
-    BusStop.Balairung,
+    BusStop.Pocin,
     {
       name: "Balairung",
       additionalInfo: "Near Fakultas Hukum UI, Balairung UI",
@@ -212,7 +212,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
     },
   ],
   [
-    BusStop.Balairung2,
+    BusStop.Balairung,
     {
       name: "Balairung",
       additionalInfo: "Near Fakultas Hukum UI, Balairung UI",
@@ -315,8 +315,8 @@ export const BLUE_NORMAL_STOP = [
   BusStop.SOR,
   BusStop.FF,
   BusStop.BalaiSidang,
-  BusStop.Balairung2,
   BusStop.Balairung,
+  BusStop.Pocin,
   BusStop.MUI,
   BusStop.FH,
   BusStop.StasiunUIAsrama,
@@ -338,7 +338,7 @@ export const BLUE_MORNING_STOP = [
   BusStop.FIK,
   BusStop.RSUI_FKM,
   BusStop.RIK,
-  BusStop.Balairung,
+  BusStop.Pocin,
   BusStop.MUI,
   BusStop.FH,
 ];
@@ -348,7 +348,7 @@ export const RED_NORMAL_STOP = [
   BusStop.Menwa,
   BusStop.StasiunUI,
   BusStop.FH,
-  BusStop.Balairung,
+  BusStop.Pocin,
   BusStop.RIK,
   BusStop.RSUI_FKM,
   BusStop.RSUI,
@@ -370,7 +370,7 @@ export const RED_MORNING_STOP = [
   BusStop.Menwa,
   BusStop.StasiunUI,
   BusStop.FH,
-  BusStop.Balairung,
+  BusStop.Pocin,
   BusStop.RIK,
   BusStop.RSUI_FKM,
   BusStop.FIK,
