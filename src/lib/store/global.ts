@@ -3,7 +3,7 @@ import { create } from "zustand";
 import type { BusCoordinate, WebsocketMessage } from "@/common/schema/ws.ts";
 import type { BusStop } from "@/common/types/bus.ts";
 import type { Line } from "@/common/types/global.ts";
-import { getSingleAvailableLine } from "@/common/utils/busStopUtils.ts";
+import { getSingleAvailableLine } from "@/lib/busStopUtils";
 
 export interface GlobalStore {
   selectedLine?: Line;

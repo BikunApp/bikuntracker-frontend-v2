@@ -1,11 +1,7 @@
 import { Crosshair, MoveLeft } from "lucide-react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
-import {
-  getAvailableLinesForStop,
-  hasOnlyOneLine,
-  getSingleAvailableLine,
-} from "@/common/utils/busStopUtils.ts";
+// import { hasOnlyOneLine, getSingleAvailableLine } from "@/lib/busStopUtils";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn } from "@/lib/utils.ts";
@@ -26,10 +22,6 @@ export default function Drawer() {
     : null;
   const hasRedLine = selectedStopMetadata?.positionRedLine !== undefined;
   const hasBlueLine = selectedStopMetadata?.positionBlueLine !== undefined;
-  const isSingleLineStop = selectedStop ? hasOnlyOneLine(selectedStop) : false;
-  const singleLine = selectedStop
-    ? getSingleAvailableLine(selectedStop)
-    : undefined;
 
   const handleLineSelection = (line: "red" | "blue") => {
     if (selectedLine === line) {
@@ -87,7 +79,7 @@ export default function Drawer() {
                 className={`${closestBus?.color === "red" ? "bg-primary-red" : closestBus?.color === "blue" ? "bg-primary" : "bg-primary"} flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white`}
               >
                 {closestBus?.bus_number != null &&
-                closestBus.bus_number.length === 2
+                  closestBus.bus_number.length === 2
                   ? closestBus.bus_number
                   : `0${closestBus?.bus_number ?? "0"}`}
               </div>
