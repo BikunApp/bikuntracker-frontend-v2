@@ -229,7 +229,7 @@ export const BUS_STOP_METADATA: Map<BusStop, BusStopMetadata> = new Map([
       additionalInfo: "Near Mesjid UI, Perpustakaan UI, Makara Art Center",
       imageSrc: muiUIStopWebpUrl,
       fallbackImageSrc: muiUIStopPngUrl,
-      positionRedLine: L.latLng(-6.3655942342627565, 106.83204710483551),
+      positionRedLine: undefined,
       positionBlueLine: L.latLng(-6.3655942342627565, 106.83204710483551),
     },
   ],
