@@ -1,6 +1,11 @@
 import { Crosshair, MoveLeft } from "lucide-react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
+import {
+  getAvailableLinesForStop,
+  hasOnlyOneLine,
+  getSingleAvailableLine,
+} from "@/common/utils/busStopUtils.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn } from "@/lib/utils.ts";
@@ -16,9 +21,15 @@ export default function Drawer() {
     setClosestBus,
   } = useGlobalStore();
 
-  const selectedStopMetadata = selectedStop ? BUS_STOP_METADATA.get(selectedStop) : null;
+  const selectedStopMetadata = selectedStop
+    ? BUS_STOP_METADATA.get(selectedStop)
+    : null;
   const hasRedLine = selectedStopMetadata?.positionRedLine !== undefined;
   const hasBlueLine = selectedStopMetadata?.positionBlueLine !== undefined;
+  const isSingleLineStop = selectedStop ? hasOnlyOneLine(selectedStop) : false;
+  const singleLine = selectedStop
+    ? getSingleAvailableLine(selectedStop)
+    : undefined;
 
   const handleLineSelection = (line: "red" | "blue") => {
     if (selectedLine === line) {
@@ -37,7 +48,7 @@ export default function Drawer() {
     }
     return "w-0";
   };
-  
+
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
@@ -76,7 +87,7 @@ export default function Drawer() {
                 className={`${closestBus?.color === "red" ? "bg-primary-red" : closestBus?.color === "blue" ? "bg-primary" : "bg-primary"} flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white`}
               >
                 {closestBus?.bus_number != null &&
-                  closestBus.bus_number.length === 2
+                closestBus.bus_number.length === 2
                   ? closestBus.bus_number
                   : `0${closestBus?.bus_number ?? "0"}`}
               </div>
@@ -90,7 +101,9 @@ export default function Drawer() {
                   </div>
                   <div className="text-primary text-xs">
                     {closestBus.message && (
-                      <p className={`${closestBus?.color === "red" ? "text-primary-red" : closestBus?.color === "blue" ? "text-primary" : "text-primary"}`}>
+                      <p
+                        className={`${closestBus?.color === "red" ? "text-primary-red" : closestBus?.color === "blue" ? "text-primary" : "text-primary"}`}
+                      >
                         Status: <b>{closestBus.message}</b>
                       </p>
                     )}
@@ -98,7 +111,6 @@ export default function Drawer() {
                 </div>
               </div>
             </div>
-            {/* comment this if wisuda */}
             <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-md">
               <div className="absolute inset-0 z-10 flex">
                 <div
@@ -109,8 +121,10 @@ export default function Drawer() {
                 ></div>
                 <div
                   className={cn("rounded-2xl", {
-                    "w-1/2": (hasRedLine && hasBlueLine),
-                    "w-full": (!hasRedLine && hasBlueLine) || (hasRedLine && !hasBlueLine),
+                    "w-1/2": hasRedLine && hasBlueLine,
+                    "w-full":
+                      (!hasRedLine && hasBlueLine) ||
+                      (hasRedLine && !hasBlueLine),
                     "bg-primary-red": selectedLine === "red",
                     "bg-primary": selectedLine === "blue",
                   })}
