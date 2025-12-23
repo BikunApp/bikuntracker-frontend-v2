@@ -57,15 +57,15 @@ export const redStopIcon = L.icon({
 type MonthDay = { month: number; day: number };
 type MonthDayRange = { start: MonthDay; end: MonthDay };
 
-const SPECIAL_DAY_RANGES: Record<"christmas" | "cny", MonthDayRange | null> = {
-  // Example: Dec 23–30
+const SPECIAL_DAY_RANGES: Record<"christmas", MonthDayRange> = {
   christmas: { start: { month: 12, day: 23 }, end: { month: 12, day: 30 } },
-  // CNY changes yearly; keep null until you set the range you want.
-  cny: null,
+};
+const CNY_RANGES_BY_YEAR: Record<number, MonthDayRange> = {
+  2025: { start: { month: 1, day: 29 }, end: { month: 1, day: 29 } },
+  2026: { start: { month: 2, day: 13 }, end: { month: 2, day: 18 } },
 };
 
 function isInMonthDayRange(date: Date, range: MonthDayRange): boolean {
-  // Use a fixed non-leap year for stable month/day comparisons.
   const year = 2001;
   const current = new Date(year, date.getMonth(), date.getDate());
   const start = new Date(year, range.start.month - 1, range.start.day);
@@ -89,7 +89,7 @@ export function getSpecialDayTheme(date: Date = new Date()): SpecialDayTheme {
   if (christmasRange && isInMonthDayRange(date, christmasRange))
     return "christmas";
 
-  const cnyRange = SPECIAL_DAY_RANGES.cny;
+  const cnyRange = CNY_RANGES_BY_YEAR[date.getFullYear()];
   if (cnyRange && isInMonthDayRange(date, cnyRange)) return "cny";
 
   return "default";
