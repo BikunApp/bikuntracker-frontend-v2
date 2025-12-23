@@ -2,6 +2,7 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import Navbar from "@/common/components/navbar/index.tsx";
+import SnowOverlay from "@/common/components/snow/index.tsx";
 import useWebsocket from "@/common/hooks/useWebsocket.ts";
 import { useAuthStore } from "@/lib/store/auth.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
@@ -25,6 +26,7 @@ export default function RootComponent() {
 
   return (
     <div className="font-poppins relative h-dvh w-full">
+      <SnowOverlay />
       <Navbar />
       <Outlet />
     </div>
