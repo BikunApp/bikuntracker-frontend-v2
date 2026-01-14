@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import Navbar from "@/common/components/navbar/index.tsx";
 import SnowOverlay from "@/common/components/snow/index.tsx";
+import useSSE from "@/common/hooks/useSSE.ts";
 import useWebsocket from "@/common/hooks/useWebsocket.ts";
 import { useAuthStore } from "@/lib/store/auth.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
@@ -12,10 +13,14 @@ export const Route = createRootRoute({
   component: RootComponent,
 });
 
+const isSSE = import.meta.env.VITE_ISS_SSE === "true";
+
 export default function RootComponent() {
   const { setUser } = useAuthStore();
   const { setMessage } = useGlobalStore();
-  useWebsocket({ onMessage: setMessage });
+
+  useSSE({ onMessage: setMessage, enabled: isSSE });
+  useWebsocket({ onMessage: setMessage, enabled: !isSSE });
 
   useEffect(() => {
     (async () => {
