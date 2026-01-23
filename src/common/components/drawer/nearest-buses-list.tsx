@@ -22,7 +22,7 @@ export default function NearestBusesList({
 
   return (
     <div className="px-6 pb-6">
-      <h3 className="mb-4 text-sm font-bold text-gray-700">Bikun terdekat</h3>
+      <h3 className="mb-4 text-sm font-bold text-gray-700">Bikun terdekat lainnya</h3>
       <div className="space-y-3">
         {buses.map((bus) => (
           <div
@@ -47,18 +47,15 @@ export default function NearestBusesList({
                 <span className="text-sm font-semibold">
                   Bus {bus.bus_number}
                 </span>
+                <p className="text-xs text-gray-500">
+                  <span className="">{formatEtaMinutes(bus.eta_seconds)} min</span> •{" "}
+                  {bus.arrival_time} WIB
+                </p>
                 <span className="text-xs text-gray-500">
                   Next {bus.next_stop}
                 </span>
-                <span className="text-xs text-gray-500">
-                  {formatEtaMinutes(bus.eta_seconds)} min • {bus.arrival_time}{" "}
-                  WIB
-                </span>
               </div>
             </div>
-            <button className="text-primary rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold hover:bg-blue-100">
-              Lihat Detail
-            </button>
           </div>
         ))}
       </div>

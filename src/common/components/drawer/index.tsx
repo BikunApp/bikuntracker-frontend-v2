@@ -27,10 +27,14 @@ export default function Drawer() {
     nearest: nearestBusETA,
     nearestList: nearestBusesList,
     loading: etaLoading,
-  } = useETA(selectedStop, selectedLine, { mode: "full" });
+    message: etaMessage,
+  } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 15 });
 
   const primaryBus = nearestBusETA;
   const otherBuses = nearestBusesList.slice(1);
+  const showNoBusState = Boolean(
+    selectedStop && selectedLine && !etaLoading && !primaryBus,
+  );
 
   useEffect(() => {
     if (!selectedStop || !selectedLine || !primaryBus) {
@@ -122,26 +126,32 @@ export default function Drawer() {
         {selectedStop && (
           <div className="p-6">
             <div className="mb-5 flex">
-              <div
-                className={cn(
-                  "flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white",
-                  {
-                    "bg-primary-red": selectedLine === "red",
-                    "bg-primary": selectedLine === "blue" || !selectedLine,
-                  },
-                )}
-              >
-                {primaryBus?.bus_number
-                  ? primaryBus.bus_number.padStart(2, "0")
-                  : "--"}
-              </div>
+              {!showNoBusState && (
+                <div
+                  className={cn(
+                    "flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white",
+                    {
+                      "bg-primary-red": selectedLine === "red",
+                      "bg-primary": selectedLine === "blue" || !selectedLine,
+                    },
+                  )}
+                >
+                  {primaryBus?.bus_number
+                    ? primaryBus.bus_number.padStart(2, "0")
+                    : "--"}
+                </div>
+              )}
 
-              <div className="ml-4 flex flex-1 flex-col justify-between">
+              <div className="ml-4 flex w-full items-center justify-between">
                 <div className="flex flex-col">
-                  <div className="text-lg font-bold">
+                  <div
+                    className={`text-lg font-bold ${showNoBusState ? "text-center font-semibold" : ""}`}
+                  >
                     {primaryBus?.bus_number
                       ? `Bus ${primaryBus.bus_number}`
-                      : "Bus terdekat"}
+                      : showNoBusState
+                        ? "Belum ada bikun aktif menuju halte ini. Coba lagi sebentar."
+                        : "Bus terdekat"}
                   </div>
                   <div className="text-xs">
                     <p
@@ -152,23 +162,37 @@ export default function Drawer() {
                       })}
                     >
                       {selectedLine
-                        ? `Next ${primaryBus?.next_stop ?? selectedStop}`
+                        ? primaryBus
+                          ? `Next ${primaryBus.next_stop ?? selectedStop}`
+                          : null
                         : "Pilih line untuk lihat ETA"}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="text-primary text-2xl font-bold">
+                {/* {showNoBusState && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    {etaMessage?.trim()
+                      ? etaMessage
+                      : "Belum ada bikun aktif menuju halte ini. Coba lagi sebentar."}
+                  </div>
+                )} */}
+
+                <div className="flex flex-col">
+                  <div
+                    className={`${selectedLine === "red" ? "text-primary-red" : "text-primary"} text-lg font-bold max-md:text-base`}
+                  >
                     {primaryBus
-                      ? formatEtaMinutes(primaryBus.eta_seconds)
+                      ? formatEtaMinutes(primaryBus.eta_seconds) + " min"
                       : "-"}
                   </div>
                   <div className="flex flex-col text-xs">
-                    <span className="font-semibold">min</span>
                     <span className="text-gray-500">
-                      {primaryBus?.arrival_time ??
-                        (etaLoading ? "Loading..." : "")}
+                      {etaLoading
+                        ? "Loading..."
+                        : primaryBus?.arrival_time
+                          ? primaryBus?.arrival_time + " WIB"
+                          : "—"}
                     </span>
                   </div>
                 </div>

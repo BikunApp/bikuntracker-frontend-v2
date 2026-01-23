@@ -10,6 +10,7 @@ interface UseETAState {
   nearestList: ETABus[];
   loading: boolean;
   error: string | null;
+  message: string | null;
 }
 
 /**
@@ -18,13 +19,14 @@ interface UseETAState {
 export function useETA(
   stop: BusStop | undefined,
   line: Line | undefined,
-  options: { mode?: "single" | "full" } = {},
+  options: { mode?: "single" | "full"; intervalSec?: number } = {},
 ) {
   const [state, setState] = useState<UseETAState>({
     nearest: null,
     nearestList: [],
     loading: false,
     error: null,
+    message: null,
   });
 
   useEffect(() => {
@@ -34,12 +36,24 @@ export function useETA(
         nearestList: [],
         loading: false,
         error: null,
+        message: null,
       });
       return;
     }
 
+    let cancelled = false;
+    let requestSeq = 0;
+    const intervalMs = (options.intervalSec ?? 0) * 1000;
+
     const fetchETA = async () => {
-      setState((prev) => ({ ...prev, loading: true, error: null }));
+      const currentRequest = ++requestSeq;
+
+      setState((prev) => ({
+        ...prev,
+        loading: prev.nearestList.length === 0,
+        error: null,
+        message: null,
+      }));
 
       try {
         const mode = options.mode ?? "full";
@@ -47,36 +61,60 @@ export function useETA(
         if (mode === "full") {
           const resp = await fetchFullETA(stop, line);
           const buses = resp.success ? resp.buses : [];
+
+          if (cancelled || currentRequest !== requestSeq) return;
+
           setState({
             nearest: buses[0] || null,
             nearestList: buses,
             loading: false,
             error: null,
+            message: resp.message || null,
           });
         } else {
           const resp = await fetchSingleBusETA(stop, line);
           const bus = resp.success ? resp.bus : null;
+
+          if (cancelled || currentRequest !== requestSeq) return;
+
           setState({
             nearest: bus,
             nearestList: bus ? [bus] : [],
             loading: false,
             error: null,
+            message: resp.message || null,
           });
         }
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to fetch ETA";
+
+        if (cancelled || currentRequest !== requestSeq) return;
+
         setState({
           nearest: null,
           nearestList: [],
           loading: false,
           error: errorMessage,
+          message: null,
         });
       }
     };
 
     fetchETA();
-  }, [stop, line, options.mode]);
+
+    if (intervalMs > 0) {
+      const id = window.setInterval(fetchETA, intervalMs);
+      return () => {
+        cancelled = true;
+        window.clearInterval(id);
+      };
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [stop, line, options.mode, options.intervalSec]);
 
   return state;
 }
