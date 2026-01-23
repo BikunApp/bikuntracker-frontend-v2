@@ -27,8 +27,7 @@ export default function Drawer() {
     nearest: nearestBusETA,
     nearestList: nearestBusesList,
     loading: etaLoading,
-    message: etaMessage,
-  } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 15 });
+  } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 30 });
 
   const primaryBus = nearestBusETA;
   const otherBuses = nearestBusesList.slice(1);
