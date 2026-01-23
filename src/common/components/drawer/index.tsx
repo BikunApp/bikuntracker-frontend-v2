@@ -1,20 +1,68 @@
 import { Crosshair, MoveLeft } from "lucide-react";
+import { useEffect } from "react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn } from "@/lib/utils.ts";
+import { useETA } from "@/common/hooks/useETA.ts";
+import NearestBusesList from "./nearest-buses-list.tsx";
+
+function formatEtaMinutes(etaSeconds: number): number {
+  return Math.max(0, Math.ceil(etaSeconds / 60));
+}
 
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
-    closestBus,
+    message,
     selectedLine,
     selectedStop,
+    setClosestBus,
     setSelectedLine,
     setSelectedStop,
-    setClosestBus,
   } = useGlobalStore();
+
+  const {
+    nearest: nearestBusETA,
+    nearestList: nearestBusesList,
+    loading: etaLoading,
+  } = useETA(selectedStop, selectedLine, { mode: "full" });
+
+  const primaryBus = nearestBusETA;
+  const otherBuses = nearestBusesList.slice(1);
+
+  useEffect(() => {
+    if (!selectedStop || !selectedLine || !primaryBus) {
+      setClosestBus(undefined);
+      return;
+    }
+
+    const normalizeBusNumber = (value: string): string => {
+      const trimmed = value.trim();
+      const normalized = trimmed.replace(/^0+/, "");
+      return normalized.length === 0 ? "0" : normalized;
+    };
+
+    const coordinates = message?.coordinates ?? [];
+    const targetBus = coordinates.find((bus) => {
+      return (
+        bus.color === selectedLine &&
+        normalizeBusNumber(bus.bus_number) ===
+          normalizeBusNumber(primaryBus.bus_number)
+      );
+    });
+
+    setClosestBus(targetBus);
+    fitBoundsToSelectedStop(selectedStop);
+  }, [
+    fitBoundsToSelectedStop,
+    message?.coordinates,
+    primaryBus,
+    selectedLine,
+    selectedStop,
+    setClosestBus,
+  ]);
 
   const selectedStopMetadata = selectedStop
     ? BUS_STOP_METADATA.get(selectedStop)
@@ -71,37 +119,62 @@ export default function Drawer() {
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
         </button>
-        {closestBus && (
+        {selectedStop && (
           <div className="p-6">
             <div className="mb-5 flex">
               <div
-                className={`${closestBus?.color === "red" ? "bg-primary-red" : closestBus?.color === "blue" ? "bg-primary" : "bg-primary"} flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white`}
+                className={cn(
+                  "flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white",
+                  {
+                    "bg-primary-red": selectedLine === "red",
+                    "bg-primary": selectedLine === "blue" || !selectedLine,
+                  },
+                )}
               >
-                {closestBus?.bus_number != null &&
-                  closestBus.bus_number.length === 2
-                  ? closestBus.bus_number
-                  : `0${closestBus?.bus_number ?? "0"}`}
+                {primaryBus?.bus_number
+                  ? primaryBus.bus_number.padStart(2, "0")
+                  : "--"}
               </div>
-              <div className="ml-4 flex justify-between">
+
+              <div className="ml-4 flex flex-1 flex-col justify-between">
                 <div className="flex flex-col">
                   <div className="text-lg font-bold">
-                    {"Bus " +
-                      (closestBus.bus_number === undefined
-                        ? "Terdekat Tidak Ditemukan"
-                        : closestBus.bus_number)}
+                    {primaryBus?.bus_number
+                      ? `Bus ${primaryBus.bus_number}`
+                      : "Bus terdekat"}
                   </div>
-                  <div className="text-primary text-xs">
-                    {closestBus.message && (
-                      <p
-                        className={`${closestBus?.color === "red" ? "text-primary-red" : closestBus?.color === "blue" ? "text-primary" : "text-primary"}`}
-                      >
-                        Status: <b>{closestBus.message}</b>
-                      </p>
-                    )}
+                  <div className="text-xs">
+                    <p
+                      className={cn("font-semibold", {
+                        "text-primary-red": selectedLine === "red",
+                        "text-primary":
+                          selectedLine === "blue" || !selectedLine,
+                      })}
+                    >
+                      {selectedLine
+                        ? `Next ${primaryBus?.next_stop ?? selectedStop}`
+                        : "Pilih line untuk lihat ETA"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="text-primary text-2xl font-bold">
+                    {primaryBus
+                      ? formatEtaMinutes(primaryBus.eta_seconds)
+                      : "-"}
+                  </div>
+                  <div className="flex flex-col text-xs">
+                    <span className="font-semibold">min</span>
+                    <span className="text-gray-500">
+                      {primaryBus?.arrival_time ??
+                        (etaLoading ? "Loading..." : "")}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-md">
               <div className="absolute inset-0 z-10 flex">
                 <div
@@ -152,6 +225,12 @@ export default function Drawer() {
             </div>
           </div>
         )}
+
+        <NearestBusesList
+          buses={otherBuses}
+          loading={etaLoading}
+          line={selectedLine}
+        />
       </div>
     </div>
   );
