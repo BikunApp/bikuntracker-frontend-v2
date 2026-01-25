@@ -24,3 +24,7 @@ export function storeJwtWithExpiry(token: string) {
     },
   );
 }
+
+export function formatEtaMinutes(etaSeconds: number): number {
+  return Math.max(0, Math.ceil(etaSeconds / 60));
+}

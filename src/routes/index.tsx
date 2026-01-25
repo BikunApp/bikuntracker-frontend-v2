@@ -53,9 +53,7 @@ export default function Page() {
     return "development";
   })();
 
-  const isStaging =
-    import.meta.env.MODE === "staging" ||
-    import.meta.env.VITE_APP_ENV === "staging";
+  const isStaging = true
 
   useEffect(() => {
     if (isStaging) {

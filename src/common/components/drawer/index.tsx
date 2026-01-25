@@ -4,13 +4,11 @@ import { useEffect } from "react";
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
-import { cn } from "@/lib/utils.ts";
+import { cn, formatEtaMinutes } from "@/lib/utils.ts";
 import { useETA } from "@/common/hooks/useETA.ts";
 import NearestBusesList from "./nearest-buses-list.tsx";
 
-function formatEtaMinutes(etaSeconds: number): number {
-  return Math.max(0, Math.ceil(etaSeconds / 60));
-}
+
 
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();

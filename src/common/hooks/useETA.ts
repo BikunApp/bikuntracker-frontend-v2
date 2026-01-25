@@ -19,7 +19,13 @@ interface UseETAState {
 export function useETA(
   stop: BusStop | undefined,
   line: Line | undefined,
-  options: { mode?: "single" | "full"; intervalSec?: number } = {},
+  {
+    mode = "full",
+    intervalSec = 0,
+  }: {
+    mode?: "single" | "full";
+    intervalSec?: number;
+  } = {},
 ) {
   const [state, setState] = useState<UseETAState>({
     nearest: null,
@@ -43,7 +49,7 @@ export function useETA(
 
     let cancelled = false;
     let requestSeq = 0;
-    const intervalMs = (options.intervalSec ?? 0) * 1000;
+    const intervalMs = intervalSec * 1000;
 
     const fetchETA = async () => {
       const currentRequest = ++requestSeq;
@@ -56,8 +62,6 @@ export function useETA(
       }));
 
       try {
-        const mode = options.mode ?? "full";
-
         if (mode === "full") {
           const resp = await fetchFullETA(stop, line);
           const buses = resp.success ? resp.buses : [];
@@ -86,16 +90,14 @@ export function useETA(
           });
         }
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch ETA";
-
         if (cancelled || currentRequest !== requestSeq) return;
 
         setState({
           nearest: null,
           nearestList: [],
           loading: false,
-          error: errorMessage,
+          error:
+            err instanceof Error ? err.message : "Failed to fetch ETA",
           message: null,
         });
       }
@@ -114,7 +116,7 @@ export function useETA(
     return () => {
       cancelled = true;
     };
-  }, [stop, line, options.mode, options.intervalSec]);
+  }, [stop, line, mode, intervalSec]);
 
   return state;
 }

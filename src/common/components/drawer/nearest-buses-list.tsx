@@ -1,5 +1,5 @@
 import type { ETABus } from "@/services/eta.ts";
-import { cn } from "@/lib/utils.ts";
+import { cn, formatEtaMinutes } from "@/lib/utils.ts";
 import type { Line } from "@/common/types/global.ts";
 
 interface NearestBusesListProps {
@@ -17,16 +17,13 @@ export default function NearestBusesList({
     return null;
   }
 
-  const formatEtaMinutes = (etaSeconds: number): number =>
-    Math.max(0, Math.ceil(etaSeconds / 60));
-
   return (
     <div className="px-6 pb-6">
       <h3 className="mb-4 text-sm font-bold text-gray-700">Bikun terdekat lainnya</h3>
       <div className="space-y-3">
-        {buses.map((bus) => (
+        {buses.map((bus,index) => (
           <div
-            key={`${bus.bus_number}-${bus.next_stop}-${bus.arrival_time}`}
+            key={`${bus.bus_number}-${bus.next_stop}-${bus.arrival_time}-${index}`}
             className="flex items-center justify-between rounded-xl bg-gray-50 p-3"
           >
             <div className="flex items-center gap-3">
