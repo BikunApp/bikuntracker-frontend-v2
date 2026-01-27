@@ -8,8 +8,6 @@ import { cn, formatEtaMinutes } from "@/lib/utils.ts";
 import { useETA } from "@/common/hooks/useETA.ts";
 import NearestBusesList from "./nearest-buses-list.tsx";
 
-
-
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
@@ -25,12 +23,17 @@ export default function Drawer() {
     nearest: nearestBusETA,
     nearestList: nearestBusesList,
     loading: etaLoading,
+    refreshing: etaRefreshing,
   } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 30 });
 
   const primaryBus = nearestBusETA;
   const otherBuses = nearestBusesList.slice(1);
+  const isEtaFetching = etaLoading || etaRefreshing;
+  const showFullLoading = Boolean(
+    selectedStop && selectedLine && isEtaFetching,
+  );
   const showNoBusState = Boolean(
-    selectedStop && selectedLine && !etaLoading && !primaryBus,
+    selectedStop && selectedLine && !isEtaFetching && !primaryBus,
   );
 
   useEffect(() => {
@@ -120,7 +123,17 @@ export default function Drawer() {
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
         </button>
-        {selectedStop && (
+        {selectedStop && showFullLoading && (
+          <div className="p-6">
+            <div className="flex h-32 w-full items-center justify-center">
+              <span className="text-sm font-semibold text-gray-500">
+                Loading...
+              </span>
+            </div>
+          </div>
+        )}
+
+        {selectedStop && !showFullLoading && (
           <div className="p-6">
             <div className="mb-5 flex">
               {!showNoBusState && (
@@ -140,14 +153,21 @@ export default function Drawer() {
               )}
 
               <div className="ml-4 flex w-full items-center justify-between">
-                <div className="flex flex-col">
+                <div className="flex w-full flex-col">
+                  {showNoBusState && (
+                    <img
+                      src="/assets/eta-not-avail.webp"
+                      alt="No bus available"
+                      className="mb-4 h-25 w-25 self-center"
+                    />
+                  )}
                   <div
-                    className={`text-lg font-bold ${showNoBusState ? "text-center font-semibold" : ""}`}
+                    className={`text-lg font-bold ${showNoBusState ? "text-center text-sm font-normal" : ""}`}
                   >
                     {primaryBus?.bus_number
                       ? `Bus ${primaryBus.bus_number}`
                       : showNoBusState
-                        ? "Belum ada bikun aktif menuju halte ini. Coba lagi sebentar."
+                        ? "Perkiraan waktu kedatangan tidak tersedia. Silakan coba lagi nanti."
                         : "Bus terdekat"}
                   </div>
                   <div className="text-xs">
@@ -167,29 +187,17 @@ export default function Drawer() {
                   </div>
                 </div>
 
-                {/* {showNoBusState && (
-                  <div className="mt-2 text-xs text-gray-500">
-                    {etaMessage?.trim()
-                      ? etaMessage
-                      : "Belum ada bikun aktif menuju halte ini. Coba lagi sebentar."}
-                  </div>
-                )} */}
-
                 <div className="flex flex-col">
                   <div
                     className={`${selectedLine === "red" ? "text-primary-red" : "text-primary"} text-lg font-bold max-md:text-base`}
                   >
-                    {primaryBus
-                      ? formatEtaMinutes(primaryBus.eta_seconds) + " min"
-                      : "-"}
+                    {primaryBus &&
+                      formatEtaMinutes(primaryBus.eta_seconds) + " min"}
                   </div>
                   <div className="flex flex-col text-xs">
                     <span className="text-gray-500">
-                      {etaLoading
-                        ? "Loading..."
-                        : primaryBus?.arrival_time
-                          ? primaryBus?.arrival_time + " WIB"
-                          : "—"}
+                      {primaryBus?.arrival_time &&
+                        primaryBus?.arrival_time + " WIB"}
                     </span>
                   </div>
                 </div>
@@ -247,11 +255,13 @@ export default function Drawer() {
           </div>
         )}
 
-        <NearestBusesList
-          buses={otherBuses}
-          loading={etaLoading}
-          line={selectedLine}
-        />
+        {!showFullLoading && (
+          <NearestBusesList
+            buses={otherBuses}
+            loading={isEtaFetching}
+            line={selectedLine}
+          />
+        )}
       </div>
     </div>
   );
