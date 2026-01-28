@@ -29,13 +29,35 @@ export default function Drawer() {
   } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 30 });
 
   const primaryBus = nearestBusETA;
+  const usingFallbackBus = Boolean(!primaryBus && etaError && closestBus);
+  const displayBusNumber = primaryBus?.bus_number ?? closestBus?.bus_number;
+  const displayNextStop = primaryBus?.next_stop ?? closestBus?.next_halte;
+  const displayBusNumberPadded = displayBusNumber
+    ? displayBusNumber.padStart(2, "0")
+    : "--";
+  const displayEtaMinutes = primaryBus
+    ? formatEtaMinutes(primaryBus.eta_seconds)
+    : usingFallbackBus
+      ? "-"
+      : null;
+  const displayArrivalTime = primaryBus?.arrival_time ?? null;
+  const noBusMessageText =
+    "Perkiraan waktu kedatangan tidak tersedia. Silakan coba lagi nanti.";
+  const displayTitleText = displayBusNumber
+    ? `Bus ${displayBusNumber}`
+    : "Bus terdekat";
+
   const otherBuses = nearestBusesList.slice(1);
   const isEtaFetching = etaLoading || etaRefreshing;
   const showFullLoading = Boolean(
     selectedStop && selectedLine && isEtaFetching,
   );
   const showNoBusState = Boolean(
-    selectedStop && selectedLine && !isEtaFetching && !primaryBus,
+    selectedStop &&
+      selectedLine &&
+      !isEtaFetching &&
+      !primaryBus &&
+      !usingFallbackBus,
   );
 
   useEffect(() => {
@@ -165,7 +187,7 @@ export default function Drawer() {
                 >
                   {primaryBus?.bus_number
                     ? primaryBus.bus_number.padStart(2, "0")
-                    : "--"}
+                    : displayBusNumberPadded}
                 </div>
               )}
 
@@ -181,11 +203,7 @@ export default function Drawer() {
                   <div
                     className={`text-lg font-bold ${showNoBusState ? "text-center text-sm font-normal" : ""}`}
                   >
-                    {primaryBus?.bus_number
-                      ? `Bus ${primaryBus.bus_number}`
-                      : showNoBusState
-                        ? "Perkiraan waktu kedatangan tidak tersedia. Silakan coba lagi nanti."
-                        : "Bus terdekat"}
+                    {showNoBusState ? noBusMessageText : displayTitleText}
                   </div>
                   <div className="text-xs">
                     <p
@@ -196,25 +214,23 @@ export default function Drawer() {
                       })}
                     >
                       {selectedLine
-                        ? primaryBus
-                          ? `Next ${primaryBus.next_stop ?? selectedStop}`
+                        ? displayBusNumber
+                          ? `Next ${displayNextStop ?? selectedStop}`
                           : null
                         : "Pilih line untuk lihat ETA"}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col text-end">
                   <div
-                    className={`${selectedLine === "red" ? "text-primary-red" : "text-primary"} text-lg font-bold max-md:text-base`}
+                    className={`${selectedLine === "red" ? "text-primary-red" : "text-primary"} text-base font-bold max-md:text-sm`}
                   >
-                    {primaryBus &&
-                      formatEtaMinutes(primaryBus.eta_seconds) + " min"}
+                    {displayEtaMinutes ? `${displayEtaMinutes} min` : null}
                   </div>
                   <div className="flex flex-col text-xs">
                     <span className="text-gray-500">
-                      {primaryBus?.arrival_time &&
-                        primaryBus?.arrival_time + " WIB"}
+                      {displayArrivalTime ? `${displayArrivalTime} WIB` : null}
                     </span>
                   </div>
                 </div>
