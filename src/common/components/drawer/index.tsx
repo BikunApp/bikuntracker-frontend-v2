@@ -11,6 +11,7 @@ import NearestBusesList from "./nearest-buses-list.tsx";
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
+    closestBus,
     message,
     selectedLine,
     selectedStop,
@@ -24,6 +25,7 @@ export default function Drawer() {
     nearestList: nearestBusesList,
     loading: etaLoading,
     refreshing: etaRefreshing,
+    error: etaError,
   } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 30 });
 
   const primaryBus = nearestBusETA;
@@ -37,7 +39,20 @@ export default function Drawer() {
   );
 
   useEffect(() => {
-    if (!selectedStop || !selectedLine || !primaryBus) {
+    if (!selectedStop || !selectedLine) {
+      setClosestBus(undefined);
+      return;
+    }
+
+    // If ETA backend fails, fallback to legacy nearest-bus logic.
+    if (!primaryBus && etaError) {
+      if (!closestBus) {
+        fitBoundsToSelectedStop(selectedStop);
+      }
+      return;
+    }
+
+    if (!primaryBus) {
       setClosestBus(undefined);
       return;
     }
@@ -60,7 +75,9 @@ export default function Drawer() {
     setClosestBus(targetBus);
     fitBoundsToSelectedStop(selectedStop);
   }, [
+    closestBus,
     fitBoundsToSelectedStop,
+    etaError,
     message?.coordinates,
     primaryBus,
     selectedLine,

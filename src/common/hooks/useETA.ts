@@ -86,10 +86,23 @@ export function useETA(
       try {
         if (mode === "full") {
           const resp = await fetchFullETA(stop, line);
-          const buses = resp.success ? resp.buses : [];
-
           if (cancelled || currentRequest !== requestSeq) return;
 
+          if (!resp.success) {
+            setState({
+              key: requestKey,
+              nearest: null,
+              nearestList: [],
+              loading: false,
+              refreshing: false,
+              error: resp.message || "Failed to fetch ETA",
+              message: resp.message || null,
+            });
+            hasLoadedOnce = true;
+            return;
+          }
+
+          const buses = resp.buses;
           setState({
             key: requestKey,
             nearest: buses[0] || null,
@@ -103,10 +116,23 @@ export function useETA(
           hasLoadedOnce = true;
         } else {
           const resp = await fetchSingleBusETA(stop, line);
-          const bus = resp.success ? resp.bus : null;
-
           if (cancelled || currentRequest !== requestSeq) return;
 
+          if (!resp.success) {
+            setState({
+              key: requestKey,
+              nearest: null,
+              nearestList: [],
+              loading: false,
+              refreshing: false,
+              error: resp.message || "Failed to fetch ETA",
+              message: resp.message || null,
+            });
+            hasLoadedOnce = true;
+            return;
+          }
+
+          const bus = resp.bus;
           setState({
             key: requestKey,
             nearest: bus,
@@ -149,7 +175,7 @@ export function useETA(
     return () => {
       cancelled = true;
     };
-  }, [stop, line, mode, intervalSec]);
+  }, [stop, line, mode, intervalSec, requestKey]);
 
   // Avoid flashing stale data when stop/line/mode changes.
   if (requestKey !== state.key) {
