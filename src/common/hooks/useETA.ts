@@ -46,10 +46,6 @@ export function useETA(
 
   useEffect(() => {
     if (!stop || !line) {
-      console.log("[useETA] Resetting state - stop or line is undefined:", {
-        stop,
-        line,
-      });
       setState({
         key: null,
         nearest: null,
@@ -61,8 +57,6 @@ export function useETA(
       });
       return;
     }
-
-    console.log("[useETA] Starting fetch for:", { stop, line, mode });
 
     let cancelled = false;
     let requestSeq = 0;
