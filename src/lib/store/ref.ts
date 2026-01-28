@@ -10,9 +10,10 @@ import {
   RED_NORMAL_STOP,
 } from "@/common/data/stops.ts";
 import type { BusStop } from "@/common/types/bus.ts";
+import type { Line } from "@/common/types/global.ts";
+import type { BusCoordinate } from "@/common/schema/ws.ts";
 
 import { useGlobalStore } from "./global.ts";
-import type { BusCoordinate } from "@/common/schema/ws.ts";
 
 export interface RefStore {
   map?: L.Map;
@@ -72,172 +73,159 @@ export const useRefStore = create<RefStore>((set, get) => ({
     get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
   },
   fitBoundsToSelectedStop: (selectedStop) => {
-    const result = nearestBus();
-    const calculatedClosestBus: { bus: BusCoordinate; distance: number } =
-      result || { bus: {} as BusCoordinate, distance: Infinity };
-
-    const { setClosestBus } = useGlobalStore.getState();
-    setClosestBus(calculatedClosestBus.bus || undefined);
-
     const busStopMarker = get().getBusStopMarker(selectedStop);
+    const { closestBus, setClosestBus } = useGlobalStore.getState();
 
-    // Inline waitForBusMarker function
+    if (!busStopMarker) return;
+
+    const fallback = !closestBus ? nearestBus() : undefined;
+    const resolvedClosestBus = closestBus ?? fallback?.bus;
+
+    if (fallback?.bus) {
+      setClosestBus(fallback.bus);
+    }
+
+    const focusStopOnly = () => {
+      busStopMarker.togglePopup();
+      get().map?.flyTo(busStopMarker.getLatLng(), Math.max(DEFAULT_ZOOM, 16));
+    };
+
+    if (!resolvedClosestBus) {
+      focusStopOnly();
+      return;
+    }
+
     const waitForBusMarker = (busId: number, timeout = 3000) => {
       const start = Date.now();
       return new Promise<L.Marker>((resolve, reject) => {
         (function loop() {
           const marker = get().getBusMarker(busId);
           if (marker) return resolve(marker);
-          if (Date.now() - start > timeout)
+          if (Date.now() - start > timeout) {
             return reject(new Error("Timeout waiting for bus marker"));
+          }
           setTimeout(loop, 100);
         })();
       });
     };
 
-    waitForBusMarker(calculatedClosestBus.bus.id)
+    waitForBusMarker(resolvedClosestBus.id)
       .then((closestBusMarker) => {
-        if (busStopMarker && closestBusMarker) {
-          console.log(busStopMarker);
-          busStopMarker.togglePopup();
-          closestBusMarker.togglePopup();
-          const featureGroup = L.featureGroup([
-            busStopMarker,
-            closestBusMarker,
-          ]);
-          get().map?.fitBounds(featureGroup.getBounds(), {
-            paddingBottomRight: [20, 240],
-            paddingTopLeft: [20, 160],
-          });
-        }
+        busStopMarker.togglePopup();
+        closestBusMarker.togglePopup();
+        const featureGroup = L.featureGroup([busStopMarker, closestBusMarker]);
+        get().map?.fitBounds(featureGroup.getBounds(), {
+          paddingBottomRight: [20, 240],
+          paddingTopLeft: [20, 160],
+        });
       })
       .catch(() => {
-        // Fallback marker jika marker belum sempat dibuat
         const fallbackMarker = new L.Marker(
-          L.latLng(
-            calculatedClosestBus.bus.latitude,
-            calculatedClosestBus.bus.longitude,
-          ),
+          L.latLng(resolvedClosestBus.latitude, resolvedClosestBus.longitude),
         );
-        if (busStopMarker) {
-          console.log(busStopMarker, fallbackMarker);
-          busStopMarker.togglePopup();
-          fallbackMarker.togglePopup();
-          const featureGroup = L.featureGroup([busStopMarker, fallbackMarker]);
-          get().map?.fitBounds(featureGroup.getBounds(), {
-            paddingBottomRight: [20, 240],
-            paddingTopLeft: [20, 160],
-          });
-        }
+        busStopMarker.togglePopup();
+        const featureGroup = L.featureGroup([busStopMarker, fallbackMarker]);
+        get().map?.fitBounds(featureGroup.getBounds(), {
+          paddingBottomRight: [20, 240],
+          paddingTopLeft: [20, 160],
+        });
       });
   },
 }));
 
-const findRoute = () => {
-  const operational = useGlobalStore.getState().message?.operationalStatus;
-  const selectedLine = useGlobalStore.getState().selectedLine;
-  if (operational === undefined) return;
-  if (operational === 0) {
+const findRoute = (
+  operationalStatus: number | undefined,
+  selectedLine: Line | undefined,
+): BusStop[] | undefined => {
+  if (operationalStatus === undefined) return;
+  if (!selectedLine) return;
+
+  // operationalStatus: 0=morning, 1=normal, 2=not operational (fallback to normal)
+  if (operationalStatus === 0) {
     return selectedLine === "red" ? RED_MORNING_STOP : BLUE_MORNING_STOP;
-  } else {
-    return selectedLine === "red" ? RED_NORMAL_STOP : BLUE_NORMAL_STOP;
   }
+  return selectedLine === "red" ? RED_NORMAL_STOP : BLUE_NORMAL_STOP;
 };
 
-const nearestBus = () => {
-  const { selectedStop } = useGlobalStore.getState();
+const nearestBus = (): { bus: BusCoordinate; distance: number } | undefined => {
+  const { selectedStop, selectedLine, message } = useGlobalStore.getState();
   if (!selectedStop) return;
+
   const metadata = BUS_STOP_METADATA.get(selectedStop);
-  const selectedLine = useGlobalStore.getState().selectedLine;
   const position =
     selectedLine === "red"
       ? metadata?.positionRedLine
       : metadata?.positionBlueLine;
 
-  const coordinates = useGlobalStore.getState().message?.coordinates;
-  const buses = coordinates;
+  const buses = message?.coordinates;
+  if (!buses || !position) return;
 
-  // Temukan bus terdekat
-  let closestBus: BusCoordinate | undefined = undefined;
+  let closestBus: BusCoordinate | undefined;
   let minDistance = Infinity;
 
+  // When no line is selected, use any moving bus.
   if (!selectedLine) {
-    buses
-      ?.filter((bus) => {
-        return bus.speed !== 0;
-      })
-      .forEach((bus) => {
-        const busLatLng = L.latLng(bus.latitude, bus.longitude);
-        const distance = position?.distanceTo(busLatLng); // dalam meter
+    for (const bus of buses) {
+      if (bus.speed === 0) continue;
+      const busLatLng = L.latLng(bus.latitude, bus.longitude);
+      const distance = position.distanceTo(busLatLng);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestBus = bus;
+      }
+    }
 
-        if (distance !== undefined && distance < minDistance) {
+    return closestBus ? { bus: closestBus, distance: minDistance } : undefined;
+  }
+
+  const route = findRoute(message?.operationalStatus, selectedLine);
+  if (!route) return;
+
+  let index = route.indexOf(selectedStop);
+  const originalIndex = index;
+
+  // Walk backwards on the route (wrapping) to find a bus "behind" the stop.
+  while (index >= 0 && index < route.length) {
+    let foundAtIndex = false;
+
+    for (const bus of buses) {
+      if (bus.speed === 0) continue;
+      if (bus.color !== selectedLine) continue;
+      if (bus.message.includes(`Depart from ${route[originalIndex]}`)) continue;
+      if (!bus.current_halte.includes(route[index])) continue;
+
+      const busLatLng = L.latLng(bus.latitude, bus.longitude);
+      const distance = position.distanceTo(busLatLng);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestBus = bus;
+        foundAtIndex = true;
+      }
+    }
+
+    // Legacy special-case: after checking one stop behind, fallback to any moving
+    // bus on the selected line.
+    if (index === originalIndex + 1) {
+      for (const bus of buses) {
+        if (bus.speed === 0) continue;
+        if (bus.color !== selectedLine) continue;
+        const busLatLng = L.latLng(bus.latitude, bus.longitude);
+        const distance = position.distanceTo(busLatLng);
+        if (distance < minDistance) {
           minDistance = distance;
           closestBus = bus;
         }
-      });
-  } else {
-    const route = findRoute();
-    let index = route?.indexOf(selectedStop);
-    const originalIndex = index;
-    while (index !== undefined && index >= 0 && route && index < route.length) {
-      console.log(`Searching for bus at ${route[index]}`);
-      let find = false;
-      buses
-        ?.filter((bus) => {
-          return index !== undefined &&
-            originalIndex !== undefined &&
-            route !== undefined &&
-            bus.speed !== 0 &&
-            !bus.message.includes(`Depart from ${route[originalIndex]}`) &&
-            selectedLine == bus.color &&
-            route
-            ? bus.current_halte.includes(route[index])
-            : false;
-        })
-        .forEach((bus) => {
-          const busLatLng = L.latLng(bus.latitude, bus.longitude);
-          const distance = position?.distanceTo(busLatLng); // dalam meter
-          if (distance !== undefined && distance < minDistance) {
-            minDistance = distance;
-            closestBus = bus;
-            find = true;
-          }
-        });
-      if (originalIndex !== undefined && index === originalIndex + 1) {
-        buses
-          ?.filter((bus) => {
-            return bus.speed !== 0 && bus.color === selectedLine;
-          })
-          .forEach((bus) => {
-            const busLatLng = L.latLng(bus.latitude, bus.longitude);
-            const distance = position?.distanceTo(busLatLng); // dalam meter
+      }
+      break;
+    }
 
-            if (distance !== undefined && distance < minDistance) {
-              minDistance = distance;
-              closestBus = bus;
-            }
-          });
-        break;
-      }
-      if (find) {
-        console.log(
-          `Found bus at ${route[index]} with distance ${minDistance}`,
-        );
-        break;
-      }
-      index--;
+    if (foundAtIndex) break;
 
-      if (index < 0) {
-        index = route.length - 1;
-      }
+    index -= 1;
+    if (index < 0) {
+      index = route.length - 1;
     }
   }
 
-  if (closestBus) {
-    return {
-      bus: closestBus,
-      distance: minDistance,
-    };
-  }
-  return undefined;
+  return closestBus ? { bus: closestBus, distance: minDistance } : undefined;
 };

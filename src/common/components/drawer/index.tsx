@@ -1,20 +1,111 @@
 import { Crosshair, MoveLeft } from "lucide-react";
+import { useEffect } from "react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
-import { cn } from "@/lib/utils.ts";
+import { cn, formatEtaMinutes } from "@/lib/utils.ts";
+import { useETA } from "@/common/hooks/useETA.ts";
+import NearestBusesList from "./nearest-buses-list.tsx";
 
 export default function Drawer() {
   const { fitBoundsToSelectedStop, centerMap } = useRefStore();
   const {
     closestBus,
+    message,
     selectedLine,
     selectedStop,
+    setClosestBus,
     setSelectedLine,
     setSelectedStop,
-    setClosestBus,
   } = useGlobalStore();
+
+  const {
+    nearest: nearestBusETA,
+    nearestList: nearestBusesList,
+    loading: etaLoading,
+    refreshing: etaRefreshing,
+    error: etaError,
+  } = useETA(selectedStop, selectedLine, { mode: "full", intervalSec: 30 });
+
+  const primaryBus = nearestBusETA;
+  const usingFallbackBus = Boolean(!primaryBus && etaError && closestBus);
+  const displayBusNumber = primaryBus?.bus_number ?? closestBus?.bus_number;
+  const displayNextStop = primaryBus?.next_stop ?? closestBus?.message;
+  const displayBusNumberPadded = displayBusNumber
+    ? displayBusNumber.padStart(2, "0")
+    : "--";
+  const displayEtaMinutes = primaryBus
+    ? formatEtaMinutes(primaryBus.eta_seconds)
+    : usingFallbackBus
+      ? "-"
+      : null;
+  const displayArrivalTime = primaryBus?.arrival_time ?? null;
+  const noBusMessageText =
+    "Perkiraan waktu kedatangan tidak tersedia. Silakan coba lagi nanti.";
+  const displayTitleText = displayBusNumber
+    ? `Bus ${displayBusNumber}`
+    : "Bus terdekat";
+
+  const otherBuses = nearestBusesList.slice(1);
+  const isEtaFetching = etaLoading || etaRefreshing;
+  const showFullLoading = Boolean(
+    selectedStop && selectedLine && isEtaFetching,
+  );
+  const showNoBusState = Boolean(
+    selectedStop &&
+      selectedLine &&
+      !isEtaFetching &&
+      !primaryBus &&
+      !usingFallbackBus,
+  );
+
+  useEffect(() => {
+    if (!selectedStop || !selectedLine) {
+      setClosestBus(undefined);
+      return;
+    }
+
+    // If ETA backend fails, fallback to legacy nearest-bus logic.
+    if (!primaryBus && etaError) {
+      if (!closestBus) {
+        fitBoundsToSelectedStop(selectedStop);
+      }
+      return;
+    }
+
+    if (!primaryBus) {
+      setClosestBus(undefined);
+      return;
+    }
+
+    const normalizeBusNumber = (value: string): string => {
+      const trimmed = value.trim();
+      const normalized = trimmed.replace(/^0+/, "");
+      return normalized.length === 0 ? "0" : normalized;
+    };
+
+    const coordinates = message?.coordinates ?? [];
+    const targetBus = coordinates.find((bus) => {
+      return (
+        bus.color === selectedLine &&
+        normalizeBusNumber(bus.bus_number) ===
+          normalizeBusNumber(primaryBus.bus_number)
+      );
+    });
+
+    setClosestBus(targetBus);
+    fitBoundsToSelectedStop(selectedStop);
+  }, [
+    closestBus,
+    fitBoundsToSelectedStop,
+    etaError,
+    message?.coordinates,
+    primaryBus,
+    selectedLine,
+    selectedStop,
+    setClosestBus,
+  ]);
 
   const selectedStopMetadata = selectedStop
     ? BUS_STOP_METADATA.get(selectedStop)
@@ -39,6 +130,7 @@ export default function Drawer() {
     }
     return "w-0";
   };
+
 
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
@@ -71,37 +163,81 @@ export default function Drawer() {
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
         </button>
-        {closestBus && (
+        {selectedStop && showFullLoading && (
+          <div className="p-6">
+            <div className="flex h-32 w-full items-center justify-center">
+              <span className="text-sm font-semibold text-gray-500">
+                Loading...
+              </span>
+            </div>
+          </div>
+        )}
+
+        {selectedStop && !showFullLoading && (
           <div className="p-6">
             <div className="mb-5 flex">
-              <div
-                className={`${closestBus?.color === "red" ? "bg-primary-red" : closestBus?.color === "blue" ? "bg-primary" : "bg-primary"} flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white`}
-              >
-                {closestBus?.bus_number != null &&
-                  closestBus.bus_number.length === 2
-                  ? closestBus.bus_number
-                  : `0${closestBus?.bus_number ?? "0"}`}
-              </div>
-              <div className="ml-4 flex justify-between">
-                <div className="flex flex-col">
-                  <div className="text-lg font-bold">
-                    {"Bus " +
-                      (closestBus.bus_number === undefined
-                        ? "Terdekat Tidak Ditemukan"
-                        : closestBus.bus_number)}
+              {!showNoBusState && (
+                <div
+                  className={cn(
+                    "flex h-20 w-20 items-center justify-center rounded-3xl text-3xl font-extrabold text-white",
+                    {
+                      "bg-primary-red": selectedLine === "red",
+                      "bg-primary": selectedLine === "blue" || !selectedLine,
+                    },
+                  )}
+                >
+                  {primaryBus?.bus_number
+                    ? primaryBus.bus_number.padStart(2, "0")
+                    : displayBusNumberPadded}
+                </div>
+              )}
+
+              <div className="ml-4 flex w-full items-center justify-between">
+                <div className="flex w-full flex-col">
+                  {showNoBusState && (
+                    <img
+                      src="/assets/eta-not-avail.webp"
+                      alt="No bus available"
+                      className="mb-4 h-25 w-25 self-center"
+                    />
+                  )}
+                  <div
+                    className={`text-lg font-bold ${showNoBusState ? "text-center text-sm font-normal" : ""}`}
+                  >
+                    {showNoBusState ? noBusMessageText : displayTitleText}
                   </div>
-                  <div className="text-primary text-xs">
-                    {closestBus.message && (
-                      <p
-                        className={`${closestBus?.color === "red" ? "text-primary-red" : closestBus?.color === "blue" ? "text-primary" : "text-primary"}`}
-                      >
-                        Status: <b>{closestBus.message}</b>
-                      </p>
-                    )}
+                  <div className="text-xs">
+                    <p
+                      className={cn("font-semibold", {
+                        "text-primary-red": selectedLine === "red",
+                        "text-primary":
+                          selectedLine === "blue" || !selectedLine,
+                      })}
+                    >
+                      {selectedLine
+                        ? displayBusNumber
+                          ? `${displayNextStop}`
+                          : null
+                        : "Pilih line untuk lihat ETA"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col text-end">
+                  <div
+                    className={`${selectedLine === "red" ? "text-primary-red" : "text-primary"} text-base font-bold max-md:text-sm`}
+                  >
+                    {displayEtaMinutes ? `${displayEtaMinutes} min` : null}
+                  </div>
+                  <div className="flex flex-col text-xs">
+                    <span className="text-gray-500">
+                      {displayArrivalTime ? `${displayArrivalTime} WIB` : null}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="relative flex h-11 w-full items-center rounded-2xl bg-white font-semibold shadow-md">
               <div className="absolute inset-0 z-10 flex">
                 <div
@@ -151,6 +287,14 @@ export default function Drawer() {
               </div>
             </div>
           </div>
+        )}
+
+        {!showFullLoading && (
+          <NearestBusesList
+            buses={otherBuses}
+            loading={isEtaFetching}
+            line={selectedLine}
+          />
         )}
       </div>
     </div>
