@@ -31,7 +31,7 @@ export default function Drawer() {
   const primaryBus = nearestBusETA;
   const usingFallbackBus = Boolean(!primaryBus && etaError && closestBus);
   const displayBusNumber = primaryBus?.bus_number ?? closestBus?.bus_number;
-  const displayNextStop = primaryBus?.next_stop ?? closestBus?.next_halte;
+  const displayNextStop = primaryBus?.next_stop ?? closestBus?.message;
   const displayBusNumberPadded = displayBusNumber
     ? displayBusNumber.padStart(2, "0")
     : "--";
@@ -131,6 +131,7 @@ export default function Drawer() {
     return "w-0";
   };
 
+
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
       <div className="relative h-full w-full">
@@ -215,7 +216,7 @@ export default function Drawer() {
                     >
                       {selectedLine
                         ? displayBusNumber
-                          ? `Next ${displayNextStop ?? selectedStop}`
+                          ? `${displayNextStop}`
                           : null
                         : "Pilih line untuk lihat ETA"}
                     </p>
