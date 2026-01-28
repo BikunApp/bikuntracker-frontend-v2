@@ -46,6 +46,7 @@ export function useETA(
 
   useEffect(() => {
     if (!stop || !line) {
+      console.log(stop, line, "resetting ETA state");
       setState({
         key: null,
         nearest: null,
