@@ -47,7 +47,7 @@ export default function Page() {
   const isDamriDown = false; // Ganti ke false kalau damri sudah aman
 
   const modalType = (() => {
-    if (isDamriDown) return "damriDown";
+    if (isDamriDown) return "damriDown"
     if (isWisudaPeriod) return "wisuda";
     if (shouldShowNotOperational) return "notOperational";
     return "development";
@@ -62,7 +62,7 @@ export default function Page() {
       setIsOpen(false);
       return;
     }
-    if (isDamriDown) {
+    if (isDamriDown){
       setIsOpen(true);
       return;
     }
