@@ -1,5 +1,5 @@
 import { Crosshair, MoveLeft } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
@@ -19,6 +19,11 @@ export default function Drawer() {
     setSelectedLine,
     setSelectedStop,
   } = useGlobalStore();
+
+  const selectionKey = useMemo(() => {
+    if (!selectedStop || !selectedLine) return null;
+    return `${selectedStop}:${selectedLine}`;
+  }, [selectedLine, selectedStop]);
 
   const {
     nearest: nearestBusETA,
@@ -52,25 +57,45 @@ export default function Drawer() {
   const showFullLoading = Boolean(
     selectedStop && selectedLine && isEtaFetching,
   );
+
   const showNoBusState = Boolean(
     selectedStop &&
-      selectedLine &&
-      !isEtaFetching &&
-      !primaryBus &&
-      !usingFallbackBus,
+    selectedLine &&
+    !isEtaFetching &&
+    !primaryBus &&
+    !usingFallbackBus,
   );
 
+  const lastAutoFitRef = useRef<{
+    selectionKey: string | null;
+    busId: number | null;
+    mode: "primary" | "fallback" | null;
+  }>({ selectionKey: null, busId: null, mode: null });
+
   useEffect(() => {
-    if (!selectedStop || !selectedLine) {
+    if (!selectedStop || !selectedLine || !selectionKey) {
       setClosestBus(undefined);
+      lastAutoFitRef.current = { selectionKey: null, busId: null, mode: null };
       return;
     }
 
     // If ETA backend fails, fallback to legacy nearest-bus logic.
     if (!primaryBus && etaError) {
-      if (!closestBus) {
+      // Only auto-fit once per selection to avoid repeated map jumps from
+      // periodic ETA refresh attempts.
+      const shouldAutoFitFallback =
+        lastAutoFitRef.current.selectionKey !== selectionKey ||
+        lastAutoFitRef.current.mode !== "fallback";
+
+      if (!closestBus && shouldAutoFitFallback) {
         fitBoundsToSelectedStop(selectedStop);
+        lastAutoFitRef.current = {
+          selectionKey,
+          busId: null,
+          mode: "fallback",
+        };
       }
+
       return;
     }
 
@@ -90,20 +115,38 @@ export default function Drawer() {
       return (
         bus.color === selectedLine &&
         normalizeBusNumber(bus.bus_number) ===
-          normalizeBusNumber(primaryBus.bus_number)
+        normalizeBusNumber(primaryBus.bus_number)
       );
     });
 
     setClosestBus(targetBus);
-    fitBoundsToSelectedStop(selectedStop);
+
+    // Auto-fit only when:
+    // - a new stop/line is selected, OR
+    // - the resolved closest bus changes.
+    const nextBusId = targetBus?.id ?? null;
+    const shouldAutoFitPrimary =
+      lastAutoFitRef.current.selectionKey !== selectionKey ||
+      lastAutoFitRef.current.busId !== nextBusId ||
+      lastAutoFitRef.current.mode !== "primary";
+
+    if (shouldAutoFitPrimary) {
+      fitBoundsToSelectedStop(selectedStop);
+      lastAutoFitRef.current = {
+        selectionKey,
+        busId: nextBusId,
+        mode: "primary",
+      };
+    }
   }, [
     closestBus,
-    fitBoundsToSelectedStop,
     etaError,
+    fitBoundsToSelectedStop,
     message?.coordinates,
     primaryBus,
     selectedLine,
     selectedStop,
+    selectionKey,
     setClosestBus,
   ]);
 
@@ -130,7 +173,6 @@ export default function Drawer() {
     }
     return "w-0";
   };
-
 
   return (
     <div className="bg-primary-white absolute right-0 bottom-0 left-0 z-30 flex flex-col rounded-tl-3xl rounded-tr-3xl">
