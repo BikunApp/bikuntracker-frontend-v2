@@ -29,7 +29,19 @@ export interface RefStore {
   setBlueBusStopMarkerFactory: (busStop: BusStop) => (marker: L.Marker) => void;
   setMap: (map?: L.Map) => void;
   // Utils
-  fitBoundsToSelectedStop: (selectedStop: BusStop) => void;
+  fitBoundsToSelectedStop: (
+    selectedStop: BusStop,
+    options?: {
+      /**
+       * When true, the store may fall back to legacy client-side nearest-bus
+       * resolution if `closestBus` is not set.
+       *
+       * Disable this when using backend ETA (`useETA`) to avoid focusing a
+       * different bus than the ETA UI.
+       */
+      allowFallbackNearestBus?: boolean;
+    },
+  ) => void;
   centerMap: () => void;
 }
 
@@ -72,13 +84,15 @@ export const useRefStore = create<RefStore>((set, get) => ({
   centerMap: () => {
     get().map?.flyTo(DEFAULT_CENTER, DEFAULT_ZOOM);
   },
-  fitBoundsToSelectedStop: (selectedStop) => {
+  fitBoundsToSelectedStop: (selectedStop, options) => {
     const busStopMarker = get().getBusStopMarker(selectedStop);
     const { closestBus, setClosestBus } = useGlobalStore.getState();
 
     if (!busStopMarker) return;
 
-    const fallback = !closestBus ? nearestBus() : undefined;
+    const allowFallbackNearestBus = options?.allowFallbackNearestBus ?? true;
+    const fallback =
+      allowFallbackNearestBus && !closestBus ? nearestBus() : undefined;
     const resolvedClosestBus = closestBus ?? fallback?.bus;
 
     if (fallback?.bus) {

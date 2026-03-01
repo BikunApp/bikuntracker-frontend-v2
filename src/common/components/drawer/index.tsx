@@ -60,10 +60,10 @@ export default function Drawer() {
 
   const showNoBusState = Boolean(
     selectedStop &&
-    selectedLine &&
-    !isEtaFetching &&
-    !primaryBus &&
-    !usingFallbackBus,
+      selectedLine &&
+      !isEtaFetching &&
+      !primaryBus &&
+      !usingFallbackBus,
   );
 
   const lastAutoFitRef = useRef<{
@@ -88,7 +88,9 @@ export default function Drawer() {
         lastAutoFitRef.current.mode !== "fallback";
 
       if (!closestBus && shouldAutoFitFallback) {
-        fitBoundsToSelectedStop(selectedStop);
+        fitBoundsToSelectedStop(selectedStop, {
+          allowFallbackNearestBus: true,
+        });
         lastAutoFitRef.current = {
           selectionKey,
           busId: null,
@@ -115,7 +117,7 @@ export default function Drawer() {
       return (
         bus.color === selectedLine &&
         normalizeBusNumber(bus.bus_number) ===
-        normalizeBusNumber(primaryBus.bus_number)
+          normalizeBusNumber(primaryBus.bus_number)
       );
     });
 
@@ -131,7 +133,9 @@ export default function Drawer() {
       lastAutoFitRef.current.mode !== "primary";
 
     if (shouldAutoFitPrimary) {
-      fitBoundsToSelectedStop(selectedStop);
+      fitBoundsToSelectedStop(selectedStop, {
+        allowFallbackNearestBus: false,
+      });
       lastAutoFitRef.current = {
         selectionKey,
         busId: nextBusId,
@@ -162,7 +166,9 @@ export default function Drawer() {
     } else {
       setSelectedLine(line);
       if (selectedStop) {
-        fitBoundsToSelectedStop(selectedStop);
+        fitBoundsToSelectedStop(selectedStop, {
+          allowFallbackNearestBus: false,
+        });
       }
     }
   };
@@ -193,7 +199,9 @@ export default function Drawer() {
         <button
           onClick={() => {
             if (selectedStop) {
-              fitBoundsToSelectedStop(selectedStop);
+              fitBoundsToSelectedStop(selectedStop, {
+                allowFallbackNearestBus: Boolean(!selectedLine),
+              });
             } else {
               centerMap();
             }
