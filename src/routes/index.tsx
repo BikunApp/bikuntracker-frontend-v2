@@ -20,6 +20,7 @@ function isNotOperational(): boolean {
 
   const day = jakartaTime.getDay();
   const hour = jakartaTime.getHours();
+  const minute = jakartaTime.getMinutes();
 
   if (day === 0) {
     // Minggu Bikun gak Operasional
@@ -28,12 +29,27 @@ function isNotOperational(): boolean {
 
   if (day >= 1 && day <= 5) {
     // Senin - Jumat
-    return hour >= 22;
+
+    if (hour >= 22) return true;
+    //handle subuh-pagi
+    else if (hour >= 0) {
+      //mulainya 06:50
+      if (hour <= 6 && minute <= 49) return true
+      return false;
+    }
+    return false;
   }
 
   if (day === 6) {
     // Sabtu
-    return hour >= 17;
+    if (hour >= 17) return true;
+    else if (hour >= 0) {
+      //mulainya 06:50
+      if (hour <= 6 && minute <= 49) return true
+      return false;
+      
+    }
+    return false;
   }
 
   return false;

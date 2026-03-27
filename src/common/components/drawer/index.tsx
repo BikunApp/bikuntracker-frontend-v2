@@ -174,8 +174,8 @@ export default function Drawer() {
   };
 
   const getBackgroundPosition = () => {
-    if (selectedLine === "red" && hasRedLine) {
-      return hasBlueLine ? "w-1/2" : "w-full";
+    if (selectedLine === "red" && hasRedLine && hasBlueLine) {
+      return "w-1/2";
     }
     return "w-0";
   };
@@ -193,7 +193,7 @@ export default function Drawer() {
             }}
             className="absolute -top-12 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
           >
-            <MoveLeft size={20} strokeWidth={3} className="text-400" />
+            <MoveLeft size={20} strokeWidth={3} className="text-primary" />
           </button>
         )}
         <button
