@@ -191,7 +191,7 @@ export default function Drawer() {
               setClosestBus(undefined);
               centerMap();
             }}
-            className="absolute -top-12 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
+            className="absolute -top-13 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl"
           >
             <MoveLeft size={20} strokeWidth={3} className="text-primary" />
           </button>
@@ -208,7 +208,7 @@ export default function Drawer() {
           }}
           className={cn(
             "bg-primary absolute right-4 flex h-10 w-10 items-center justify-center rounded-full shadow-2xl",
-            { "-top-[60px]": selectedStop, "-top-[120px]": !selectedStop },
+            { "-top-13": selectedStop, "-top-[120px]": !selectedStop },
           )}
         >
           <Crosshair size={22} strokeWidth={3} className="text-white" />
