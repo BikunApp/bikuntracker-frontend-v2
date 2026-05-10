@@ -1,20 +1,30 @@
-name: Deploy Staging to vercel
+name: Deploy Staging to Vercel
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - staging
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: ngduc/vercel-deploy-action@master
-        with:
-          vercel-cli: vercel
-          vercel-token: ${{ secrets.WEBDEV_VERCEL_TOKEN }}
-          vercel-args: "--prod"
-          vercel-org-id: ${{ secrets.ORG_ID}}
-          vercel-project-id: ${{ secrets.PROJECT_ID}}
-          working-directory: ./
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Production Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.WEBDEV_VERCEL_TOKEN }}
+
+      - name: Build Project
+        run: vercel build --prod --token=${{ secrets.WEBDEV_VERCEL_TOKEN }}
+
+      - name: Deploy Prebuilt Project
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.WEBDEV_VERCEL_TOKEN }}
