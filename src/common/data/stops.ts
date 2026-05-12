@@ -313,9 +313,16 @@ export const BLUE_NORMAL_STOP = [
   BusStop.FT,
   BusStop.Vokasi,
   BusStop.SOR,
-  BusStop.FF,
-  BusStop.BalaiSidang,
-  BusStop.Balairung,
+
+  // Uncomment this if > 18 may 2026
+  // BusStop.FF,
+  // BusStop.BalaiSidang,
+  // BusStop.Balairung,
+
+  // Comment this if > 18 may 2026
+  BusStop.FMIPA,
+  BusStop.RIK,
+
   BusStop.Pocin,
   BusStop.MUI,
   BusStop.FH,
