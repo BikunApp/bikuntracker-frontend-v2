@@ -16,6 +16,8 @@ import {
   RED_NORMAL_ROUTE,
   // WISUDA_ROUTE,
 } from "@/common/data/routes.ts";
+
+import { BLUE_NORMAL_ROUTE_OLD } from "@/common/data/OldRoute.ts";
 import {
   BLUE_MORNING_STOP,
   BLUE_NORMAL_STOP,
@@ -215,7 +217,7 @@ export default function MapContent() {
               data={
                 message.operationalStatus === OperationalStatus.MorningRoute
                   ? BLUE_MORNING_ROUTE
-                  : BLUE_NORMAL_ROUTE
+                  : BLUE_NORMAL_ROUTE_OLD
               }
               color="#473E91"
               weight={8}
