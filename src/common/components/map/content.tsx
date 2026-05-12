@@ -11,7 +11,7 @@ import {
 import { RouteWithArrows } from "./route-with-arrows.tsx";
 import {
   BLUE_MORNING_ROUTE,
-  BLUE_NORMAL_ROUTE,
+  // BLUE_NORMAL_ROUTE,
   RED_MORNING_ROUTE,
   RED_NORMAL_ROUTE,
   // WISUDA_ROUTE,
