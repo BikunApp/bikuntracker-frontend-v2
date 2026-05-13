@@ -50,7 +50,10 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
       />
       <div className="font-poppins text-center">
         <p className="font-bold">
-          Terima kasih telah menggunakan Bikun Tracker!
+          Perubahan Sementara Rute Bikun Lin Biru
+        </p>
+        <p className="text-400 text-sm whitespace-pre-line">
+          {EMERGENCY_ROUTE}
         </p>
         <p className="text-400 text-sm whitespace-pre-line">{ETA_ANNOUNCEMENT}</p>
       </div>
@@ -70,18 +73,15 @@ const damriDownModal = () => {
       <img
         src="/assets/bikun-down.svg"
         alt="Down"
-        className="mt-6 self-center max-md:w-[80%] w-[55%]"
+        className="mt-6 w-[55%] self-center max-md:w-[80%]"
       />
       <div className="font-poppins text-center">
-        <p className="font-bold">
-          Terima kasih telah menggunakan Bikun Tracker!
-        </p>
+        <p className="font-bold">Perubahan Sementara Rute Bikun Lin Biru</p>
         <p className="text-400 text-sm whitespace-pre-line">{DAMRI_DOWN}</p>
       </div>
     </DialogContent>
   );
 };
-
 
 const wisudaModal = (setOpen: (open: boolean) => void) => {
   return (
