@@ -321,8 +321,6 @@ export const BLUE_NORMAL_STOP = [
 
   // Comment this if > 18 may 2026
   BusStop.FMIPA,
-  BusStop.FIK,
-  BusStop.RSUI_FKM,
   BusStop.RIK,
 
   BusStop.Pocin,
