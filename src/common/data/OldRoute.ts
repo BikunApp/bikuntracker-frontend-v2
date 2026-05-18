@@ -177,7 +177,7 @@ export const RED_NORMAL_ROUTE_OLD: FeatureCollection = {
     },
   ],
 };
-export const BLUE_NORMAL_ROUTE_OLD: FeatureCollection = {
+export const BLUE_NORMAL_ROUTE: FeatureCollection = {
   type: "FeatureCollection",
   features: [
     {

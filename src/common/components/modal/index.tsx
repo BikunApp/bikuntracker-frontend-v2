@@ -3,9 +3,8 @@ import { Button } from "../ui/button.tsx";
 import { Link } from "@tanstack/react-router";
 import { busSchedule } from "@/common/constants/busSchedule.ts";
 import {
-  // CHANGE_ROUTE,
+  CHANGE_ROUTE,
   DAMRI_DOWN,
-  EMERGENCY_ROUTE,
   // DEVELOPMENT,
 } from "@/common/constants/modalCopyWriting.ts";
 
@@ -51,11 +50,9 @@ const developmentModal = (setOpen: (open: boolean) => void) => {
       />
       <div className="font-poppins text-center">
         <p className="font-bold">
-          Perubahan Sementara Rute Bikun Lin Biru
+          Terima kasih telah menggunakan Bikun Tracker!
         </p>
-        <p className="text-400 text-sm whitespace-pre-line">
-          {EMERGENCY_ROUTE}
-        </p>
+        <p className="text-400 text-sm whitespace-pre-line">{CHANGE_ROUTE}</p>
       </div>
       <Button
         className="rounded-[20px] py-7 text-base font-bold"
@@ -73,15 +70,18 @@ const damriDownModal = () => {
       <img
         src="/assets/bikun-down.svg"
         alt="Down"
-        className="mt-6 w-[55%] self-center max-md:w-[80%]"
+        className="mt-6 self-center max-md:w-[80%] w-[55%]"
       />
       <div className="font-poppins text-center">
-        <p className="font-bold">Perubahan Sementara Rute Bikun Lin Biru</p>
+        <p className="font-bold">
+          Terima kasih telah menggunakan Bikun Tracker!
+        </p>
         <p className="text-400 text-sm whitespace-pre-line">{DAMRI_DOWN}</p>
       </div>
     </DialogContent>
   );
 };
+
 
 const wisudaModal = (setOpen: (open: boolean) => void) => {
   return (
