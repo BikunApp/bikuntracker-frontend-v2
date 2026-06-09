@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import {
   type WebsocketMessage,
@@ -7,13 +7,13 @@ import {
 
 export interface UseWebsocketProps {
   onMessage: (message?: WebsocketMessage) => void;
+  enabled?: boolean;
 }
 
-export default function useWebsocket({ onMessage }: UseWebsocketProps) {
-  const [socket] = useState<WebSocket>(
-    () => new WebSocket(import.meta.env.VITE_WS_URL),
-  );
-
+export default function useWebsocket({
+  onMessage,
+  enabled = true,
+}: UseWebsocketProps) {
   const onMessageCallbackRef = useRef<UseWebsocketProps["onMessage"] | null>(
     null,
   );
@@ -22,6 +22,10 @@ export default function useWebsocket({ onMessage }: UseWebsocketProps) {
   }, [onMessage]);
 
   useEffect(() => {
+    if (!enabled) return;
+
+    const socket = new WebSocket(import.meta.env.VITE_WS_URL);
+
     socket.addEventListener("open", (event) => {
       console.log("Connection opened to ws:", event);
     });
@@ -30,5 +34,9 @@ export default function useWebsocket({ onMessage }: UseWebsocketProps) {
       const message = websocketMessageSchema.parse(JSON.parse(event.data));
       onMessageCallbackRef.current?.(message);
     });
-  }, [socket]);
+
+    return () => {
+      socket.close();
+    };
+  }, [enabled]);
 }

@@ -12,4 +12,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 5173,
+    open: true,
+    proxy: {
+      "/api/eta": {
+        target: "https://eta.api.bikun.ui.ac.id",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

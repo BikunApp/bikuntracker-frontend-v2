@@ -3,7 +3,10 @@ import { create } from "zustand";
 import type { BusCoordinate, WebsocketMessage } from "@/common/schema/ws.ts";
 import type { BusStop } from "@/common/types/bus.ts";
 import type { Line } from "@/common/types/global.ts";
-import { getSingleAvailableLine } from "@/lib/busStopUtils";
+import {
+  getAvailableLinesForStop,
+  getSingleAvailableLine,
+} from "@/lib/busStopUtils.ts";
 
 export interface GlobalStore {
   selectedLine?: Line;
@@ -29,13 +32,36 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     set((state) => {
       const newState = { ...state, selectedStop: stop };
 
-      // Auto-select line if the bus stop has only one available line
-      if (stop) {
-        const singleLine = getSingleAvailableLine(stop);
-        if (singleLine) {
-          newState.selectedLine = singleLine;
-        }
+      if (!stop) {
+        newState.selectedLine = undefined;
+        return newState;
       }
+
+      // Only apply default line when the user selects a (different) stop.
+      // This prevents overriding a manual toggle while staying on the same stop.
+      const stopChanged = state.selectedStop !== stop;
+      if (!stopChanged) {
+        return newState;
+      }
+
+      // Auto-select line:
+      // - If only one line exists: select it.
+      // - If multiple lines exist: prefer blue, fallback to the first available.
+      const singleLine = getSingleAvailableLine(stop);
+      if (singleLine) {
+        newState.selectedLine = singleLine;
+        return newState;
+      }
+
+      const availableLines = getAvailableLinesForStop(stop);
+      if (availableLines.length === 0) {
+        newState.selectedLine = undefined;
+        return newState;
+      }
+
+      newState.selectedLine = availableLines.includes("blue")
+        ? "blue"
+        : availableLines[0];
 
       return newState;
     }),

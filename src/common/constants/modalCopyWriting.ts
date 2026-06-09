@@ -6,3 +6,5 @@ export const DEVELOPMENT = `Saat ini Bikun Tracker sedang dalam tahap pengembang
 `;
 
 export const CHANGE_ROUTE = `Kami informasikan bahwa jalur operasional Bikun telah mengalami perubahan dan akan berlaku secara permanen per tanggal 10 November 2025.\n\nSilakan melihat jalur terbaru untuk memastikan perjalanan Anda tetap sesuai tujuan.`
+
+export const ETA_ANNOUNCEMENT = `Kami menghadirkan fitur terbaru, ETA (Estimated Time Arrival), untuk memperkirakan waktu kedatangan Bikun. Silakan pilih halte dan jalur terlebih dahulu untuk melihat estimasi waktu. \n\nBikun Tracker masih dalam tahap pengembangan, sehingga beberapa data, termasuk ETA, mungkin belum sepenuhnya akurat. Kami sedang bekerja keras untuk memperbaikinya agar pengalaman Anda semakin nyaman.`;
