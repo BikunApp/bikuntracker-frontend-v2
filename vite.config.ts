@@ -5,8 +5,16 @@ import path from "path";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
+const stagingRobotsPlugin = {
+  name: "staging-robots",
+  transformIndexHtml() {
+    if (process.env.VITE_STAGING !== "true") return [];
+    return [{ tag: "meta", attrs: { name: "robots", content: "noindex, nofollow" }, injectTo: "head" as const }];
+  },
+};
+
 export default defineConfig({
-  plugins: [tanstackRouter({ target: "react" }), react(), tailwindcss()],
+  plugins: [stagingRobotsPlugin, tanstackRouter({ target: "react" }), react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
