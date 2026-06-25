@@ -2,6 +2,7 @@ import { Crosshair, MoveLeft } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
+import { trackEtaImpression } from "@/lib/analytics.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 import { cn, formatEtaMinutes } from "@/lib/utils.ts";
@@ -153,6 +154,28 @@ export default function Drawer() {
     selectionKey,
     setClosestBus,
   ]);
+
+  // eta_impression: dihitung bila data ETA sudah ter-render dan pengguna
+  // masih melihatnya setelah 10 detik. Setiap kombinasi halte+line yang
+  // sudah dilaporkan tidak akan dihitung ulang (guard via ref).
+  const etaImpressionFiredRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!selectionKey || !selectedStop || !selectedLine || !primaryBus) return;
+    if (etaImpressionFiredRef.current.has(selectionKey)) return;
+
+    const timer = window.setTimeout(() => {
+      etaImpressionFiredRef.current.add(selectionKey);
+      trackEtaImpression({
+        bus_stop: selectedStop,
+        line: selectedLine,
+        bus_number: primaryBus.bus_number,
+        eta_seconds: primaryBus.eta_seconds,
+      });
+    }, 10_000);
+
+    return () => window.clearTimeout(timer);
+  }, [selectionKey, selectedStop, selectedLine, primaryBus]);
 
   const selectedStopMetadata = selectedStop
     ? BUS_STOP_METADATA.get(selectedStop)
