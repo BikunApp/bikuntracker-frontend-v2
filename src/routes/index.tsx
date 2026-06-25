@@ -5,6 +5,7 @@ import Drawer from "@/common/components/drawer/index.tsx";
 import Map from "@/common/components/map/index.tsx";
 import NavigationBar from "@/common/components/navigation/index.tsx";
 import Modal from "@/common/components/modal/index.tsx";
+import { trackHomepageImpression } from "@/lib/analytics.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 
 export const Route = createFileRoute("/")({
@@ -72,6 +73,16 @@ export default function Page() {
   const isStaging =
     import.meta.env.MODE === "staging" ||
     import.meta.env.VITE_APP_ENV === "staging";
+
+  // homepage_impression: homepage dianggap "dilihat" bila pengguna masih
+  // berada di halaman setelah 15 detik. Hanya sekali per page load (guard
+  // ada di dalam trackHomepageImpression).
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      trackHomepageImpression();
+    }, 15_000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isStaging) {

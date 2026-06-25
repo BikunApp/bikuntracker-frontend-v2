@@ -7,6 +7,7 @@ import {
   DrawerTitle,
 } from "@/common/components/ui/drawer.tsx";
 import { BUS_STOP_METADATA } from "@/common/data/stops.ts";
+import { trackBusStopClick } from "@/lib/analytics.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
 
@@ -67,6 +68,7 @@ export default function NavigationDrawerContent() {
                 <DrawerClose>
                   <div
                     onClick={() => {
+                      trackBusStopClick(busStop);
                       setSelectedStop(busStop);
                       fitBoundsToSelectedStop(busStop);
                     }}

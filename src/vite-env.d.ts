@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_BACKEND_API_URL: string;
   readonly VITE_SSE_URL: string;
   readonly VITE_ISS_SSE: string;
+  readonly VITE_MIXPANEL_TOKEN?: string;
 }
 
 interface ImportMeta {

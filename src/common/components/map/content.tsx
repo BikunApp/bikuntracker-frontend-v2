@@ -24,6 +24,7 @@ import {
   RED_NORMAL_STOP,
 } from "@/common/data/stops.ts";
 import { useAnimatedBusPositions } from "@/common/hooks/useAnimatedBus.ts";
+import { trackBusClick } from "@/lib/analytics.ts";
 import { OperationalStatus } from "@/common/types/bus.ts";
 import { useGlobalStore } from "@/lib/store/global.ts";
 import { useRefStore } from "@/lib/store/ref.ts";
@@ -150,6 +151,15 @@ export default function MapContent() {
                     }
                     position={L.latLng(currentLat, currentLng)}
                     zIndexOffset={100}
+                    eventHandlers={{
+                      click: () =>
+                        trackBusClick({
+                          bus_number: coordinate.bus_number,
+                          color: coordinate.color,
+                          imei: coordinate.imei,
+                          is_moving: true,
+                        }),
+                    }}
                   >
                     <Popup>
                       <div className="h-full w-full">
@@ -181,6 +191,15 @@ export default function MapContent() {
                   }
                   position={L.latLng(currentLat, currentLng)}
                   zIndexOffset={100}
+                  eventHandlers={{
+                    click: () =>
+                      trackBusClick({
+                        bus_number: coordinate.bus_number,
+                        color: coordinate.color,
+                        imei: coordinate.imei,
+                        is_moving: false,
+                      }),
+                  }}
                 >
                   <Popup>
                     <div className="h-full w-full">
